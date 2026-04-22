@@ -3,372 +3,495 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Hatchet — Exit Tickets</title>
+<title>Hatchet Exit Tickets</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet"/>
 <style>
-  :root { --bark:#2c1a0e;--wood:#5c3a1e;--tan:#c4a882;--cream:#f5efe6;--paper:#faf7f2;--green:#3a6b3a;--green-light:#d4edda;--red:#8b2020;--red-light:#fce8e8;--gold:#b8860b; }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Source Sans 3',sans-serif;background:var(--cream);min-height:100vh;color:var(--bark)}
-  .page{display:none}.page.active{display:block}
-  #teacher-login{display:none;background:var(--bark);min-height:100vh;align-items:center;justify-content:center}
-  #teacher-login.active{display:flex}
-  #teacher-dash{display:none}#teacher-dash.active{display:block}
-  .site-header{background:var(--bark);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
-  .brand{display:flex;align-items:center;gap:12px}.brand span{font-size:26px}
-  .brand h1{font-family:'Playfair Display',serif;color:white;font-size:20px;line-height:1}
-  .brand p{color:var(--tan);font-size:12px;letter-spacing:2px;text-transform:uppercase}
-  .teacher-link{font-size:12px;color:var(--tan);background:rgba(255,255,255,.08);padding:6px 12px;border-radius:5px;border:1px solid rgba(255,255,255,.12);cursor:pointer;transition:all .2s}
-  .teacher-link:hover{background:rgba(255,255,255,.15);color:white}
-  .container{max-width:680px;margin:0 auto;padding:36px 20px 60px}
-  .dash-container{max-width:960px;margin:0 auto;padding:32px 20px 60px}
-  .card{background:white;border-radius:12px;box-shadow:0 3px 20px rgba(44,26,14,.10);overflow:hidden;margin-bottom:24px}
-  .card-header{background:var(--bark);padding:20px 28px;display:flex;justify-content:space-between;align-items:center}
-  .card-header h2{font-family:'Playfair Display',serif;color:white;font-size:22px}
-  .card-header p{color:var(--tan);font-size:13px;margin-top:2px}
-  .card-badge{background:rgba(196,168,130,.15);border:1px solid rgba(196,168,130,.3);color:var(--tan);font-size:12px;padding:5px 12px;border-radius:20px;white-space:nowrap}
-  .card-body{padding:28px}
-  .field{margin-bottom:20px}
-  .field label{display:block;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--wood);margin-bottom:7px}
-  .field input{width:100%;padding:11px 14px;border:2px solid #e0d5c5;border-radius:7px;font-family:'Source Sans 3',sans-serif;font-size:15px;color:var(--bark);background:var(--paper);outline:none;transition:border-color .15s}
-  .field input:focus{border-color:var(--wood)}
-  .field-row{display:flex;gap:14px}.field-row .field{flex:1}
-  .waiting-box{text-align:center;padding:40px 28px}
-  .waiting-box .icon{font-size:48px;margin-bottom:16px}
-  .waiting-box h3{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:8px}
-  .waiting-box p{color:#7a6450;font-size:15px}
-  .question{margin-bottom:28px}
-  .question-label{font-size:15px;font-weight:700;color:var(--bark);margin-bottom:13px;line-height:1.5;display:flex;gap:10px;align-items:flex-start}
-  .q-num{background:var(--bark);color:white;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;flex-shrink:0;margin-top:2px}
-  .options{display:flex;flex-direction:column;gap:9px}
-  .option-btn{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:8px;border:2px solid #e0d5c5;background:var(--paper);text-align:left;cursor:pointer;font-family:'Source Sans 3',sans-serif;font-size:14px;color:var(--bark);transition:all .14s;width:100%}
-  .option-btn:hover{border-color:var(--tan);background:#f0e8dc}
-  .option-btn.selected{border-color:var(--wood);background:#ede0ce}
-  .option-circle{width:26px;height:26px;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
-  .btn{padding:12px 26px;border-radius:8px;border:none;font-family:'Source Sans 3',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s}
-  .btn-primary{background:var(--bark);color:white}.btn-primary:hover{background:var(--wood)}.btn-primary:disabled{background:#bbb;cursor:not-allowed}
-  .btn-outline{background:white;color:var(--bark);border:2px solid var(--bark)}.btn-outline:hover{background:var(--cream)}
-  .btn-danger{background:var(--red);color:white}.btn-danger:hover{opacity:.88}
-  .btn-sm{padding:7px 14px;font-size:13px}
-  .action-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px}
-  .hint{font-size:13px;color:#8b6f4e}
-  .success-screen{text-align:center;padding:48px 28px}
-  .success-screen .big-icon{font-size:56px;margin-bottom:16px}
-  .success-screen h2{font-family:'Playfair Display',serif;font-size:26px;margin-bottom:8px}
-  .success-screen p{color:#7a6450;font-size:16px}
-  .score-display{display:inline-block;margin:20px 0;font-family:'Playfair Display',serif;font-size:48px;color:var(--bark);border-bottom:3px solid var(--tan);padding-bottom:4px}
-  .login-card{background:white;border-radius:14px;padding:40px;width:100%;max-width:380px;box-shadow:0 8px 40px rgba(0,0,0,.3);text-align:center}
-  .login-card .icon{font-size:36px;margin-bottom:16px}
-  .login-card h2{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:6px}
-  .login-card p{color:#7a6450;font-size:14px;margin-bottom:24px}
-  .login-error{color:var(--red);font-size:13px;margin-top:10px;display:none}
-  .dash-header{background:var(--bark);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
-  .dash-header h1{font-family:'Playfair Display',serif;color:white;font-size:20px}
-  .dash-header p{color:var(--tan);font-size:12px}
-  .ticket-selector{background:white;border-radius:12px;box-shadow:0 3px 20px rgba(44,26,14,.10);padding:24px 28px;margin-bottom:28px}
-  .ticket-selector h3{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:4px}
-  .ticket-selector p{color:#7a6450;font-size:13px;margin-bottom:16px}
-  .ticket-tabs{display:flex;gap:8px;flex-wrap:wrap}
-  .ticket-tab{padding:8px 16px;border-radius:6px;border:2px solid #e0d5c5;background:white;color:var(--bark);font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .14s}
-  .ticket-tab.active-tab{background:var(--bark);color:white;border-color:var(--bark)}
-  .ticket-tab:hover:not(.active-tab){border-color:var(--tan)}
-  .set-btn-row{margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-  .active-label{font-size:13px;font-weight:700;padding:5px 12px;border-radius:20px;border:1px solid}
-  .active-label.on{background:var(--green-light);color:var(--green);border-color:var(--green)}
-  .active-label.off{background:var(--red-light);color:var(--red);border-color:var(--red)}
-  .responses-card{background:white;border-radius:12px;box-shadow:0 3px 20px rgba(44,26,14,.10);overflow:hidden}
-  .responses-header{background:var(--bark);padding:18px 28px;display:flex;justify-content:space-between;align-items:center}
-  .responses-header h3{font-family:'Playfair Display',serif;color:white;font-size:18px}
-  .responses-header p{color:var(--tan);font-size:13px}
-  .rh-right{display:flex;gap:10px;align-items:center}
-  .count-badge{background:rgba(196,168,130,.2);color:var(--tan);padding:4px 12px;border-radius:20px;font-size:13px;border:1px solid rgba(196,168,130,.3)}
-  .stats-row{display:flex;gap:16px;padding:20px 28px;background:#faf7f2;flex-wrap:wrap}
-  .stat{flex:1;min-width:100px;text-align:center}
-  .stat .val{font-family:'Playfair Display',serif;font-size:28px;color:var(--bark)}
-  .stat .lbl{font-size:12px;color:#8b6f4e;letter-spacing:1px;text-transform:uppercase}
-  hr.divider{border:none;border-top:1px solid #e0d5c5}
-  table{width:100%;border-collapse:collapse}
-  th{background:#f5efe6;padding:11px 16px;text-align:left;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--wood);border-bottom:2px solid #e0d5c5}
-  td{padding:12px 16px;border-bottom:1px solid #f0e8dc;font-size:14px}
-  tr:last-child td{border-bottom:none}tr:hover td{background:#faf7f2}
-  .sc{font-weight:700}.sc.s5{color:var(--green)}.sc.s34{color:var(--gold)}.sc.slow{color:var(--red)}
-  .empty-state{text-align:center;padding:48px;color:#a08060;font-size:15px}
-  .empty-state .icon{font-size:36px;margin-bottom:12px}
-  .spinner{display:inline-block;width:16px;height:16px;border:3px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  @media(max-width:500px){.field-row{flex-direction:column}.card-body{padding:20px}}
+:root{--bark:#2c1a0e;--wood:#5c3a1e;--tan:#c4a882;--cream:#f5efe6;--paper:#faf7f2;--green:#3a6b3a;--gl:#d4edda;--red:#8b2020;--rl:#fce8e8;--gold:#b8860b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Source Sans 3',sans-serif;background:var(--cream);min-height:100vh;color:var(--bark)}
+
+/* --- views --- */
+.view{display:none!important}
+.view.show{display:block!important}
+#v-login.show{display:flex!important}
+#v-dash.show{display:block!important}
+
+/* --- header --- */
+.hdr{background:var(--bark);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:99;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.brand{display:flex;align-items:center;gap:12px}
+.brand em{font-size:26px;font-style:normal}
+.brand h1{font-family:'Playfair Display',serif;color:#fff;font-size:20px;line-height:1}
+.brand p{color:var(--tan);font-size:11px;letter-spacing:2px;text-transform:uppercase}
+.ghost-btn{font-size:12px;color:var(--tan);background:rgba(255,255,255,.08);padding:6px 14px;border-radius:5px;border:1px solid rgba(255,255,255,.15);cursor:pointer}
+.ghost-btn:hover{background:rgba(255,255,255,.18);color:#fff}
+
+/* --- layout --- */
+.wrap{max-width:680px;margin:0 auto;padding:36px 20px 60px}
+.dwrap{max-width:960px;margin:0 auto;padding:32px 20px 60px}
+
+/* --- card --- */
+.card{background:#fff;border-radius:12px;box-shadow:0 3px 20px rgba(44,26,14,.10);overflow:hidden;margin-bottom:24px}
+.ch{background:var(--bark);padding:20px 28px;display:flex;justify-content:space-between;align-items:center}
+.ch h2{font-family:'Playfair Display',serif;color:#fff;font-size:22px}
+.ch p{color:var(--tan);font-size:13px;margin-top:2px}
+.badge{background:rgba(196,168,130,.15);border:1px solid rgba(196,168,130,.3);color:var(--tan);font-size:12px;padding:5px 12px;border-radius:20px}
+.cb{padding:28px}
+
+/* --- fields --- */
+.field{margin-bottom:20px}
+.field label{display:block;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--wood);margin-bottom:7px}
+.field input{width:100%;padding:11px 14px;border:2px solid #e0d5c5;border-radius:7px;font-family:'Source Sans 3',sans-serif;font-size:15px;color:var(--bark);background:var(--paper);outline:none;transition:border-color .15s}
+.field input:focus{border-color:var(--wood)}
+.frow{display:flex;gap:14px}
+.frow .field{flex:1}
+
+/* --- waiting --- */
+.wb{text-align:center;padding:40px 28px}
+.wb .ic{font-size:48px;margin-bottom:16px}
+.wb h3{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:8px}
+.wb p{color:#7a6450;font-size:15px}
+
+/* --- quiz --- */
+.ques{margin-bottom:28px}
+.qlbl{font-size:15px;font-weight:700;margin-bottom:13px;line-height:1.5;display:flex;gap:10px;align-items:flex-start}
+.qn{background:var(--bark);color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;flex-shrink:0;margin-top:2px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:8px;border:2px solid #e0d5c5;background:var(--paper);text-align:left;cursor:pointer;font-family:'Source Sans 3',sans-serif;font-size:14px;color:var(--bark);transition:all .14s;width:100%}
+.opt:hover{border-color:var(--tan);background:#f0e8dc}
+.opt.sel{border-color:var(--wood);background:#ede0ce}
+.oc{width:26px;height:26px;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.arow{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.hint{font-size:13px;color:#8b6f4e}
+
+/* --- buttons --- */
+.btn{padding:12px 26px;border-radius:8px;border:none;font-family:'Source Sans 3',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s}
+.btn-p{background:var(--bark);color:#fff}.btn-p:hover{background:var(--wood)}.btn-p:disabled{background:#bbb;cursor:not-allowed}
+.btn-o{background:#fff;color:var(--bark);border:2px solid var(--bark)}.btn-o:hover{background:var(--cream)}
+.btn-d{background:var(--red);color:#fff}.btn-d:hover{opacity:.85}
+.btn-sm{padding:7px 14px;font-size:13px}
+
+/* --- success --- */
+.suc{text-align:center;padding:48px 28px}
+.suc .bi{font-size:56px;margin-bottom:16px}
+.suc h2{font-family:'Playfair Display',serif;font-size:26px;margin-bottom:8px}
+.suc p{color:#7a6450;font-size:16px}
+.sd{display:inline-block;margin:20px 0;font-family:'Playfair Display',serif;font-size:48px;color:var(--bark);border-bottom:3px solid var(--tan);padding-bottom:4px}
+
+/* --- login view --- */
+#v-login{background:var(--bark);min-height:100vh;align-items:center;justify-content:center;flex-direction:column}
+.lcard{background:#fff;border-radius:14px;padding:40px;width:100%;max-width:380px;box-shadow:0 8px 40px rgba(0,0,0,.3);text-align:center}
+.lcard .li{font-size:36px;margin-bottom:16px}
+.lcard h2{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:6px}
+.lcard .sub{color:#7a6450;font-size:14px;margin-bottom:24px}
+.lerr{color:var(--red);font-size:13px;margin-top:10px;display:none}
+.bk{margin-top:20px;font-size:13px;color:#a08060;cursor:pointer}
+
+/* --- dash header --- */
+.dhdr{background:var(--bark);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:99;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.dhdr h1{font-family:'Playfair Display',serif;color:#fff;font-size:20px}
+.dhdr p{color:var(--tan);font-size:12px}
+
+/* --- ticket selector --- */
+.tsel{background:#fff;border-radius:12px;box-shadow:0 3px 20px rgba(44,26,14,.10);padding:24px 28px;margin-bottom:28px}
+.tsel h3{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:4px}
+.tsel .sub{color:#7a6450;font-size:13px;margin-bottom:16px}
+.ttabs{display:flex;gap:8px;flex-wrap:wrap}
+.ttab{padding:8px 16px;border-radius:6px;border:2px solid #e0d5c5;background:#fff;color:var(--bark);font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .14s}
+.ttab.on{background:var(--bark);color:#fff;border-color:var(--bark)}
+.ttab:hover:not(.on){border-color:var(--tan)}
+.sbr{margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.albl{font-size:13px;font-weight:700;padding:5px 12px;border-radius:20px;border:1px solid}
+.albl.aon{background:var(--gl);color:var(--green);border-color:var(--green)}
+.albl.aoff{background:var(--rl);color:var(--red);border-color:var(--red)}
+
+/* --- responses --- */
+.rcard{background:#fff;border-radius:12px;box-shadow:0 3px 20px rgba(44,26,14,.10);overflow:hidden}
+.rhdr{background:var(--bark);padding:18px 28px;display:flex;justify-content:space-between;align-items:center}
+.rhdr h3{font-family:'Playfair Display',serif;color:#fff;font-size:18px}
+.rhdr p{color:var(--tan);font-size:13px}
+.rhr{display:flex;gap:10px;align-items:center}
+.cbdg{background:rgba(196,168,130,.2);color:var(--tan);padding:4px 12px;border-radius:20px;font-size:13px;border:1px solid rgba(196,168,130,.3)}
+.srow{display:flex;gap:16px;padding:20px 28px;background:#faf7f2;flex-wrap:wrap}
+.st{flex:1;min-width:100px;text-align:center}
+.st .v{font-family:'Playfair Display',serif;font-size:28px;color:var(--bark)}
+.st .l{font-size:11px;color:#8b6f4e;letter-spacing:1px;text-transform:uppercase}
+hr{border:none;border-top:1px solid #e0d5c5}
+table{width:100%;border-collapse:collapse}
+th{background:#f5efe6;padding:11px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--wood);border-bottom:2px solid #e0d5c5}
+td{padding:12px 16px;border-bottom:1px solid #f0e8dc;font-size:14px}
+tr:last-child td{border-bottom:none}tr:hover td{background:#faf7f2}
+.sc{font-weight:700}.s5{color:var(--green)}.s34{color:var(--gold)}.slo{color:var(--red)}
+.empty{text-align:center;padding:48px;color:#a08060;font-size:15px}
+.empty .ic{font-size:36px;margin-bottom:12px}
+.spin{display:inline-block;width:15px;height:15px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(max-width:500px){.frow{flex-direction:column}.cb{padding:20px}}
 </style>
 </head>
 <body>
 
-<header class="site-header" id="student-header">
-  <div class="brand"><span>🪓</span><div><p>5th Grade ELA</p><h1>Hatchet — Exit Tickets</h1></div></div>
-  <span class="teacher-link" id="teacher-btn">Teacher</span>
+<!-- ===== STUDENT HEADER ===== -->
+<header class="hdr" id="s-hdr">
+  <div class="brand"><em>&#129683;</em><div><p>5th Grade ELA</p><h1>Hatchet &mdash; Exit Tickets</h1></div></div>
+  <button class="ghost-btn" id="btn-teacher">Teacher</button>
 </header>
 
-<div class="page active" id="page-name">
-  <div class="container">
+<!-- ===== VIEW: NAME ===== -->
+<div class="view show" id="v-name">
+  <div class="wrap">
     <div class="card">
-      <div class="card-header"><div><h2>Welcome!</h2><p>Please enter your information to begin.</p></div><span class="card-badge">Exit Ticket</span></div>
-      <div class="card-body">
-        <div class="field-row">
-          <div class="field"><label>First Name</label><input type="text" id="input-first" placeholder="First name" autocomplete="off"/></div>
-          <div class="field"><label>Last Name</label><input type="text" id="input-last" placeholder="Last name" autocomplete="off"/></div>
+      <div class="ch"><div><h2>Welcome!</h2><p>Enter your info to begin.</p></div><span class="badge">Exit Ticket</span></div>
+      <div class="cb">
+        <div class="frow">
+          <div class="field"><label>First Name</label><input type="text" id="inp-first" placeholder="First name" autocomplete="off"></div>
+          <div class="field"><label>Last Name</label><input type="text" id="inp-last" placeholder="Last name" autocomplete="off"></div>
         </div>
-        <div class="field" style="max-width:200px"><label>Student Number</label><input type="text" id="input-num" placeholder="e.g. 12345" autocomplete="off"/></div>
-        <button class="btn btn-primary" id="start-btn">Continue &rarr;</button>
-        <p id="name-error" style="color:var(--red);font-size:13px;margin-top:10px;display:none">Please fill in all fields.</p>
+        <div class="field" style="max-width:210px"><label>Student Number</label><input type="text" id="inp-num" placeholder="e.g. 12345" autocomplete="off"></div>
+        <button class="btn btn-p" id="btn-start">Continue &rarr;</button>
+        <p id="name-err" style="color:var(--red);font-size:13px;margin-top:10px;display:none">Please fill in all three fields.</p>
       </div>
     </div>
   </div>
 </div>
 
-<div class="page" id="page-waiting">
-  <div class="container">
-    <div class="card"><div class="card-body"><div class="waiting-box"><div class="icon">&#9203;</div><h3>Hang tight!</h3><p>Your teacher hasn't activated a ticket yet.<br/>This page will update automatically.</p></div></div></div>
+<!-- ===== VIEW: WAITING ===== -->
+<div class="view" id="v-wait">
+  <div class="wrap">
+    <div class="card"><div class="cb"><div class="wb">
+      <div class="ic">&#9203;</div>
+      <h3>Hang tight!</h3>
+      <p>Your teacher hasn&rsquo;t activated a ticket yet.<br>This page checks automatically every few seconds.</p>
+    </div></div></div>
   </div>
 </div>
 
-<div class="page" id="page-quiz">
-  <div class="container"><div class="card" id="quiz-card"></div></div>
+<!-- ===== VIEW: QUIZ ===== -->
+<div class="view" id="v-quiz">
+  <div class="wrap"><div class="card" id="quiz-card"></div></div>
 </div>
 
-<div class="page" id="page-success">
-  <div class="container">
-    <div class="card"><div class="card-body"><div class="success-screen"><div class="big-icon">&#10003;</div><h2>Submitted!</h2><div class="score-display" id="success-score"></div><p id="success-msg"></p><p style="margin-top:18px;color:#a08060;font-size:14px">You can close this tab.</p></div></div></div>
+<!-- ===== VIEW: SUCCESS ===== -->
+<div class="view" id="v-done">
+  <div class="wrap">
+    <div class="card"><div class="cb"><div class="suc">
+      <div class="bi">&#10003;&#65039;</div>
+      <h2>Submitted!</h2>
+      <div class="sd" id="done-score"></div>
+      <p id="done-msg"></p>
+      <p style="margin-top:18px;color:#a08060;font-size:14px">You can close this tab.</p>
+    </div></div></div>
   </div>
 </div>
 
-<div id="teacher-login">
-  <div class="login-card">
-    <div class="icon">&#128274;</div>
+<!-- ===== VIEW: LOGIN ===== -->
+<div class="view" id="v-login">
+  <div class="lcard">
+    <div class="li">&#128274;</div>
     <h2>Teacher Dashboard</h2>
-    <p>Hatchet Exit Tickets</p>
-    <div class="field"><label>Password</label><input type="password" id="pw-input" placeholder="Enter password"/></div>
-    <button class="btn btn-primary" style="width:100%" id="login-btn">Sign In</button>
-    <p class="login-error" id="login-error">Incorrect password. Try again.</p>
-    <p style="margin-top:20px;font-size:13px;color:#a08060;cursor:pointer" id="back-btn">&larr; Back to student view</p>
+    <p class="sub">Hatchet Exit Tickets</p>
+    <div class="field"><label>Password</label><input type="password" id="inp-pw" placeholder="Enter password"></div>
+    <button class="btn btn-p" style="width:100%" id="btn-login">Sign In</button>
+    <p class="lerr" id="login-err">Incorrect password.</p>
+    <p class="bk" id="btn-back">&larr; Back to student view</p>
   </div>
 </div>
 
-<div id="teacher-dash">
-  <div class="dash-header">
+<!-- ===== VIEW: DASHBOARD ===== -->
+<div class="view" id="v-dash">
+  <div class="dhdr">
     <div><h1>&#129683; Teacher Dashboard</h1><p>Hatchet Exit Tickets &mdash; Response Tracker</p></div>
     <div style="display:flex;gap:10px;align-items:center">
-      <button class="btn btn-outline btn-sm" id="refresh-btn">&#8635; Refresh</button>
-      <button class="btn btn-sm" style="background:rgba(255,255,255,.12);color:white;border:1px solid rgba(255,255,255,.2)" id="logout-btn">Sign Out</button>
+      <button class="btn btn-o btn-sm" id="btn-refresh">&#8635; Refresh</button>
+      <button class="ghost-btn" id="btn-logout">Sign Out</button>
     </div>
   </div>
-  <div class="dash-container">
-    <div class="ticket-selector">
+  <div class="dwrap">
+    <!-- ticket control -->
+    <div class="tsel">
       <h3>Active Exit Ticket</h3>
-      <p>Select which ticket students will see when they visit the page.</p>
-      <div class="ticket-tabs" id="dash-tabs"></div>
-      <div class="set-btn-row">
-        <button class="btn btn-primary btn-sm" id="set-active-btn">Set Active Ticket</button>
-        <button class="btn btn-outline btn-sm" id="deactivate-btn">Deactivate (show waiting screen)</button>
-        <span class="active-label off" id="active-label">Loading...</span>
+      <p class="sub">Choose which ticket students see when they load the page.</p>
+      <div class="ttabs" id="d-tabs"></div>
+      <div class="sbr">
+        <button class="btn btn-p btn-sm" id="btn-setactive">Set Active Ticket</button>
+        <button class="btn btn-o btn-sm" id="btn-deactivate">Deactivate</button>
+        <span class="albl aoff" id="d-albl">Loading&hellip;</span>
       </div>
     </div>
-    <div class="responses-card">
-      <div class="responses-header">
+    <!-- responses -->
+    <div class="rcard">
+      <div class="rhdr">
         <div><h3>Student Responses</h3><p>All submissions across all tickets</p></div>
-        <div class="rh-right"><span class="count-badge" id="resp-count">0 responses</span><button class="btn btn-danger btn-sm" id="clear-btn">Clear All</button></div>
+        <div class="rhr"><span class="cbdg" id="d-count">0 responses</span><button class="btn btn-d btn-sm" id="btn-clear">Clear All</button></div>
       </div>
-      <div class="stats-row">
-        <div class="stat"><div class="val" id="stat-total">&mdash;</div><div class="lbl">Responses</div></div>
-        <div class="stat"><div class="val" id="stat-avg">&mdash;</div><div class="lbl">Avg Score</div></div>
-        <div class="stat"><div class="val" id="stat-perfect">&mdash;</div><div class="lbl">Perfect 5/5</div></div>
-        <div class="stat"><div class="val" id="stat-low">&mdash;</div><div class="lbl">Below 3/5</div></div>
+      <div class="srow">
+        <div class="st"><div class="v" id="d-total">&mdash;</div><div class="l">Responses</div></div>
+        <div class="st"><div class="v" id="d-avg">&mdash;</div><div class="l">Avg Score</div></div>
+        <div class="st"><div class="v" id="d-perf">&mdash;</div><div class="l">Perfect 5/5</div></div>
+        <div class="st"><div class="v" id="d-low">&mdash;</div><div class="l">Below 3/5</div></div>
       </div>
-      <hr class="divider"/>
-      <div id="responses-table-wrap"><div class="empty-state"><div class="icon">&#128203;</div>No responses yet.</div></div>
+      <hr>
+      <div id="d-table"><div class="empty"><div class="ic">&#128203;</div>No responses yet.</div></div>
     </div>
   </div>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, get, push, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+<!-- Firebase compat (script tags, no modules) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-const app = initializeApp({ databaseURL: "https://hatchet-tickets-default-rtdb.firebaseio.com/" });
-const db = getDatabase(app);
-const PASS = "mariana2026";
+<script>
+// ---- Firebase init ----
+firebase.initializeApp({
+  databaseURL: "https://hatchet-tickets-default-rtdb.firebaseio.com/"
+});
+var db = firebase.database();
 
-const TICKETS = [
-  { id:1, title:"Exit Ticket #1", chapters:"Chapters 1\u20134", questions:[
-    { q:"Why is Brian on the small plane at the beginning of the novel?", opts:["He is going to summer camp.","He is flying to visit his father in Canada.","He is moving to Canada with his mother.","He is going on a school field trip."], ans:1 },
-    { q:"What is \"The Secret\" that weighs on Brian's mind?", opts:["He stole money from his mother.","He saw his mother with another man before the divorce.","He failed his final exams.","He broke his father's favorite tool."], ans:1 },
-    { q:"What happens to the pilot during the flight?", opts:["He falls asleep at the controls.","He has a heart attack and dies.","He jumps out of the plane.","He radios for help and lands safely."], ans:1 },
-    { q:"How does Brian manage to land the plane?", opts:["He follows radio instructions from a controller.","He pulls back on the controls and crash-lands into a lake.","He parachutes out before impact.","He finds an empty field and sets the plane down."], ans:1 },
-    { q:"What gift did Brian's mother give him before the trip?", opts:["A survival kit.","A pocket knife.","A hatchet.","A compass."], ans:2 },
+// ---- Data ----
+var PASS = "mariana2026";
+var TICKETS = [
+  { id:1, title:"Exit Ticket #1", ch:"Chapters 1\u20134", qs:[
+    { q:"Why is Brian on the small plane at the beginning of the novel?", o:["He is going to summer camp.","He is flying to visit his father in Canada.","He is moving to Canada with his mother.","He is going on a school field trip."], a:1 },
+    { q:'What is "The Secret" that weighs on Brian\'s mind?', o:["He stole money from his mother.","He saw his mother with another man before the divorce.","He failed his final exams.","He broke his father\u2019s favorite tool."], a:1 },
+    { q:"What happens to the pilot during the flight?", o:["He falls asleep at the controls.","He has a heart attack and dies.","He jumps out of the plane.","He radios for help and lands safely."], a:1 },
+    { q:"How does Brian manage to land the plane?", o:["He follows radio instructions from a controller.","He pulls back on the controls and crash-lands into a lake.","He parachutes out before impact.","He finds an empty field and sets the plane down."], a:1 },
+    { q:"What gift did Brian\u2019s mother give him before the trip?", o:["A survival kit.","A pocket knife.","A hatchet.","A compass."], a:2 }
   ]},
-  { id:2, title:"Exit Ticket #2", chapters:"Chapters 5\u20138", questions:[
-    { q:"After the crash, what is Brian's most urgent physical need?", opts:["Building a shelter.","Finding food.","Finding drinkable water.","Making a fire."], ans:2 },
-    { q:"What does Brian eat first after the crash, even though it makes him sick?", opts:["Fish.","Wild raspberries.","Gut cherries (chokecherries).","Bird eggs."], ans:2 },
-    { q:"Where does Brian make his shelter?", opts:["In a hollowed-out tree.","In a rock overhang or cave-like ledge.","In a pit he digs in the ground.","In the wreckage of the plane."], ans:1 },
-    { q:"A porcupine enters Brian's shelter and injures him. What does this experience teach him?", opts:["To block the entrance each night.","That self-pity is useless \u2014 he must stay positive and problem-solve.","That porcupines are his biggest threat.","That he should move campsites immediately."], ans:1 },
-    { q:"Brian dreams of his friend Terry and his father, both seemingly pointing at something. What do these dreams help him figure out?", opts:["How to build a raft.","How to make fire.","How to find the emergency kit on the plane.","How to signal rescuers."], ans:1 },
+  { id:2, title:"Exit Ticket #2", ch:"Chapters 5\u20138", qs:[
+    { q:"After the crash, what is Brian\u2019s most urgent physical need?", o:["Building a shelter.","Finding food.","Finding drinkable water.","Making a fire."], a:2 },
+    { q:"What does Brian eat first after the crash, even though it makes him sick?", o:["Fish.","Wild raspberries.","Gut cherries (chokecherries).","Bird eggs."], a:2 },
+    { q:"Where does Brian make his shelter?", o:["In a hollowed-out tree.","In a rock overhang or cave-like ledge.","In a pit he digs in the ground.","In the wreckage of the plane."], a:1 },
+    { q:"A porcupine enters Brian\u2019s shelter and injures him. What does this teach him?", o:["To block the entrance each night.","That self-pity is useless \u2014 he must stay positive and problem-solve.","That porcupines are his biggest threat.","That he should move campsites immediately."], a:1 },
+    { q:"Brian dreams of his friend Terry and his father, both seemingly pointing at something. What idea do these dreams help him figure out?", o:["How to build a raft.","How to make fire.","How to find the emergency kit on the plane.","How to signal rescuers."], a:1 }
   ]},
-  { id:3, title:"Exit Ticket #3", chapters:"Chapters 9\u201312", questions:[
-    { q:"What materials does Brian use to finally create fire?", opts:["Two dry sticks rubbed together.","The hatchet struck against a rock to create sparks.","A piece of glass from the plane focused on dry leaves.","Flint stones he finds near the lake."], ans:1 },
-    { q:"Why is fire so important to Brian beyond just warmth?", opts:["It keeps insects away and purifies his water.","It scares away predators, signals rescuers, and allows him to cook food.","It dries out his wet shelter and clothing.","All of the above."], ans:3 },
-    { q:"What startles Brian at the lake while he is getting water?", opts:["A bear.","A wolf.","A moose.","A ruffed grouse (foolbird) bursting from cover."], ans:3 },
-    { q:"How does Brian successfully catch fish?", opts:["He makes a fishing pole from a branch and uses worms as bait.","He weaves a net from plant fibers.","He makes a spear and learns to aim above where he sees the fish due to light refraction.","He traps fish in a pool he builds with rocks."], ans:2 },
-    { q:"Which word best describes how Brian's mindset has changed by the end of Chapter 12?", opts:["Hopeless.","Reckless.","Resilient.","Angry."], ans:2 },
+  { id:3, title:"Exit Ticket #3", ch:"Chapters 9\u201312", qs:[
+    { q:"What materials does Brian use to finally create fire?", o:["Two dry sticks rubbed together.","The hatchet struck against a rock to create sparks.","A piece of glass from the plane focused on dry leaves.","Flint stones he finds near the lake."], a:1 },
+    { q:"Why is fire so important to Brian beyond just warmth?", o:["It keeps insects away and purifies his water.","It scares away predators, signals rescuers, and allows him to cook food.","It dries out his wet shelter and clothing.","All of the above."], a:3 },
+    { q:"What startles Brian at the lake while he is getting water?", o:["A bear.","A wolf.","A moose.","A ruffed grouse (foolbird) bursting from cover."], a:3 },
+    { q:"How does Brian successfully catch fish?", o:["He makes a fishing pole from a branch and uses worms as bait.","He weaves a net from plant fibers.","He makes a spear and learns to aim above where he sees the fish due to light refraction.","He traps fish in a pool he builds with rocks."], a:2 },
+    { q:"Which word best describes how Brian\u2019s mindset has changed by the end of Chapter 12?", o:["Hopeless.","Reckless.","Resilient.","Angry."], a:2 }
   ]},
-  { id:4, title:"Exit Ticket #4", chapters:"Chapters 13\u201316", questions:[
-    { q:"A plane flies over Brian's camp but does not see him. How does this affect him?", opts:["He feels relieved he can handle survival on his own.","He falls into a deep depression and loses the will to survive temporarily.","He becomes angry at the pilot.","He immediately builds a larger signal fire."], ans:1 },
-    { q:"After the plane misses him, Brian reaches his lowest point. What does he ultimately realize?", opts:["That he truly wants to be rescued at any cost.","That he must give up hope.","That he has become tougher and changed \u2014 he calls it his \"new Brian.\"","That his family will never find him."], ans:2 },
-    { q:"A skunk destroys Brian's turtle egg cache. What does this teach him?", opts:["To store food in higher places.","That he must constantly protect and adapt his food storage strategies.","That skunks are the most dangerous animal in the forest.","To stop collecting eggs and focus only on fish."], ans:1 },
-    { q:"What motivates Brian to finally try to retrieve the survival pack from the sunken plane?", opts:["He sees a map he needs.","He hopes to find a rescue transmitter (emergency beacon).","He wants dry clothes.","He runs out of food near the lake."], ans:1 },
-    { q:"What natural disaster strikes Brian's camp and causes major damage?", opts:["A wildfire.","A tornado.","A violent storm with high winds and waves.","A flash flood."], ans:2 },
+  { id:4, title:"Exit Ticket #4", ch:"Chapters 13\u201316", qs:[
+    { q:"A plane flies over Brian\u2019s camp but does not see him. How does this affect him?", o:["He feels relieved he can handle survival on his own.","He falls into a deep depression and loses the will to survive temporarily.","He becomes angry at the pilot.","He immediately builds a larger signal fire."], a:1 },
+    { q:'After the plane misses him, Brian reaches his lowest point. What does he ultimately realize?', o:["That he truly wants to be rescued at any cost.","That he must give up hope.","That he has become tougher \u2014 he calls it his \u201cnew Brian.\u201d","That his family will never find him."], a:2 },
+    { q:"A skunk destroys Brian\u2019s turtle egg cache. What does this teach him?", o:["To store food in higher places.","That he must constantly adapt his food storage strategies.","That skunks are the most dangerous animal in the forest.","To stop collecting eggs and focus only on fish."], a:1 },
+    { q:"What motivates Brian to finally try to retrieve the survival pack from the sunken plane?", o:["He sees a map he needs.","He hopes to find a rescue transmitter (emergency beacon).","He wants dry clothes.","He runs out of food near the lake."], a:1 },
+    { q:"What natural disaster strikes Brian\u2019s camp and causes major damage?", o:["A wildfire.","A tornado.","A violent storm with high winds and waves.","A flash flood."], a:2 }
   ]},
-  { id:5, title:"Exit Ticket #5", chapters:"Chapters 17\u201319", questions:[
-    { q:"What tool does Brian use to break into the submerged plane to reach the survival pack?", opts:["A sharpened stick.","His hatchet.","A rock from the lake bed.","A piece of metal from the plane door."], ans:1 },
-    { q:"Which item in the survival pack proves most critical to Brian's rescue?", opts:["A flare gun.","An emergency transmitter (EPIRB).","A satellite phone.","A signal mirror."], ans:1 },
-    { q:"How is Brian ultimately rescued?", opts:["His parents charter a helicopter that spots his signal fire.","A fur trader whose plane picks up Brian's transmitter signal lands nearby.","A search party following the plane's GPS coordinates finds him on foot.","A passing boat sees his smoke signal."], ans:1 },
-    { q:"By the end of the novel, how has Brian changed from who he was at the beginning?", opts:["He is unchanged \u2014 he is simply relieved to return to normal life.","He is more resourceful, self-reliant, and mentally tough, and sees the world differently.","He becomes bitter and angry about his ordeal.","He decides he wants to live in the wilderness permanently."], ans:1 },
-    { q:"What does Brian think about \"The Secret\" by the end of the novel?", opts:["He decides to confront his mother immediately upon returning.","It no longer controls him \u2014 he plans to tell his father but feels at peace with it.","He has completely forgotten about it during his time in the wilderness.","He feels more resentment toward his mother than ever."], ans:1 },
-  ]},
+  { id:5, title:"Exit Ticket #5", ch:"Chapters 17\u201319", qs:[
+    { q:"What tool does Brian use to break into the submerged plane?", o:["A sharpened stick.","His hatchet.","A rock from the lake bed.","A piece of metal from the plane door."], a:1 },
+    { q:"Which item in the survival pack proves most critical to Brian\u2019s rescue?", o:["A flare gun.","An emergency transmitter (EPIRB).","A satellite phone.","A signal mirror."], a:1 },
+    { q:"How is Brian ultimately rescued?", o:["His parents charter a helicopter that spots his signal fire.","A fur trader whose plane picks up Brian\u2019s transmitter signal lands nearby.","A search party following the plane\u2019s GPS coordinates finds him on foot.","A passing boat sees his smoke signal."], a:1 },
+    { q:"By the end of the novel, how has Brian changed from who he was at the beginning?", o:["He is unchanged \u2014 simply relieved to return to normal life.","He is more resourceful, self-reliant, and mentally tough, and sees the world differently.","He becomes bitter and angry about his ordeal.","He decides he wants to live in the wilderness permanently."], a:1 },
+    { q:'What does Brian think about "The Secret" by the end of the novel?', o:["He decides to confront his mother immediately upon returning.","It no longer controls him \u2014 he plans to tell his father but feels at peace.","He has completely forgotten about it during his time in the wilderness.","He feels more resentment toward his mother than ever."], a:1 }
+  ]}
 ];
 
-let studentInfo = {}, selected = {}, currentTicket = null, dashTab = 1, watching = false;
+// ---- State ----
+var stu = {}, sel = {}, curTicket = null, dashTab = 1, pollId = null;
 
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('teacher-login').classList.remove('active');
-  document.getElementById('teacher-dash').classList.remove('active');
-  document.getElementById('student-header').style.display = 'flex';
-  if (id === 'teacher-login') {
-    document.getElementById('student-header').style.display = 'none';
-    document.getElementById('teacher-login').classList.add('active');
-  } else if (id === 'teacher-dash') {
-    document.getElementById('student-header').style.display = 'none';
-    document.getElementById('teacher-dash').classList.add('active');
-  } else {
-    document.getElementById(id).classList.add('active');
-  }
+// ---- View switcher ----
+function show(id) {
+  var views = ['v-name','v-wait','v-quiz','v-done','v-login','v-dash'];
+  views.forEach(function(v){ document.getElementById(v).classList.remove('show'); });
+  document.getElementById('s-hdr').style.display = (id==='v-login'||id==='v-dash') ? 'none' : 'flex';
+  document.getElementById(id).classList.add('show');
 }
 
-// Name entry
-document.getElementById('start-btn').addEventListener('click', () => {
-  const first = document.getElementById('input-first').value.trim();
-  const last  = document.getElementById('input-last').value.trim();
-  const num   = document.getElementById('input-num').value.trim();
-  if (!first || !last || !num) { document.getElementById('name-error').style.display='block'; return; }
-  document.getElementById('name-error').style.display = 'none';
-  studentInfo = { first, last, num, fullName: first+' '+last };
-  const btn = document.getElementById('start-btn');
-  btn.innerHTML = '<span class="spinner"></span>Loading...'; btn.disabled = true;
-  if (!watching) {
-    watching = true;
-    onValue(ref(db,'activeTicket'), snap => {
-      const val = snap.val();
-      if (!val || val==='none') {
-        showPage('page-waiting');
-        const b = document.getElementById('start-btn');
-        if (b) { b.innerHTML = 'Continue \u2192'; b.disabled = false; }
-      } else {
-        const ticket = TICKETS.find(t => t.id===parseInt(val));
-        if (ticket && (!currentTicket || currentTicket.id!==ticket.id)) loadQuiz(ticket);
-      }
-    });
+// ---- Student: name submit ----
+document.getElementById('btn-start').addEventListener('click', function() {
+  var first = document.getElementById('inp-first').value.trim();
+  var last  = document.getElementById('inp-last').value.trim();
+  var num   = document.getElementById('inp-num').value.trim();
+  if (!first || !last || !num) {
+    document.getElementById('name-err').style.display = 'block';
+    return;
   }
+  document.getElementById('name-err').style.display = 'none';
+  stu = { first:first, last:last, num:num, name:first+' '+last };
+  this.innerHTML = '<span class="spin"></span>Loading&hellip;';
+  this.disabled = true;
+  startPolling();
 });
 
-function loadQuiz(ticket) {
-  currentTicket = ticket; selected = {};
-  const card = document.getElementById('quiz-card');
-  card.innerHTML = '<div class="card-header"><div><h2>'+ticket.title+'</h2><p>'+ticket.chapters+'</p></div><span class="card-badge">5 Questions</span></div><div class="card-body" id="qbody">'
-    + ticket.questions.map((q,qi)=>'<div class="question"><div class="question-label"><span class="q-num">'+(qi+1)+'</span>'+q.q+'</div><div class="options">'
-      + q.opts.map((o,oi)=>'<button class="option-btn" data-qi="'+qi+'" data-oi="'+oi+'"><span class="option-circle">'+String.fromCharCode(65+oi)+'</span>'+o+'</button>').join('')
-      +'</div></div>').join('')
-    +'<div class="action-row"><button class="btn btn-primary" id="submit-btn" disabled>Submit</button><span class="hint" id="quiz-hint">Answer all 5 questions to submit.</span></div></div>';
+function startPolling() {
+  checkActive();
+  pollId = setInterval(checkActive, 4000);
+}
 
-  card.querySelectorAll('.option-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const qi=parseInt(btn.dataset.qi), oi=parseInt(btn.dataset.oi);
-      card.querySelectorAll('.option-btn[data-qi="'+qi+'"]').forEach(b=>b.classList.remove('selected'));
-      btn.classList.add('selected'); selected[qi]=oi;
-      if (Object.keys(selected).length===currentTicket.questions.length) {
-        document.getElementById('submit-btn').disabled=false;
-        document.getElementById('quiz-hint').style.display='none';
+function checkActive() {
+  db.ref('activeTicket').get().then(function(snap) {
+    var val = snap.val();
+    if (!val || val === 'none') {
+      show('v-wait');
+      var b = document.getElementById('btn-start');
+      if (b) { b.innerHTML = 'Continue &rarr;'; b.disabled = false; }
+    } else {
+      var ticket = null;
+      for (var i=0; i<TICKETS.length; i++) { if (TICKETS[i].id === parseInt(val)) { ticket = TICKETS[i]; break; } }
+      if (ticket && (!curTicket || curTicket.id !== ticket.id)) {
+        clearInterval(pollId);
+        loadQuiz(ticket);
+      }
+    }
+  });
+}
+
+// ---- Quiz ----
+function loadQuiz(ticket) {
+  curTicket = ticket; sel = {};
+  var html = '<div class="ch"><div><h2>'+ticket.title+'</h2><p>'+ticket.ch+'</p></div><span class="badge">5 Questions</span></div><div class="cb">';
+  for (var qi=0; qi<ticket.qs.length; qi++) {
+    var q = ticket.qs[qi];
+    html += '<div class="ques"><div class="qlbl"><span class="qn">'+(qi+1)+'</span>'+q.q+'</div><div class="opts">';
+    for (var oi=0; oi<q.o.length; oi++) {
+      html += '<button class="opt" data-qi="'+qi+'" data-oi="'+oi+'"><span class="oc">'+String.fromCharCode(65+oi)+'</span>'+q.o[oi]+'</button>';
+    }
+    html += '</div></div>';
+  }
+  html += '<div class="arow"><button class="btn btn-p" id="btn-submit" disabled>Submit</button><span class="hint" id="q-hint">Answer all 5 questions to submit.</span></div></div>';
+  document.getElementById('quiz-card').innerHTML = html;
+
+  // wire option buttons
+  var opts = document.querySelectorAll('.opt');
+  for (var k=0; k<opts.length; k++) {
+    opts[k].addEventListener('click', function() {
+      var qi = parseInt(this.getAttribute('data-qi'));
+      var oi = parseInt(this.getAttribute('data-oi'));
+      var siblings = document.querySelectorAll('.opt[data-qi="'+qi+'"]');
+      for (var s=0; s<siblings.length; s++) siblings[s].classList.remove('sel');
+      this.classList.add('sel');
+      sel[qi] = oi;
+      if (Object.keys(sel).length === curTicket.qs.length) {
+        document.getElementById('btn-submit').disabled = false;
+        document.getElementById('q-hint').style.display = 'none';
       }
     });
-  });
+  }
 
-  document.getElementById('submit-btn').addEventListener('click', async () => {
-    const sb=document.getElementById('submit-btn');
-    sb.innerHTML='<span class="spinner"></span>Submitting...'; sb.disabled=true;
-    const score=currentTicket.questions.reduce((acc,q,qi)=>acc+(selected[qi]===q.ans?1:0),0);
-    await push(ref(db,'responses'),{
-      name:studentInfo.fullName, num:studentInfo.num,
-      ticket:currentTicket.title, chapters:currentTicket.chapters,
-      ticketId:currentTicket.id, score, total:5,
-      time:new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}),
-      timestamp:Date.now()
+  // wire submit
+  document.getElementById('btn-submit').addEventListener('click', function() {
+    this.innerHTML = '<span class="spin"></span>Submitting&hellip;';
+    this.disabled = true;
+    var score = 0;
+    for (var qi=0; qi<curTicket.qs.length; qi++) { if (sel[qi]===curTicket.qs[qi].a) score++; }
+    db.ref('responses').push({
+      name: stu.name, num: stu.num,
+      ticket: curTicket.title, chapters: curTicket.ch, ticketId: curTicket.id,
+      score: score, total: 5,
+      time: new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}),
+      ts: Date.now()
+    }).then(function() {
+      document.getElementById('done-score').textContent = score + ' / 5';
+      var msgs = ["Keep reviewing \u2014 you\u2019ve got this! \uD83D\uDCDA","Good effort! Review your notes. \uD83D\uDC4D","Nice work! \uD83C\uDF1F","Great job! \uD83C\uDF89","Perfect score! Outstanding! \uD83C\uDFC6"];
+      document.getElementById('done-msg').textContent = msgs[score];
+      show('v-done');
     });
-    document.getElementById('success-score').textContent=score+' / 5';
-    const msgs=["Keep reviewing \u2014 you've got this! \uD83D\uDCDA","Good effort! Review your notes. \uD83D\uDC4D","Nice work! \uD83C\uDF1F","Great job! \uD83C\uDF89","Perfect score! Outstanding! \uD83C\uDFC6"];
-    document.getElementById('success-msg').textContent=msgs[score];
-    showPage('page-success');
   });
-  showPage('page-quiz');
+
+  show('v-quiz');
 }
 
-// Teacher auth
-document.getElementById('teacher-btn').addEventListener('click',()=>showPage('teacher-login'));
-document.getElementById('back-btn').addEventListener('click',()=>showPage('page-name'));
-document.getElementById('logout-btn').addEventListener('click',()=>showPage('page-name'));
-document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin();});
-document.getElementById('login-btn').addEventListener('click',tryLogin);
-function tryLogin(){
-  if(document.getElementById('pw-input').value===PASS){
-    document.getElementById('login-error').style.display='none';
-    document.getElementById('pw-input').value='';
-    showPage('teacher-dash'); loadDashboard();
-  } else { document.getElementById('login-error').style.display='block'; }
+// ---- Teacher login ----
+document.getElementById('btn-teacher').addEventListener('click', function() { show('v-login'); });
+document.getElementById('btn-back').addEventListener('click', function() { show('v-name'); });
+document.getElementById('btn-logout').addEventListener('click', function() { show('v-name'); });
+document.getElementById('inp-pw').addEventListener('keydown', function(e) { if (e.key==='Enter') tryLogin(); });
+document.getElementById('btn-login').addEventListener('click', tryLogin);
+
+function tryLogin() {
+  if (document.getElementById('inp-pw').value === PASS) {
+    document.getElementById('login-err').style.display = 'none';
+    document.getElementById('inp-pw').value = '';
+    show('v-dash');
+    loadDash();
+  } else {
+    document.getElementById('login-err').style.display = 'block';
+  }
 }
 
-// Dashboard
-document.getElementById('refresh-btn').addEventListener('click',loadDashboard);
-document.getElementById('set-active-btn').addEventListener('click',async()=>{await set(ref(db,'activeTicket'),String(dashTab));renderLabel();});
-document.getElementById('deactivate-btn').addEventListener('click',async()=>{await set(ref(db,'activeTicket'),'none');renderLabel();});
-document.getElementById('clear-btn').addEventListener('click',async()=>{if(!confirm('Clear ALL responses? This cannot be undone.'))return;await remove(ref(db,'responses'));loadTable();});
+// ---- Dashboard ----
+document.getElementById('btn-refresh').addEventListener('click', loadDash);
 
-function loadDashboard(){renderTabs();renderLabel();loadTable();}
+document.getElementById('btn-setactive').addEventListener('click', function() {
+  db.ref('activeTicket').set(String(dashTab)).then(refreshLabel);
+});
+document.getElementById('btn-deactivate').addEventListener('click', function() {
+  db.ref('activeTicket').set('none').then(refreshLabel);
+});
+document.getElementById('btn-clear').addEventListener('click', function() {
+  if (!confirm('Clear ALL student responses? This cannot be undone.')) return;
+  db.ref('responses').remove().then(loadTable);
+});
 
-function renderTabs(){
-  document.getElementById('dash-tabs').innerHTML=TICKETS.map(t=>'<button class="ticket-tab'+(dashTab===t.id?' active-tab':'')+'" data-id="'+t.id+'">#'+t.id+' \u2014 '+t.chapters+'</button>').join('');
-  document.querySelectorAll('.ticket-tab').forEach(b=>b.addEventListener('click',()=>{dashTab=parseInt(b.dataset.id);renderTabs();}));
+function loadDash() { renderTabs(); refreshLabel(); loadTable(); }
+
+function renderTabs() {
+  var html = '';
+  for (var i=0; i<TICKETS.length; i++) {
+    var t = TICKETS[i];
+    html += '<button class="ttab'+(dashTab===t.id?' on':'')+'" data-id="'+t.id+'">#'+t.id+' \u2014 '+t.ch+'</button>';
+  }
+  document.getElementById('d-tabs').innerHTML = html;
+  var tabs = document.querySelectorAll('.ttab');
+  for (var k=0; k<tabs.length; k++) {
+    tabs[k].addEventListener('click', function() {
+      dashTab = parseInt(this.getAttribute('data-id'));
+      renderTabs();
+    });
+  }
 }
 
-async function renderLabel(){
-  const snap=await get(ref(db,'activeTicket')); const val=snap.val();
-  const el=document.getElementById('active-label');
-  if(!val||val==='none'){el.textContent='No ticket active';el.className='active-label off';}
-  else{const t=TICKETS.find(t=>t.id===parseInt(val));el.textContent=t?'Active: '+t.title+' ('+t.chapters+')':'No ticket active';el.className='active-label on';}
+function refreshLabel() {
+  db.ref('activeTicket').get().then(function(snap) {
+    var val = snap.val();
+    var el = document.getElementById('d-albl');
+    if (!val || val==='none') {
+      el.textContent = 'No ticket active'; el.className = 'albl aoff';
+    } else {
+      var t = null; for(var i=0;i<TICKETS.length;i++){if(TICKETS[i].id===parseInt(val)){t=TICKETS[i];break;}}
+      el.textContent = t ? 'Active: '+t.title+' ('+t.ch+')' : 'No ticket active';
+      el.className = 'albl aon';
+    }
+  });
 }
 
-async function loadTable(){
-  const snap=await get(ref(db,'responses'));
-  const data=snap.val();
-  const rows=data?Object.values(data).sort((a,b)=>b.timestamp-a.timestamp):[];
-  document.getElementById('resp-count').textContent=rows.length+' response'+(rows.length!==1?'s':'');
-  document.getElementById('stat-total').textContent=rows.length;
-  if(rows.length>0){
-    document.getElementById('stat-avg').textContent=(rows.reduce((a,r)=>a+r.score,0)/rows.length).toFixed(1)+'/5';
-    document.getElementById('stat-perfect').textContent=rows.filter(r=>r.score===5).length;
-    document.getElementById('stat-low').textContent=rows.filter(r=>r.score<3).length;
-  } else { ['stat-avg','stat-perfect','stat-low'].forEach(id=>document.getElementById(id).textContent='\u2014'); }
-  const wrap=document.getElementById('responses-table-wrap');
-  if(!rows.length){wrap.innerHTML='<div class="empty-state"><div class="icon">\uD83D\uDCCB</div>No responses yet. Students will appear here as they submit.</div>';return;}
-  wrap.innerHTML='<table><thead><tr><th>#</th><th>Name</th><th>Student #</th><th>Ticket</th><th>Score</th><th>Submitted</th></tr></thead><tbody>'
-    +rows.map((r,i)=>{const cls=r.score===5?'s5':r.score>=3?'s34':'slow';return'<tr><td style="color:#a08060">'+(i+1)+'</td><td><strong>'+r.name+'</strong></td><td style="font-family:monospace">'+r.num+'</td><td><span style="font-size:12px;color:#8b6f4e">'+r.chapters+'</span></td><td class="sc '+cls+'">'+r.score+'/'+r.total+' <span style="font-size:12px;font-weight:400">('+Math.round(r.score/r.total*100)+'%)</span></td><td style="color:#a08060;font-size:13px">'+r.time+'</td></tr>';}).join('')
-    +'</tbody></table>';
+function loadTable() {
+  db.ref('responses').get().then(function(snap) {
+    var data = snap.val();
+    var rows = [];
+    if (data) { var keys=Object.keys(data); for(var i=0;i<keys.length;i++) rows.push(data[keys[i]]); }
+    rows.sort(function(a,b){return b.ts-a.ts;});
+
+    document.getElementById('d-count').textContent = rows.length+' response'+(rows.length!==1?'s':'');
+    document.getElementById('d-total').textContent = rows.length || '\u2014';
+    if (rows.length) {
+      var sum=0; for(var i=0;i<rows.length;i++) sum+=rows[i].score;
+      document.getElementById('d-avg').textContent = (sum/rows.length).toFixed(1)+'/5';
+      var perf=0,low=0; for(var i=0;i<rows.length;i++){if(rows[i].score===5)perf++;if(rows[i].score<3)low++;}
+      document.getElementById('d-perf').textContent = perf;
+      document.getElementById('d-low').textContent = low;
+    } else {
+      document.getElementById('d-avg').textContent = '\u2014';
+      document.getElementById('d-perf').textContent = '\u2014';
+      document.getElementById('d-low').textContent = '\u2014';
+    }
+
+    if (!rows.length) {
+      document.getElementById('d-table').innerHTML = '<div class="empty"><div class="ic">&#128203;</div>No responses yet. Students will appear here as they submit.</div>';
+      return;
+    }
+    var html = '<table><thead><tr><th>#</th><th>Name</th><th>Student #</th><th>Ticket</th><th>Score</th><th>Submitted</th></tr></thead><tbody>';
+    for (var i=0;i<rows.length;i++) {
+      var r=rows[i], cls=r.score===5?'s5':r.score>=3?'s34':'slo';
+      html += '<tr><td style="color:#a08060">'+(i+1)+'</td><td><strong>'+r.name+'</strong></td><td style="font-family:monospace">'+r.num+'</td><td><span style="font-size:12px;color:#8b6f4e">'+r.chapters+'</span></td><td class="sc '+cls+'">'+r.score+'/'+r.total+' <span style="font-size:12px;font-weight:400">('+Math.round(r.score/r.total*100)+'%)</span></td><td style="color:#a08060;font-size:13px">'+r.time+'</td></tr>';
+    }
+    html += '</tbody></table>';
+    document.getElementById('d-table').innerHTML = html;
+  });
 }
 
-showPage('page-name');
+// ---- Init ----
+show('v-name');
 </script>
 </body>
 </html>
