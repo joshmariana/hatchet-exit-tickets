@@ -6,782 +6,368 @@
 <title>Hatchet — Exit Tickets</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --bark: #2c1a0e;
-    --wood: #5c3a1e;
-    --tan: #c4a882;
-    --cream: #f5efe6;
-    --paper: #faf7f2;
-    --green: #3a6b3a;
-    --green-light: #d4edda;
-    --red: #8b2020;
-    --red-light: #fce8e8;
-    --gold: #b8860b;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Source Sans 3', sans-serif;
-    background: var(--cream);
-    min-height: 100vh;
-    color: var(--bark);
-  }
-
-  /* ── PAGE SYSTEM ── */
-  .page { display: none; }
-  .page.active { display: block; }
-
-  /* ── HEADER ── */
-  .site-header {
-    background: var(--bark);
-    padding: 14px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky; top: 0; z-index: 100;
-    box-shadow: 0 2px 12px rgba(0,0,0,.3);
-  }
-  .site-header .brand {
-    display: flex; align-items: center; gap: 12px;
-  }
-  .site-header .brand span { font-size: 26px; }
-  .site-header .brand h1 {
-    font-family: 'Playfair Display', serif;
-    color: white; font-size: 20px; line-height: 1;
-  }
-  .site-header .brand p { color: var(--tan); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
-  .teacher-link {
-    font-size: 12px; color: var(--tan); text-decoration: none;
-    background: rgba(255,255,255,.08); padding: 6px 12px; border-radius: 5px;
-    border: 1px solid rgba(255,255,255,.12); transition: all .2s;
-    cursor: pointer;
-  }
-  .teacher-link:hover { background: rgba(255,255,255,.15); color: white; }
-
-  /* ── CONTAINERS ── */
-  .container { max-width: 680px; margin: 0 auto; padding: 36px 20px 60px; }
-
-  /* ── CARDS ── */
-  .card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 3px 20px rgba(44,26,14,.10);
-    overflow: hidden;
-    margin-bottom: 24px;
-  }
-  .card-header {
-    background: var(--bark); padding: 20px 28px;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .card-header h2 { font-family: 'Playfair Display', serif; color: white; font-size: 22px; }
-  .card-header p { color: var(--tan); font-size: 13px; margin-top: 2px; }
-  .card-badge {
-    background: rgba(196,168,130,.15); border: 1px solid rgba(196,168,130,.3);
-    color: var(--tan); font-size: 12px; padding: 5px 12px; border-radius: 20px; white-space: nowrap;
-  }
-  .card-body { padding: 28px; }
-
-  /* ── FORM FIELDS ── */
-  .field { margin-bottom: 20px; }
-  .field label {
-    display: block; font-size: 13px; font-weight: 700;
-    letter-spacing: 1px; text-transform: uppercase;
-    color: var(--wood); margin-bottom: 7px;
-  }
-  .field input {
-    width: 100%; padding: 11px 14px;
-    border: 2px solid #e0d5c5; border-radius: 7px;
-    font-family: 'Source Sans 3', sans-serif; font-size: 15px;
-    color: var(--bark); background: var(--paper);
-    transition: border-color .15s;
-    outline: none;
-  }
-  .field input:focus { border-color: var(--wood); }
-  .field-row { display: flex; gap: 14px; }
-  .field-row .field { flex: 1; }
-
-  /* ── WAITING STATE ── */
-  .waiting-box {
-    text-align: center; padding: 40px 28px;
-  }
-  .waiting-box .icon { font-size: 48px; margin-bottom: 16px; }
-  .waiting-box h3 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 8px; }
-  .waiting-box p { color: #7a6450; font-size: 15px; }
-
-  /* ── QUESTIONS ── */
-  .question { margin-bottom: 28px; }
-  .question-label {
-    font-size: 15px; font-weight: 700; color: var(--bark);
-    margin-bottom: 13px; line-height: 1.5;
-    display: flex; gap: 10px; align-items: flex-start;
-  }
-  .q-num {
-    background: var(--bark); color: white;
-    border-radius: 4px; padding: 1px 8px;
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px;
-  }
-  .options { display: flex; flex-direction: column; gap: 9px; }
-  .option-btn {
-    display: flex; align-items: center; gap: 12px;
-    padding: 11px 14px; border-radius: 8px;
-    border: 2px solid #e0d5c5; background: var(--paper);
-    text-align: left; cursor: pointer;
-    font-family: 'Source Sans 3', sans-serif; font-size: 14px; color: var(--bark);
-    transition: all .14s;
-  }
-  .option-btn:hover { border-color: var(--tan); background: #f0e8dc; }
-  .option-btn.selected { border-color: var(--wood); background: #ede0ce; }
-  .option-btn.correct { border-color: var(--green); background: var(--green-light); color: #1a5c26; }
-  .option-btn.wrong { border-color: var(--red); background: var(--red-light); color: var(--red); }
-  .option-circle {
-    width: 26px; height: 26px; border-radius: 50%;
-    border: 2px solid currentColor;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700; flex-shrink: 0;
-  }
-
-  /* ── BUTTONS ── */
-  .btn {
-    padding: 12px 26px; border-radius: 8px; border: none;
-    font-family: 'Source Sans 3', sans-serif; font-size: 15px; font-weight: 700;
-    cursor: pointer; transition: all .15s; letter-spacing: .3px;
-  }
-  .btn-primary { background: var(--bark); color: white; }
-  .btn-primary:hover { background: var(--wood); }
-  .btn-primary:disabled { background: #bbb; cursor: not-allowed; }
-  .btn-outline { background: white; color: var(--bark); border: 2px solid var(--bark); }
-  .btn-outline:hover { background: var(--cream); }
-  .btn-danger { background: var(--red); color: white; }
-  .btn-danger:hover { opacity: .88; }
-  .btn-sm { padding: 7px 14px; font-size: 13px; }
-
-  /* ── SCORE BADGE ── */
-  .score-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 10px 18px; border-radius: 8px; font-size: 16px; font-weight: 700;
-    border: 2px solid;
-  }
-  .score-badge.great { background: var(--green-light); border-color: var(--green); color: #1a5c26; }
-  .score-badge.ok { background: #fff3cd; border-color: var(--gold); color: #7a5c00; }
-  .score-badge.low { background: var(--red-light); border-color: var(--red); color: var(--red); }
-
-  .action-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
-  .hint { font-size: 13px; color: #8b6f4e; }
-
-  /* ── SUCCESS SCREEN ── */
-  .success-screen {
-    text-align: center; padding: 48px 28px;
-  }
-  .success-screen .big-icon { font-size: 56px; margin-bottom: 16px; }
-  .success-screen h2 { font-family: 'Playfair Display', serif; font-size: 26px; margin-bottom: 8px; }
-  .success-screen p { color: #7a6450; font-size: 16px; }
-  .score-display {
-    display: inline-block; margin: 20px 0;
-    font-family: 'Playfair Display', serif; font-size: 48px; color: var(--bark);
-    border-bottom: 3px solid var(--tan); padding-bottom: 4px;
-  }
-
-  /* ── TEACHER LOGIN ── */
-  #teacher-login { background: var(--bark); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-  #teacher-login.active { display: flex; }
-  .login-card {
-    background: white; border-radius: 14px; padding: 40px;
-    width: 100%; max-width: 380px;
-    box-shadow: 0 8px 40px rgba(0,0,0,.3);
-    text-align: center;
-  }
-  .login-card .icon { font-size: 36px; margin-bottom: 16px; }
-  .login-card h2 { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 6px; }
-  .login-card p { color: #7a6450; font-size: 14px; margin-bottom: 24px; }
-  .login-error { color: var(--red); font-size: 13px; margin-top: 10px; display: none; }
-
-  /* ── TEACHER DASHBOARD ── */
-  #teacher-dash { display: none; }
-  #teacher-dash.active { display: block; }
-  .dash-header {
-    background: var(--bark); padding: 16px 28px;
-    display: flex; align-items: center; justify-content: space-between;
-    position: sticky; top: 0; z-index: 100;
-    box-shadow: 0 2px 12px rgba(0,0,0,.3);
-  }
-  .dash-header h1 { font-family: 'Playfair Display', serif; color: white; font-size: 20px; }
-  .dash-header p { color: var(--tan); font-size: 12px; }
-  .dash-container { max-width: 960px; margin: 0 auto; padding: 32px 20px 60px; }
-
-  /* Active ticket selector */
-  .ticket-selector {
-    background: white; border-radius: 12px;
-    box-shadow: 0 3px 20px rgba(44,26,14,.10);
-    padding: 24px 28px; margin-bottom: 28px;
-  }
-  .ticket-selector h3 { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 4px; }
-  .ticket-selector p { color: #7a6450; font-size: 13px; margin-bottom: 16px; }
-  .ticket-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
-  .ticket-tab {
-    padding: 8px 16px; border-radius: 6px; border: 2px solid #e0d5c5;
-    background: white; color: var(--bark);
-    font-family: 'Source Sans 3', sans-serif; font-size: 13px; font-weight: 700;
-    cursor: pointer; transition: all .14s;
-  }
-  .ticket-tab.active-tab { background: var(--bark); color: white; border-color: var(--bark); }
-  .ticket-tab:hover:not(.active-tab) { border-color: var(--tan); }
-  .set-btn-row { margin-top: 16px; display: flex; gap: 10px; align-items: center; }
-  .active-label {
-    font-size: 13px; color: var(--green); font-weight: 700;
-    background: var(--green-light); padding: 5px 12px; border-radius: 20px;
-    border: 1px solid var(--green);
-  }
-
-  /* Responses table */
-  .responses-card {
-    background: white; border-radius: 12px;
-    box-shadow: 0 3px 20px rgba(44,26,14,.10);
-    overflow: hidden;
-  }
-  .responses-header {
-    background: var(--bark); padding: 18px 28px;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .responses-header h3 { font-family: 'Playfair Display', serif; color: white; font-size: 18px; }
-  .responses-header p { color: var(--tan); font-size: 13px; }
-  .responses-header .right { display: flex; gap: 10px; align-items: center; }
-  .count-badge {
-    background: rgba(196,168,130,.2); color: var(--tan);
-    padding: 4px 12px; border-radius: 20px; font-size: 13px;
-    border: 1px solid rgba(196,168,130,.3);
-  }
-
-  table { width: 100%; border-collapse: collapse; }
-  th {
-    background: #f5efe6; padding: 11px 16px; text-align: left;
-    font-size: 12px; font-weight: 700; letter-spacing: 1px;
-    text-transform: uppercase; color: var(--wood);
-    border-bottom: 2px solid #e0d5c5;
-  }
-  td { padding: 12px 16px; border-bottom: 1px solid #f0e8dc; font-size: 14px; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #faf7f2; }
-  .score-cell { font-weight: 700; }
-  .score-cell.s5 { color: var(--green); }
-  .score-cell.s34 { color: var(--gold); }
-  .score-cell.slow { color: var(--red); }
-  .empty-state {
-    text-align: center; padding: 48px; color: #a08060;
-    font-size: 15px;
-  }
-  .empty-state .icon { font-size: 36px; margin-bottom: 12px; }
-
-  /* Stats row */
-  .stats-row { display: flex; gap: 16px; padding: 20px 28px; background: #faf7f2; flex-wrap: wrap; }
-  .stat { flex: 1; min-width: 100px; text-align: center; }
-  .stat .val { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--bark); }
-  .stat .lbl { font-size: 12px; color: #8b6f4e; letter-spacing: 1px; text-transform: uppercase; }
-
-  .divider { border: none; border-top: 1px solid #e0d5c5; margin: 0; }
-
-  @media (max-width: 500px) {
-    .field-row { flex-direction: column; }
-    .card-body { padding: 20px; }
-    .dash-container { padding: 20px 12px 60px; }
-  }
+  :root { --bark:#2c1a0e;--wood:#5c3a1e;--tan:#c4a882;--cream:#f5efe6;--paper:#faf7f2;--green:#3a6b3a;--green-light:#d4edda;--red:#8b2020;--red-light:#fce8e8;--gold:#b8860b; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Source Sans 3',sans-serif;background:var(--cream);min-height:100vh;color:var(--bark)}
+  .page{display:none}.page.active{display:block}
+  #teacher-login{display:none;background:var(--bark);min-height:100vh;align-items:center;justify-content:center}
+  #teacher-login.active{display:flex}
+  #teacher-dash{display:none}#teacher-dash.active{display:block}
+  .site-header{background:var(--bark);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+  .brand{display:flex;align-items:center;gap:12px}.brand span{font-size:26px}
+  .brand h1{font-family:'Playfair Display',serif;color:white;font-size:20px;line-height:1}
+  .brand p{color:var(--tan);font-size:12px;letter-spacing:2px;text-transform:uppercase}
+  .teacher-link{font-size:12px;color:var(--tan);background:rgba(255,255,255,.08);padding:6px 12px;border-radius:5px;border:1px solid rgba(255,255,255,.12);cursor:pointer;transition:all .2s}
+  .teacher-link:hover{background:rgba(255,255,255,.15);color:white}
+  .container{max-width:680px;margin:0 auto;padding:36px 20px 60px}
+  .dash-container{max-width:960px;margin:0 auto;padding:32px 20px 60px}
+  .card{background:white;border-radius:12px;box-shadow:0 3px 20px rgba(44,26,14,.10);overflow:hidden;margin-bottom:24px}
+  .card-header{background:var(--bark);padding:20px 28px;display:flex;justify-content:space-between;align-items:center}
+  .card-header h2{font-family:'Playfair Display',serif;color:white;font-size:22px}
+  .card-header p{color:var(--tan);font-size:13px;margin-top:2px}
+  .card-badge{background:rgba(196,168,130,.15);border:1px solid rgba(196,168,130,.3);color:var(--tan);font-size:12px;padding:5px 12px;border-radius:20px;white-space:nowrap}
+  .card-body{padding:28px}
+  .field{margin-bottom:20px}
+  .field label{display:block;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--wood);margin-bottom:7px}
+  .field input{width:100%;padding:11px 14px;border:2px solid #e0d5c5;border-radius:7px;font-family:'Source Sans 3',sans-serif;font-size:15px;color:var(--bark);background:var(--paper);outline:none;transition:border-color .15s}
+  .field input:focus{border-color:var(--wood)}
+  .field-row{display:flex;gap:14px}.field-row .field{flex:1}
+  .waiting-box{text-align:center;padding:40px 28px}
+  .waiting-box .icon{font-size:48px;margin-bottom:16px}
+  .waiting-box h3{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:8px}
+  .waiting-box p{color:#7a6450;font-size:15px}
+  .question{margin-bottom:28px}
+  .question-label{font-size:15px;font-weight:700;color:var(--bark);margin-bottom:13px;line-height:1.5;display:flex;gap:10px;align-items:flex-start}
+  .q-num{background:var(--bark);color:white;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;flex-shrink:0;margin-top:2px}
+  .options{display:flex;flex-direction:column;gap:9px}
+  .option-btn{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:8px;border:2px solid #e0d5c5;background:var(--paper);text-align:left;cursor:pointer;font-family:'Source Sans 3',sans-serif;font-size:14px;color:var(--bark);transition:all .14s;width:100%}
+  .option-btn:hover{border-color:var(--tan);background:#f0e8dc}
+  .option-btn.selected{border-color:var(--wood);background:#ede0ce}
+  .option-circle{width:26px;height:26px;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+  .btn{padding:12px 26px;border-radius:8px;border:none;font-family:'Source Sans 3',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s}
+  .btn-primary{background:var(--bark);color:white}.btn-primary:hover{background:var(--wood)}.btn-primary:disabled{background:#bbb;cursor:not-allowed}
+  .btn-outline{background:white;color:var(--bark);border:2px solid var(--bark)}.btn-outline:hover{background:var(--cream)}
+  .btn-danger{background:var(--red);color:white}.btn-danger:hover{opacity:.88}
+  .btn-sm{padding:7px 14px;font-size:13px}
+  .action-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px}
+  .hint{font-size:13px;color:#8b6f4e}
+  .success-screen{text-align:center;padding:48px 28px}
+  .success-screen .big-icon{font-size:56px;margin-bottom:16px}
+  .success-screen h2{font-family:'Playfair Display',serif;font-size:26px;margin-bottom:8px}
+  .success-screen p{color:#7a6450;font-size:16px}
+  .score-display{display:inline-block;margin:20px 0;font-family:'Playfair Display',serif;font-size:48px;color:var(--bark);border-bottom:3px solid var(--tan);padding-bottom:4px}
+  .login-card{background:white;border-radius:14px;padding:40px;width:100%;max-width:380px;box-shadow:0 8px 40px rgba(0,0,0,.3);text-align:center}
+  .login-card .icon{font-size:36px;margin-bottom:16px}
+  .login-card h2{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:6px}
+  .login-card p{color:#7a6450;font-size:14px;margin-bottom:24px}
+  .login-error{color:var(--red);font-size:13px;margin-top:10px;display:none}
+  .dash-header{background:var(--bark);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+  .dash-header h1{font-family:'Playfair Display',serif;color:white;font-size:20px}
+  .dash-header p{color:var(--tan);font-size:12px}
+  .ticket-selector{background:white;border-radius:12px;box-shadow:0 3px 20px rgba(44,26,14,.10);padding:24px 28px;margin-bottom:28px}
+  .ticket-selector h3{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:4px}
+  .ticket-selector p{color:#7a6450;font-size:13px;margin-bottom:16px}
+  .ticket-tabs{display:flex;gap:8px;flex-wrap:wrap}
+  .ticket-tab{padding:8px 16px;border-radius:6px;border:2px solid #e0d5c5;background:white;color:var(--bark);font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .14s}
+  .ticket-tab.active-tab{background:var(--bark);color:white;border-color:var(--bark)}
+  .ticket-tab:hover:not(.active-tab){border-color:var(--tan)}
+  .set-btn-row{margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .active-label{font-size:13px;font-weight:700;padding:5px 12px;border-radius:20px;border:1px solid}
+  .active-label.on{background:var(--green-light);color:var(--green);border-color:var(--green)}
+  .active-label.off{background:var(--red-light);color:var(--red);border-color:var(--red)}
+  .responses-card{background:white;border-radius:12px;box-shadow:0 3px 20px rgba(44,26,14,.10);overflow:hidden}
+  .responses-header{background:var(--bark);padding:18px 28px;display:flex;justify-content:space-between;align-items:center}
+  .responses-header h3{font-family:'Playfair Display',serif;color:white;font-size:18px}
+  .responses-header p{color:var(--tan);font-size:13px}
+  .rh-right{display:flex;gap:10px;align-items:center}
+  .count-badge{background:rgba(196,168,130,.2);color:var(--tan);padding:4px 12px;border-radius:20px;font-size:13px;border:1px solid rgba(196,168,130,.3)}
+  .stats-row{display:flex;gap:16px;padding:20px 28px;background:#faf7f2;flex-wrap:wrap}
+  .stat{flex:1;min-width:100px;text-align:center}
+  .stat .val{font-family:'Playfair Display',serif;font-size:28px;color:var(--bark)}
+  .stat .lbl{font-size:12px;color:#8b6f4e;letter-spacing:1px;text-transform:uppercase}
+  hr.divider{border:none;border-top:1px solid #e0d5c5}
+  table{width:100%;border-collapse:collapse}
+  th{background:#f5efe6;padding:11px 16px;text-align:left;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--wood);border-bottom:2px solid #e0d5c5}
+  td{padding:12px 16px;border-bottom:1px solid #f0e8dc;font-size:14px}
+  tr:last-child td{border-bottom:none}tr:hover td{background:#faf7f2}
+  .sc{font-weight:700}.sc.s5{color:var(--green)}.sc.s34{color:var(--gold)}.sc.slow{color:var(--red)}
+  .empty-state{text-align:center;padding:48px;color:#a08060;font-size:15px}
+  .empty-state .icon{font-size:36px;margin-bottom:12px}
+  .spinner{display:inline-block;width:16px;height:16px;border:3px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @media(max-width:500px){.field-row{flex-direction:column}.card-body{padding:20px}}
 </style>
 </head>
 <body>
 
-<!-- ════════════════════════════════════════
-     STUDENT PAGES
-════════════════════════════════════════ -->
-
-<!-- Header (shown on student pages) -->
 <header class="site-header" id="student-header">
-  <div class="brand">
-    <span>🪓</span>
-    <div>
-      <p>5th Grade ELA</p>
-      <h1>Hatchet — Exit Tickets</h1>
-    </div>
-  </div>
-  <span class="teacher-link" onclick="showTeacherLogin()">Teacher</span>
+  <div class="brand"><span>🪓</span><div><p>5th Grade ELA</p><h1>Hatchet — Exit Tickets</h1></div></div>
+  <span class="teacher-link" id="teacher-btn">Teacher</span>
 </header>
 
-<!-- PAGE: Name entry -->
 <div class="page active" id="page-name">
   <div class="container">
     <div class="card">
-      <div class="card-header">
-        <div>
-          <h2>Welcome!</h2>
-          <p>Please enter your information to begin.</p>
-        </div>
-        <span class="card-badge">Exit Ticket</span>
-      </div>
+      <div class="card-header"><div><h2>Welcome!</h2><p>Please enter your information to begin.</p></div><span class="card-badge">Exit Ticket</span></div>
       <div class="card-body">
         <div class="field-row">
-          <div class="field">
-            <label>First Name</label>
-            <input type="text" id="input-first" placeholder="e.g. Brian" autocomplete="off"/>
-          </div>
-          <div class="field">
-            <label>Last Name</label>
-            <input type="text" id="input-last" placeholder="e.g. Robeson" autocomplete="off"/>
-          </div>
+          <div class="field"><label>First Name</label><input type="text" id="input-first" placeholder="First name" autocomplete="off"/></div>
+          <div class="field"><label>Last Name</label><input type="text" id="input-last" placeholder="Last name" autocomplete="off"/></div>
         </div>
-        <div class="field" style="max-width:180px">
-          <label>Student Number</label>
-          <input type="text" id="input-num" placeholder="e.g. 12345" autocomplete="off"/>
-        </div>
-        <button class="btn btn-primary" onclick="submitName()">Continue →</button>
-        <p id="name-error" style="color:var(--red);font-size:13px;margin-top:10px;display:none;">Please fill in all fields.</p>
+        <div class="field" style="max-width:200px"><label>Student Number</label><input type="text" id="input-num" placeholder="e.g. 12345" autocomplete="off"/></div>
+        <button class="btn btn-primary" id="start-btn">Continue &rarr;</button>
+        <p id="name-error" style="color:var(--red);font-size:13px;margin-top:10px;display:none">Please fill in all fields.</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- PAGE: Waiting for teacher to set ticket -->
 <div class="page" id="page-waiting">
   <div class="container">
-    <div class="card">
-      <div class="card-body">
-        <div class="waiting-box">
-          <div class="icon">⏳</div>
-          <h3>Hang tight!</h3>
-          <p>Your teacher hasn't activated a ticket yet.<br/>This page will update automatically.</p>
-        </div>
-      </div>
-    </div>
+    <div class="card"><div class="card-body"><div class="waiting-box"><div class="icon">&#9203;</div><h3>Hang tight!</h3><p>Your teacher hasn't activated a ticket yet.<br/>This page will update automatically.</p></div></div></div>
   </div>
 </div>
 
-<!-- PAGE: Quiz -->
 <div class="page" id="page-quiz">
-  <div class="container">
-    <div class="card" id="quiz-card">
-      <!-- dynamically populated -->
-    </div>
-  </div>
+  <div class="container"><div class="card" id="quiz-card"></div></div>
 </div>
 
-<!-- PAGE: Success -->
 <div class="page" id="page-success">
   <div class="container">
-    <div class="card">
-      <div class="card-body">
-        <div class="success-screen">
-          <div class="big-icon">✅</div>
-          <h2>Submitted!</h2>
-          <div class="score-display" id="success-score"></div>
-          <p id="success-msg"></p>
-          <p style="margin-top:18px;color:#a08060;font-size:14px;">You can close this tab.</p>
-        </div>
-      </div>
-    </div>
+    <div class="card"><div class="card-body"><div class="success-screen"><div class="big-icon">&#10003;</div><h2>Submitted!</h2><div class="score-display" id="success-score"></div><p id="success-msg"></p><p style="margin-top:18px;color:#a08060;font-size:14px">You can close this tab.</p></div></div></div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     TEACHER LOGIN
-════════════════════════════════════════ -->
-<div class="page" id="teacher-login">
+<div id="teacher-login">
   <div class="login-card">
-    <div class="icon">🔒</div>
+    <div class="icon">&#128274;</div>
     <h2>Teacher Dashboard</h2>
     <p>Hatchet Exit Tickets</p>
-    <div class="field">
-      <label>Password</label>
-      <input type="password" id="pw-input" placeholder="Enter password" onkeydown="if(event.key==='Enter')checkPassword()"/>
-    </div>
-    <button class="btn btn-primary" style="width:100%" onclick="checkPassword()">Sign In</button>
+    <div class="field"><label>Password</label><input type="password" id="pw-input" placeholder="Enter password"/></div>
+    <button class="btn btn-primary" style="width:100%" id="login-btn">Sign In</button>
     <p class="login-error" id="login-error">Incorrect password. Try again.</p>
-    <p style="margin-top:20px;font-size:13px;color:#a08060;cursor:pointer" onclick="showStudentPage()">← Back to student view</p>
+    <p style="margin-top:20px;font-size:13px;color:#a08060;cursor:pointer" id="back-btn">&larr; Back to student view</p>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     TEACHER DASHBOARD
-════════════════════════════════════════ -->
 <div id="teacher-dash">
   <div class="dash-header">
-    <div>
-      <h1>🪓 Teacher Dashboard</h1>
-      <p>Hatchet Exit Tickets — Response Tracker</p>
-    </div>
+    <div><h1>&#129683; Teacher Dashboard</h1><p>Hatchet Exit Tickets &mdash; Response Tracker</p></div>
     <div style="display:flex;gap:10px;align-items:center">
-      <button class="btn btn-outline btn-sm" onclick="loadDashboard()">↻ Refresh</button>
-      <button class="btn btn-sm" style="background:rgba(255,255,255,.12);color:white;border:1px solid rgba(255,255,255,.2)" onclick="logout()">Sign Out</button>
+      <button class="btn btn-outline btn-sm" id="refresh-btn">&#8635; Refresh</button>
+      <button class="btn btn-sm" style="background:rgba(255,255,255,.12);color:white;border:1px solid rgba(255,255,255,.2)" id="logout-btn">Sign Out</button>
     </div>
   </div>
-
   <div class="dash-container">
-    <!-- Active Ticket Control -->
     <div class="ticket-selector">
       <h3>Active Exit Ticket</h3>
       <p>Select which ticket students will see when they visit the page.</p>
       <div class="ticket-tabs" id="dash-tabs"></div>
       <div class="set-btn-row">
-        <button class="btn btn-primary btn-sm" onclick="setActiveTicket()">Set Active Ticket</button>
-        <button class="btn btn-outline btn-sm" onclick="setActiveTicket('none')">Deactivate (show waiting screen)</button>
-        <span class="active-label" id="active-label">Loading...</span>
+        <button class="btn btn-primary btn-sm" id="set-active-btn">Set Active Ticket</button>
+        <button class="btn btn-outline btn-sm" id="deactivate-btn">Deactivate (show waiting screen)</button>
+        <span class="active-label off" id="active-label">Loading...</span>
       </div>
     </div>
-
-    <!-- Response Table -->
     <div class="responses-card">
       <div class="responses-header">
-        <div>
-          <h3>Student Responses</h3>
-          <p>All submissions across all tickets</p>
-        </div>
-        <div class="right">
-          <span class="count-badge" id="resp-count">0 responses</span>
-          <button class="btn btn-danger btn-sm" onclick="clearResponses()">Clear All</button>
-        </div>
+        <div><h3>Student Responses</h3><p>All submissions across all tickets</p></div>
+        <div class="rh-right"><span class="count-badge" id="resp-count">0 responses</span><button class="btn btn-danger btn-sm" id="clear-btn">Clear All</button></div>
       </div>
-      <div class="stats-row" id="stats-row">
-        <div class="stat"><div class="val" id="stat-total">—</div><div class="lbl">Responses</div></div>
-        <div class="stat"><div class="val" id="stat-avg">—</div><div class="lbl">Avg Score</div></div>
-        <div class="stat"><div class="val" id="stat-perfect">—</div><div class="lbl">Perfect 5/5</div></div>
-        <div class="stat"><div class="val" id="stat-low">—</div><div class="lbl">Below 3/5</div></div>
+      <div class="stats-row">
+        <div class="stat"><div class="val" id="stat-total">&mdash;</div><div class="lbl">Responses</div></div>
+        <div class="stat"><div class="val" id="stat-avg">&mdash;</div><div class="lbl">Avg Score</div></div>
+        <div class="stat"><div class="val" id="stat-perfect">&mdash;</div><div class="lbl">Perfect 5/5</div></div>
+        <div class="stat"><div class="val" id="stat-low">&mdash;</div><div class="lbl">Below 3/5</div></div>
       </div>
       <hr class="divider"/>
-      <div id="responses-table-wrap">
-        <div class="empty-state"><div class="icon">📋</div>No responses yet.</div>
-      </div>
+      <div id="responses-table-wrap"><div class="empty-state"><div class="icon">&#128203;</div>No responses yet.</div></div>
     </div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     JAVASCRIPT
-════════════════════════════════════════ -->
-<script>
-// ── DATA ──────────────────────────────────────────────────────
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, push, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const app = initializeApp({ databaseURL: "https://hatchet-tickets-default-rtdb.firebaseio.com/" });
+const db = getDatabase(app);
+const PASS = "mariana2026";
+
 const TICKETS = [
-  {
-    id: 1, title: "Exit Ticket #1", chapters: "Chapters 1–4",
-    questions: [
-      { q: "Why is Brian on the small plane at the beginning of the novel?",
-        opts: ["He is going to summer camp.","He is flying to visit his father in Canada.","He is moving to Canada with his mother.","He is going on a school field trip."], ans: 1 },
-      { q: "What is \"The Secret\" that weighs on Brian's mind?",
-        opts: ["He stole money from his mother.","He saw his mother with another man before the divorce.","He failed his final exams.","He broke his father's favorite tool."], ans: 1 },
-      { q: "What happens to the pilot during the flight?",
-        opts: ["He falls asleep at the controls.","He has a heart attack and dies.","He jumps out of the plane.","He radios for help and lands safely."], ans: 1 },
-      { q: "How does Brian manage to land the plane?",
-        opts: ["He follows radio instructions from a controller.","He pulls back on the controls and crash-lands into a lake.","He parachutes out before impact.","He finds an empty field and sets the plane down."], ans: 1 },
-      { q: "What gift did Brian's mother give him before the trip?",
-        opts: ["A survival kit.","A pocket knife.","A hatchet.","A compass."], ans: 2 },
-    ]
-  },
-  {
-    id: 2, title: "Exit Ticket #2", chapters: "Chapters 5–8",
-    questions: [
-      { q: "After the crash, what is Brian's most urgent physical need?",
-        opts: ["Building a shelter.","Finding food.","Finding drinkable water.","Making a fire."], ans: 2 },
-      { q: "What does Brian eat first after the crash, even though it makes him sick?",
-        opts: ["Fish.","Wild raspberries.","Gut cherries (chokecherries).","Bird eggs."], ans: 2 },
-      { q: "Where does Brian make his shelter?",
-        opts: ["In a hollowed-out tree.","In a rock overhang or cave-like ledge.","In a pit he digs in the ground.","In the wreckage of the plane."], ans: 1 },
-      { q: "A porcupine enters Brian's shelter and injures him. What does this painful experience teach him?",
-        opts: ["To block the entrance to his shelter each night.","That self-pity is useless — he must stay positive and problem-solve.","That porcupines are his biggest threat in the wilderness.","That he should move to a different campsite immediately."], ans: 1 },
-      { q: "Brian dreams of his friend Terry and his father, both seemingly pointing at something. What idea do these dreams help him figure out?",
-        opts: ["How to build a raft.","How to make fire.","How to find the emergency kit on the plane.","How to signal rescuers."], ans: 1 },
-    ]
-  },
-  {
-    id: 3, title: "Exit Ticket #3", chapters: "Chapters 9–12",
-    questions: [
-      { q: "What materials does Brian use to finally create fire?",
-        opts: ["Two dry sticks rubbed together.","The hatchet struck against a rock to create sparks.","A piece of glass from the plane focused on dry leaves.","Flint stones he finds near the lake."], ans: 1 },
-      { q: "Why is fire so important to Brian beyond just warmth?",
-        opts: ["It keeps insects away and purifies his water.","It scares away predators, signals rescuers, and allows him to cook food.","It dries out his wet shelter and clothing.","All of the above."], ans: 3 },
-      { q: "What animal startles Brian at the lake while he is getting water?",
-        opts: ["A bear.","A wolf.","A moose.","A ruffed grouse (foolbird) bursting from cover."], ans: 3 },
-      { q: "How does Brian successfully catch fish?",
-        opts: ["He makes a fishing pole from a branch and uses worms as bait.","He weaves a net from plant fibers.","He makes a spear and learns to aim above where he sees the fish due to light refraction.","He traps fish in a pool he builds with rocks."], ans: 2 },
-      { q: "Which word best describes how Brian's mindset has changed by the end of Chapter 12?",
-        opts: ["Hopeless.","Reckless.","Resilient.","Angry."], ans: 2 },
-    ]
-  },
-  {
-    id: 4, title: "Exit Ticket #4", chapters: "Chapters 13–16",
-    questions: [
-      { q: "A plane flies over Brian's camp but does not see him. How does this affect him emotionally?",
-        opts: ["He feels relieved that he can handle survival on his own.","He falls into a deep depression and loses the will to survive temporarily.","He becomes angry at the pilot.","He immediately builds a larger signal fire."], ans: 1 },
-      { q: "After the plane misses him, Brian reaches his lowest point. What does he ultimately realize from this experience?",
-        opts: ["That he truly wants to be rescued at any cost.","That he must give up hope.","That he has become a tougher, changed person — he calls it his \"new Brian.\"","That his family will never find him."], ans: 2 },
-      { q: "A skunk destroys Brian's turtle egg cache. What does this teach him?",
-        opts: ["To store food in higher places.","That he must protect and constantly adapt his food storage strategies.","That skunks are the most dangerous animal in the forest.","To stop collecting eggs and focus only on fish."], ans: 1 },
-      { q: "What motivates Brian to finally try to retrieve the survival pack from the sunken plane?",
-        opts: ["He sees a map he needs.","He hopes to find a rescue transmitter (emergency beacon).","He wants dry clothes.","He runs out of food near the lake."], ans: 1 },
-      { q: "What natural disaster strikes Brian's camp and causes major damage to his shelter and food stores?",
-        opts: ["A wildfire.","A tornado.","A violent storm with high winds and waves.","A flash flood."], ans: 2 },
-    ]
-  },
-  {
-    id: 5, title: "Exit Ticket #5", chapters: "Chapters 17–19",
-    questions: [
-      { q: "What tool does Brian use to break into the submerged plane to reach the survival pack?",
-        opts: ["A sharpened stick.","His hatchet.","A rock from the lake bed.","A piece of metal from the plane door."], ans: 1 },
-      { q: "Which item in the survival pack proves most critical to Brian's rescue?",
-        opts: ["A flare gun.","An emergency transmitter (EPIRB).","A satellite phone.","A signal mirror."], ans: 1 },
-      { q: "How is Brian ultimately rescued?",
-        opts: ["His parents charter a helicopter that spots his signal fire.","A fur trader whose plane picks up Brian's transmitter signal lands nearby.","A search party following the plane's GPS coordinates finds him on foot.","A passing boat sees his smoke signal."], ans: 1 },
-      { q: "By the end of the novel, how has Brian changed from who he was at the beginning?",
-        opts: ["He is unchanged — he is simply relieved to return to normal life.","He is more resourceful, self-reliant, and mentally tough, and sees the world differently.","He becomes bitter and angry about his ordeal.","He decides he wants to live in the wilderness permanently."], ans: 1 },
-      { q: "What does Brian think about \"The Secret\" by the end of the novel?",
-        opts: ["He decides to confront his mother immediately upon returning.","It no longer controls him — he plans to tell his father but feels at peace with it.","He has completely forgotten about it during his time in the wilderness.","He feels more resentment toward his mother than ever before."], ans: 1 },
-    ]
-  }
+  { id:1, title:"Exit Ticket #1", chapters:"Chapters 1\u20134", questions:[
+    { q:"Why is Brian on the small plane at the beginning of the novel?", opts:["He is going to summer camp.","He is flying to visit his father in Canada.","He is moving to Canada with his mother.","He is going on a school field trip."], ans:1 },
+    { q:"What is \"The Secret\" that weighs on Brian's mind?", opts:["He stole money from his mother.","He saw his mother with another man before the divorce.","He failed his final exams.","He broke his father's favorite tool."], ans:1 },
+    { q:"What happens to the pilot during the flight?", opts:["He falls asleep at the controls.","He has a heart attack and dies.","He jumps out of the plane.","He radios for help and lands safely."], ans:1 },
+    { q:"How does Brian manage to land the plane?", opts:["He follows radio instructions from a controller.","He pulls back on the controls and crash-lands into a lake.","He parachutes out before impact.","He finds an empty field and sets the plane down."], ans:1 },
+    { q:"What gift did Brian's mother give him before the trip?", opts:["A survival kit.","A pocket knife.","A hatchet.","A compass."], ans:2 },
+  ]},
+  { id:2, title:"Exit Ticket #2", chapters:"Chapters 5\u20138", questions:[
+    { q:"After the crash, what is Brian's most urgent physical need?", opts:["Building a shelter.","Finding food.","Finding drinkable water.","Making a fire."], ans:2 },
+    { q:"What does Brian eat first after the crash, even though it makes him sick?", opts:["Fish.","Wild raspberries.","Gut cherries (chokecherries).","Bird eggs."], ans:2 },
+    { q:"Where does Brian make his shelter?", opts:["In a hollowed-out tree.","In a rock overhang or cave-like ledge.","In a pit he digs in the ground.","In the wreckage of the plane."], ans:1 },
+    { q:"A porcupine enters Brian's shelter and injures him. What does this experience teach him?", opts:["To block the entrance each night.","That self-pity is useless \u2014 he must stay positive and problem-solve.","That porcupines are his biggest threat.","That he should move campsites immediately."], ans:1 },
+    { q:"Brian dreams of his friend Terry and his father, both seemingly pointing at something. What do these dreams help him figure out?", opts:["How to build a raft.","How to make fire.","How to find the emergency kit on the plane.","How to signal rescuers."], ans:1 },
+  ]},
+  { id:3, title:"Exit Ticket #3", chapters:"Chapters 9\u201312", questions:[
+    { q:"What materials does Brian use to finally create fire?", opts:["Two dry sticks rubbed together.","The hatchet struck against a rock to create sparks.","A piece of glass from the plane focused on dry leaves.","Flint stones he finds near the lake."], ans:1 },
+    { q:"Why is fire so important to Brian beyond just warmth?", opts:["It keeps insects away and purifies his water.","It scares away predators, signals rescuers, and allows him to cook food.","It dries out his wet shelter and clothing.","All of the above."], ans:3 },
+    { q:"What startles Brian at the lake while he is getting water?", opts:["A bear.","A wolf.","A moose.","A ruffed grouse (foolbird) bursting from cover."], ans:3 },
+    { q:"How does Brian successfully catch fish?", opts:["He makes a fishing pole from a branch and uses worms as bait.","He weaves a net from plant fibers.","He makes a spear and learns to aim above where he sees the fish due to light refraction.","He traps fish in a pool he builds with rocks."], ans:2 },
+    { q:"Which word best describes how Brian's mindset has changed by the end of Chapter 12?", opts:["Hopeless.","Reckless.","Resilient.","Angry."], ans:2 },
+  ]},
+  { id:4, title:"Exit Ticket #4", chapters:"Chapters 13\u201316", questions:[
+    { q:"A plane flies over Brian's camp but does not see him. How does this affect him?", opts:["He feels relieved he can handle survival on his own.","He falls into a deep depression and loses the will to survive temporarily.","He becomes angry at the pilot.","He immediately builds a larger signal fire."], ans:1 },
+    { q:"After the plane misses him, Brian reaches his lowest point. What does he ultimately realize?", opts:["That he truly wants to be rescued at any cost.","That he must give up hope.","That he has become tougher and changed \u2014 he calls it his \"new Brian.\"","That his family will never find him."], ans:2 },
+    { q:"A skunk destroys Brian's turtle egg cache. What does this teach him?", opts:["To store food in higher places.","That he must constantly protect and adapt his food storage strategies.","That skunks are the most dangerous animal in the forest.","To stop collecting eggs and focus only on fish."], ans:1 },
+    { q:"What motivates Brian to finally try to retrieve the survival pack from the sunken plane?", opts:["He sees a map he needs.","He hopes to find a rescue transmitter (emergency beacon).","He wants dry clothes.","He runs out of food near the lake."], ans:1 },
+    { q:"What natural disaster strikes Brian's camp and causes major damage?", opts:["A wildfire.","A tornado.","A violent storm with high winds and waves.","A flash flood."], ans:2 },
+  ]},
+  { id:5, title:"Exit Ticket #5", chapters:"Chapters 17\u201319", questions:[
+    { q:"What tool does Brian use to break into the submerged plane to reach the survival pack?", opts:["A sharpened stick.","His hatchet.","A rock from the lake bed.","A piece of metal from the plane door."], ans:1 },
+    { q:"Which item in the survival pack proves most critical to Brian's rescue?", opts:["A flare gun.","An emergency transmitter (EPIRB).","A satellite phone.","A signal mirror."], ans:1 },
+    { q:"How is Brian ultimately rescued?", opts:["His parents charter a helicopter that spots his signal fire.","A fur trader whose plane picks up Brian's transmitter signal lands nearby.","A search party following the plane's GPS coordinates finds him on foot.","A passing boat sees his smoke signal."], ans:1 },
+    { q:"By the end of the novel, how has Brian changed from who he was at the beginning?", opts:["He is unchanged \u2014 he is simply relieved to return to normal life.","He is more resourceful, self-reliant, and mentally tough, and sees the world differently.","He becomes bitter and angry about his ordeal.","He decides he wants to live in the wilderness permanently."], ans:1 },
+    { q:"What does Brian think about \"The Secret\" by the end of the novel?", opts:["He decides to confront his mother immediately upon returning.","It no longer controls him \u2014 he plans to tell his father but feels at peace with it.","He has completely forgotten about it during his time in the wilderness.","He feels more resentment toward his mother than ever."], ans:1 },
+  ]},
 ];
 
-const TEACHER_PASSWORD = "mariana2026";
-const STORAGE_KEY_ACTIVE = "hatchet_active_ticket";
-const STORAGE_KEY_RESPONSES = "hatchet_responses";
+let studentInfo = {}, selected = {}, currentTicket = null, dashTab = 1, watching = false;
 
-// ── STATE ─────────────────────────────────────────────────────
-let studentInfo = {};
-let selected = {};
-let currentTicket = null;
-let pollTimer = null;
-let dashSelectedTab = 1;
-
-// ── UTILS ─────────────────────────────────────────────────────
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  const header = document.getElementById('student-header');
-  const teacherPages = ['teacher-login','teacher-dash'];
-  if (teacherPages.includes(id)) {
-    header.style.display = 'none';
-    document.getElementById('teacher-login').style.display = 'none';
-    document.getElementById('teacher-dash').style.display = 'none';
-    document.getElementById(id).style.display = id === 'teacher-login' ? 'flex' : 'block';
+  document.getElementById('teacher-login').classList.remove('active');
+  document.getElementById('teacher-dash').classList.remove('active');
+  document.getElementById('student-header').style.display = 'flex';
+  if (id === 'teacher-login') {
+    document.getElementById('student-header').style.display = 'none';
+    document.getElementById('teacher-login').classList.add('active');
+  } else if (id === 'teacher-dash') {
+    document.getElementById('student-header').style.display = 'none';
+    document.getElementById('teacher-dash').classList.add('active');
+  } else {
     document.getElementById(id).classList.add('active');
-  } else {
-    header.style.display = 'flex';
-    document.getElementById('teacher-login').style.display = 'none';
-    document.getElementById('teacher-dash').style.display = 'none';
   }
 }
 
-function getStorage(key) {
-  try { return JSON.parse(localStorage.getItem(key)); } catch { return null; }
-}
-function setStorage(key, val) {
-  try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
-}
-
-// ── NAME ENTRY ────────────────────────────────────────────────
-function submitName() {
+// Name entry
+document.getElementById('start-btn').addEventListener('click', () => {
   const first = document.getElementById('input-first').value.trim();
-  const last = document.getElementById('input-last').value.trim();
-  const num = document.getElementById('input-num').value.trim();
-  if (!first || !last || !num) {
-    document.getElementById('name-error').style.display = 'block';
-    return;
-  }
+  const last  = document.getElementById('input-last').value.trim();
+  const num   = document.getElementById('input-num').value.trim();
+  if (!first || !last || !num) { document.getElementById('name-error').style.display='block'; return; }
   document.getElementById('name-error').style.display = 'none';
-  studentInfo = { first, last, num, fullName: `${first} ${last}` };
-  checkActiveTicket();
-}
-
-// ── POLLING / ACTIVE TICKET ───────────────────────────────────
-function checkActiveTicket() {
-  const active = getStorage(STORAGE_KEY_ACTIVE);
-  if (!active || active === 'none') {
-    showPage('page-waiting');
-    if (!pollTimer) pollTimer = setInterval(checkActiveTicket, 4000);
-  } else {
-    clearInterval(pollTimer); pollTimer = null;
-    const ticket = TICKETS.find(t => t.id === parseInt(active));
-    if (ticket) loadQuiz(ticket);
-    else showPage('page-waiting');
+  studentInfo = { first, last, num, fullName: first+' '+last };
+  const btn = document.getElementById('start-btn');
+  btn.innerHTML = '<span class="spinner"></span>Loading...'; btn.disabled = true;
+  if (!watching) {
+    watching = true;
+    onValue(ref(db,'activeTicket'), snap => {
+      const val = snap.val();
+      if (!val || val==='none') {
+        showPage('page-waiting');
+        const b = document.getElementById('start-btn');
+        if (b) { b.innerHTML = 'Continue \u2192'; b.disabled = false; }
+      } else {
+        const ticket = TICKETS.find(t => t.id===parseInt(val));
+        if (ticket && (!currentTicket || currentTicket.id!==ticket.id)) loadQuiz(ticket);
+      }
+    });
   }
-}
+});
 
-// ── QUIZ ──────────────────────────────────────────────────────
 function loadQuiz(ticket) {
-  currentTicket = ticket;
-  selected = {};
+  currentTicket = ticket; selected = {};
   const card = document.getElementById('quiz-card');
-  card.innerHTML = `
-    <div class="card-header">
-      <div><h2>${ticket.title}</h2><p>${ticket.chapters}</p></div>
-      <span class="card-badge">5 Questions</span>
-    </div>
-    <div class="card-body" id="quiz-body">
-      ${ticket.questions.map((q, qi) => renderQuestion(q, qi)).join('')}
-      <div class="action-row" id="quiz-actions">
-        <button class="btn btn-primary" id="submit-btn" onclick="submitQuiz()" disabled>Submit</button>
-        <span class="hint" id="quiz-hint">Answer all 5 questions to submit.</span>
-      </div>
-    </div>`;
+  card.innerHTML = '<div class="card-header"><div><h2>'+ticket.title+'</h2><p>'+ticket.chapters+'</p></div><span class="card-badge">5 Questions</span></div><div class="card-body" id="qbody">'
+    + ticket.questions.map((q,qi)=>'<div class="question"><div class="question-label"><span class="q-num">'+(qi+1)+'</span>'+q.q+'</div><div class="options">'
+      + q.opts.map((o,oi)=>'<button class="option-btn" data-qi="'+qi+'" data-oi="'+oi+'"><span class="option-circle">'+String.fromCharCode(65+oi)+'</span>'+o+'</button>').join('')
+      +'</div></div>').join('')
+    +'<div class="action-row"><button class="btn btn-primary" id="submit-btn" disabled>Submit</button><span class="hint" id="quiz-hint">Answer all 5 questions to submit.</span></div></div>';
+
+  card.querySelectorAll('.option-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const qi=parseInt(btn.dataset.qi), oi=parseInt(btn.dataset.oi);
+      card.querySelectorAll('.option-btn[data-qi="'+qi+'"]').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected'); selected[qi]=oi;
+      if (Object.keys(selected).length===currentTicket.questions.length) {
+        document.getElementById('submit-btn').disabled=false;
+        document.getElementById('quiz-hint').style.display='none';
+      }
+    });
+  });
+
+  document.getElementById('submit-btn').addEventListener('click', async () => {
+    const sb=document.getElementById('submit-btn');
+    sb.innerHTML='<span class="spinner"></span>Submitting...'; sb.disabled=true;
+    const score=currentTicket.questions.reduce((acc,q,qi)=>acc+(selected[qi]===q.ans?1:0),0);
+    await push(ref(db,'responses'),{
+      name:studentInfo.fullName, num:studentInfo.num,
+      ticket:currentTicket.title, chapters:currentTicket.chapters,
+      ticketId:currentTicket.id, score, total:5,
+      time:new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}),
+      timestamp:Date.now()
+    });
+    document.getElementById('success-score').textContent=score+' / 5';
+    const msgs=["Keep reviewing \u2014 you've got this! \uD83D\uDCDA","Good effort! Review your notes. \uD83D\uDC4D","Nice work! \uD83C\uDF1F","Great job! \uD83C\uDF89","Perfect score! Outstanding! \uD83C\uDFC6"];
+    document.getElementById('success-msg').textContent=msgs[score];
+    showPage('page-success');
+  });
   showPage('page-quiz');
 }
 
-function renderQuestion(q, qi) {
-  return `<div class="question" id="q-${qi}">
-    <div class="question-label"><span class="q-num">${qi+1}</span>${q.q}</div>
-    <div class="options">
-      ${q.opts.map((o, oi) => `
-        <button class="option-btn" id="opt-${qi}-${oi}" onclick="selectOption(${qi},${oi})">
-          <span class="option-circle">${String.fromCharCode(65+oi)}</span>${o}
-        </button>`).join('')}
-    </div>
-  </div>`;
+// Teacher auth
+document.getElementById('teacher-btn').addEventListener('click',()=>showPage('teacher-login'));
+document.getElementById('back-btn').addEventListener('click',()=>showPage('page-name'));
+document.getElementById('logout-btn').addEventListener('click',()=>showPage('page-name'));
+document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin();});
+document.getElementById('login-btn').addEventListener('click',tryLogin);
+function tryLogin(){
+  if(document.getElementById('pw-input').value===PASS){
+    document.getElementById('login-error').style.display='none';
+    document.getElementById('pw-input').value='';
+    showPage('teacher-dash'); loadDashboard();
+  } else { document.getElementById('login-error').style.display='block'; }
 }
 
-function selectOption(qi, oi) {
-  // deselect others in this question
-  currentTicket.questions[qi].opts.forEach((_, i) => {
-    document.getElementById(`opt-${qi}-${i}`).classList.remove('selected');
-  });
-  document.getElementById(`opt-${qi}-${oi}`).classList.add('selected');
-  selected[qi] = oi;
-  // enable submit if all answered
-  if (Object.keys(selected).length === currentTicket.questions.length) {
-    document.getElementById('submit-btn').disabled = false;
-    document.getElementById('quiz-hint').style.display = 'none';
-  }
+// Dashboard
+document.getElementById('refresh-btn').addEventListener('click',loadDashboard);
+document.getElementById('set-active-btn').addEventListener('click',async()=>{await set(ref(db,'activeTicket'),String(dashTab));renderLabel();});
+document.getElementById('deactivate-btn').addEventListener('click',async()=>{await set(ref(db,'activeTicket'),'none');renderLabel();});
+document.getElementById('clear-btn').addEventListener('click',async()=>{if(!confirm('Clear ALL responses? This cannot be undone.'))return;await remove(ref(db,'responses'));loadTable();});
+
+function loadDashboard(){renderTabs();renderLabel();loadTable();}
+
+function renderTabs(){
+  document.getElementById('dash-tabs').innerHTML=TICKETS.map(t=>'<button class="ticket-tab'+(dashTab===t.id?' active-tab':'')+'" data-id="'+t.id+'">#'+t.id+' \u2014 '+t.chapters+'</button>').join('');
+  document.querySelectorAll('.ticket-tab').forEach(b=>b.addEventListener('click',()=>{dashTab=parseInt(b.dataset.id);renderTabs();}));
 }
 
-function submitQuiz() {
-  const score = currentTicket.questions.reduce((acc, q, qi) => acc + (selected[qi] === q.ans ? 1 : 0), 0);
-  // Save response
-  const responses = getStorage(STORAGE_KEY_RESPONSES) || [];
-  responses.push({
-    name: studentInfo.fullName,
-    num: studentInfo.num,
-    ticket: currentTicket.title,
-    chapters: currentTicket.chapters,
-    score,
-    total: 5,
-    time: new Date().toLocaleString('en-US', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' })
-  });
-  setStorage(STORAGE_KEY_RESPONSES, responses);
-  // Show success
-  document.getElementById('success-score').textContent = `${score} / 5`;
-  const msgs = ['Keep reviewing — you've got this! 📖', 'Good effort! Review your notes. 👍', 'Nice work! 🌟', 'Great job! 🎉', 'Perfect score! Outstanding! 🏆'];
-  document.getElementById('success-msg').textContent = msgs[score];
-  showPage('page-success');
+async function renderLabel(){
+  const snap=await get(ref(db,'activeTicket')); const val=snap.val();
+  const el=document.getElementById('active-label');
+  if(!val||val==='none'){el.textContent='No ticket active';el.className='active-label off';}
+  else{const t=TICKETS.find(t=>t.id===parseInt(val));el.textContent=t?'Active: '+t.title+' ('+t.chapters+')':'No ticket active';el.className='active-label on';}
 }
 
-// ── TEACHER LOGIN ─────────────────────────────────────────────
-function showTeacherLogin() {
-  showPage('teacher-login');
-}
-function showStudentPage() {
-  showPage('page-name');
-}
-function checkPassword() {
-  const pw = document.getElementById('pw-input').value;
-  if (pw === TEACHER_PASSWORD) {
-    document.getElementById('login-error').style.display = 'none';
-    document.getElementById('pw-input').value = '';
-    showPage('teacher-dash');
-    loadDashboard();
-  } else {
-    document.getElementById('login-error').style.display = 'block';
-  }
-}
-function logout() {
-  showPage('page-name');
+async function loadTable(){
+  const snap=await get(ref(db,'responses'));
+  const data=snap.val();
+  const rows=data?Object.values(data).sort((a,b)=>b.timestamp-a.timestamp):[];
+  document.getElementById('resp-count').textContent=rows.length+' response'+(rows.length!==1?'s':'');
+  document.getElementById('stat-total').textContent=rows.length;
+  if(rows.length>0){
+    document.getElementById('stat-avg').textContent=(rows.reduce((a,r)=>a+r.score,0)/rows.length).toFixed(1)+'/5';
+    document.getElementById('stat-perfect').textContent=rows.filter(r=>r.score===5).length;
+    document.getElementById('stat-low').textContent=rows.filter(r=>r.score<3).length;
+  } else { ['stat-avg','stat-perfect','stat-low'].forEach(id=>document.getElementById(id).textContent='\u2014'); }
+  const wrap=document.getElementById('responses-table-wrap');
+  if(!rows.length){wrap.innerHTML='<div class="empty-state"><div class="icon">\uD83D\uDCCB</div>No responses yet. Students will appear here as they submit.</div>';return;}
+  wrap.innerHTML='<table><thead><tr><th>#</th><th>Name</th><th>Student #</th><th>Ticket</th><th>Score</th><th>Submitted</th></tr></thead><tbody>'
+    +rows.map((r,i)=>{const cls=r.score===5?'s5':r.score>=3?'s34':'slow';return'<tr><td style="color:#a08060">'+(i+1)+'</td><td><strong>'+r.name+'</strong></td><td style="font-family:monospace">'+r.num+'</td><td><span style="font-size:12px;color:#8b6f4e">'+r.chapters+'</span></td><td class="sc '+cls+'">'+r.score+'/'+r.total+' <span style="font-size:12px;font-weight:400">('+Math.round(r.score/r.total*100)+'%)</span></td><td style="color:#a08060;font-size:13px">'+r.time+'</td></tr>';}).join('')
+    +'</tbody></table>';
 }
 
-// ── TEACHER DASHBOARD ─────────────────────────────────────────
-function loadDashboard() {
-  renderTicketTabs();
-  renderActiveLabel();
-  renderResponsesTable();
-}
-
-function renderTicketTabs() {
-  const tabsEl = document.getElementById('dash-tabs');
-  tabsEl.innerHTML = TICKETS.map(t => `
-    <button class="ticket-tab ${dashSelectedTab === t.id ? 'active-tab' : ''}"
-      onclick="dashSelectedTab=${t.id};renderTicketTabs()">
-      #${t.id} ${t.chapters}
-    </button>`).join('');
-}
-
-function setActiveTicket(override) {
-  const val = override !== undefined ? override : String(dashSelectedTab);
-  setStorage(STORAGE_KEY_ACTIVE, val);
-  renderActiveLabel();
-}
-
-function renderActiveLabel() {
-  const active = getStorage(STORAGE_KEY_ACTIVE);
-  const el = document.getElementById('active-label');
-  if (!active || active === 'none') {
-    el.textContent = 'No ticket active';
-    el.style.background = '#fce8e8'; el.style.color = 'var(--red)'; el.style.borderColor = 'var(--red)';
-  } else {
-    const t = TICKETS.find(t => t.id === parseInt(active));
-    el.textContent = t ? `Active: ${t.title} (${t.chapters})` : 'No ticket active';
-    el.style.background = 'var(--green-light)'; el.style.color = 'var(--green)'; el.style.borderColor = 'var(--green)';
-  }
-}
-
-function renderResponsesTable() {
-  const responses = getStorage(STORAGE_KEY_RESPONSES) || [];
-  const countEl = document.getElementById('resp-count');
-  countEl.textContent = `${responses.length} response${responses.length !== 1 ? 's' : ''}`;
-
-  // Stats
-  document.getElementById('stat-total').textContent = responses.length;
-  if (responses.length > 0) {
-    const avg = (responses.reduce((a, r) => a + r.score, 0) / responses.length).toFixed(1);
-    document.getElementById('stat-avg').textContent = avg + '/5';
-    document.getElementById('stat-perfect').textContent = responses.filter(r => r.score === 5).length;
-    document.getElementById('stat-low').textContent = responses.filter(r => r.score < 3).length;
-  } else {
-    ['stat-avg','stat-perfect','stat-low'].forEach(id => document.getElementById(id).textContent = '—');
-  }
-
-  const wrap = document.getElementById('responses-table-wrap');
-  if (responses.length === 0) {
-    wrap.innerHTML = `<div class="empty-state"><div class="icon">📋</div>No responses yet. Students will appear here as they submit.</div>`;
-    return;
-  }
-
-  const sorted = [...responses].reverse(); // newest first
-  wrap.innerHTML = `
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Student #</th>
-          <th>Ticket</th>
-          <th>Score</th>
-          <th>Submitted</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${sorted.map((r, i) => {
-          const sc = r.score;
-          const cls = sc === 5 ? 's5' : sc >= 3 ? 's34' : 'slow';
-          const pct = Math.round((sc / r.total) * 100);
-          return `<tr>
-            <td style="color:#a08060">${sorted.length - i}</td>
-            <td><strong>${r.name}</strong></td>
-            <td style="font-family:monospace">${r.num}</td>
-            <td><span style="font-size:12px;color:#8b6f4e">${r.chapters}</span></td>
-            <td class="score-cell ${cls}">${sc}/${r.total} <span style="font-size:12px;font-weight:400">(${pct}%)</span></td>
-            <td style="color:#a08060;font-size:13px">${r.time}</td>
-          </tr>`;
-        }).join('')}
-      </tbody>
-    </table>`;
-}
-
-function clearResponses() {
-  if (!confirm('Clear ALL student responses? This cannot be undone.')) return;
-  setStorage(STORAGE_KEY_RESPONSES, []);
-  renderResponsesTable();
-}
-
-// ── INIT ──────────────────────────────────────────────────────
 showPage('page-name');
 </script>
 </body>
