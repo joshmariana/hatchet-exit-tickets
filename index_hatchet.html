@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hatchet Exit Tickets</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bark:#2c1a0e;--wood:#5c3a1e;--tan:#c4a882;--cream:#f5efe6;--paper:#faf7f2;--green:#3a6b3a;--gl:#d4edda;--red:#8b2020;--rl:#fce8e8;--gold:#b8860b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Source Sans 3',sans-serif;background:var(--cream);min-height:100vh;color:var(--bark)}
+
+/* --- views --- */
+.view{display:none!important}
+.view.show{display:block!important}
+#v-login.show{display:flex!important}
+#v-dash.show{display:block!important}
+
+/* --- header --- */
+.hdr{background:var(--bark);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:99;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.brand{display:flex;align-items:center;gap:12px}
+.brand em{font-size:26px;font-style:normal}
+.brand h1{font-family:'Playfair Display',serif;color:#fff;font-size:20px;line-height:1}
+.brand p{color:var(--tan);font-size:11px;letter-spacing:2px;text-transform:uppercase}
+.ghost-btn{font-size:12px;color:var(--tan);background:rgba(255,255,255,.08);padding:6px 14px;border-radius:5px;border:1px solid rgba(255,255,255,.15);cursor:pointer}
+.ghost-btn:hover{background:rgba(255,255,255,.18);color:#fff}
+
+/* --- layout --- */
+.wrap{max-width:680px;margin:0 auto;padding:36px 20px 60px}
+.dwrap{max-width:960px;margin:0 auto;padding:32px 20px 60px}
+
+/* --- card --- */
+.card{background:#fff;border-radius:12px;box-shadow:0 3px 20px rgba(44,26,14,.10);overflow:hidden;margin-bottom:24px}
+.ch{background:var(--bark);padding:20px 28px;display:flex;justify-content:space-between;align-items:center}
+.ch h2{font-family:'Playfair Display',serif;color:#fff;font-size:22px}
+.ch p{color:var(--tan);font-size:13px;margin-top:2px}
+.badge{background:rgba(196,168,130,.15);border:1px solid rgba(196,168,130,.3);color:var(--tan);font-size:12px;padding:5px 12px;border-radius:20px}
+.cb{padding:28px}
+
+/* --- fields --- */
+.field{margin-bottom:20px}
+.field label{display:block;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--wood);margin-bottom:7px}
+.field input{width:100%;padding:11px 14px;border:2px solid #e0d5c5;border-radius:7px;font-family:'Source Sans 3',sans-serif;font-size:15px;color:var(--bark);background:var(--paper);outline:none;transition:border-color .15s}
+.field input:focus{border-color:var(--wood)}
+.frow{display:flex;gap:14px}
+.frow .field{flex:1}
+
+/* --- waiting --- */
+.wb{text-align:center;padding:40px 28px}
+.wb .ic{font-size:48px;margin-bottom:16px}
+.wb h3{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:8px}
+.wb p{color:#7a6450;font-size:15px}
+
+/* --- quiz --- */
+.ques{margin-bottom:28px}
+.qlbl{font-size:15px;font-weight:700;margin-bottom:13px;line-height:1.5;display:flex;gap:10px;align-items:flex-start}
+.qn{background:var(--bark);color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;flex-shrink:0;margin-top:2px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:8px;border:2px solid #e0d5c5;background:var(--paper);text-align:left;cursor:pointer;font-family:'Source Sans 3',sans-serif;font-size:14px;color:var(--bark);transition:all .14s;width:100%}
+.opt:hover{border-color:var(--tan);background:#f0e8dc}
+.opt.sel{border-color:var(--wood);background:#ede0ce}
+.oc{width:26px;height:26px;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.arow{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.hint{font-size:13px;color:#8b6f4e}
+
+/* --- buttons --- */
+.btn{padding:12px 26px;border-radius:8px;border:none;font-family:'Source Sans 3',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s}
+.btn-p{background:var(--bark);color:#fff}.btn-p:hover{background:var(--wood)}.btn-p:disabled{background:#bbb;cursor:not-allowed}
+.btn-o{background:#fff;color:var(--bark);border:2px solid var(--bark)}.btn-o:hover{background:var(--cream)}
+.btn-d{background:var(--red);color:#fff}.btn-d:hover{opacity:.85}
+.btn-sm{padding:7px 14px;font-size:13px}
+
+/* --- success --- */
+.suc{text-align:center;padding:48px 28px}
+.suc .bi{font-size:56px;margin-bottom:16px}
+.suc h2{font-family:'Playfair Display',serif;font-size:26px;margin-bottom:8px}
+.suc p{color:#7a6450;font-size:16px}
+.sd{display:inline-block;margin:20px 0;font-family:'Playfair Display',serif;font-size:48px;color:var(--bark);border-bottom:3px solid var(--tan);padding-bottom:4px}
+
+/* --- login view --- */
+#v-login{background:var(--bark);min-height:100vh;align-items:center;justify-content:center;flex-direction:column}
+.lcard{background:#fff;border-radius:14px;padding:40px;width:100%;max-width:380px;box-shadow:0 8px 40px rgba(0,0,0,.3);text-align:center}
+.lcard .li{font-size:36px;margin-bottom:16px}
+.lcard h2{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:6px}
+.lcard .sub{color:#7a6450;font-size:14px;margin-bottom:24px}
+.lerr{color:var(--red);font-size:13px;margin-top:10px;display:none}
+.bk{margin-top:20px;font-size:13px;color:#a08060;cursor:pointer}
+
+/* --- dash header --- */
+.dhdr{background:var(--bark);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:99;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.dhdr h1{font-family:'Playfair Display',serif;color:#fff;font-size:20px}
+.dhdr p{color:var(--tan);font-size:12px}
+
+/* --- ticket selector --- */
+.tsel{background:#fff;border-radius:12px;box-shadow:0 3px 20px rgba(44,26,14,.10);padding:24px 28px;margin-bottom:28px}
+.tsel h3{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:4px}
+.tsel .sub{color:#7a6450;font-size:13px;margin-bottom:16px}
+.ttabs{display:flex;gap:8px;flex-wrap:wrap}
+.ttab{padding:8px 16px;border-radius:6px;border:2px solid #e0d5c5;background:#fff;color:var(--bark);font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .14s}
+.ttab.on{background:var(--bark);color:#fff;border-color:var(--bark)}
+.ttab:hover:not(.on){border-color:var(--tan)}
+.sbr{margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.albl{font-size:13px;font-weight:700;padding:5px 12px;border-radius:20px;border:1px solid}
+.albl.aon{background:var(--gl);color:var(--green);border-color:var(--green)}
+.albl.aoff{background:var(--rl);color:var(--red);border-color:var(--red)}
+
+/* --- responses --- */
+.rcard{background:#fff;border-radius:12px;box-shadow:0 3px 20px rgba(44,26,14,.10);overflow:hidden}
+.rhdr{background:var(--bark);padding:18px 28px;display:flex;justify-content:space-between;align-items:center}
+.rhdr h3{font-family:'Playfair Display',serif;color:#fff;font-size:18px}
+.rhdr p{color:var(--tan);font-size:13px}
+.rhr{display:flex;gap:10px;align-items:center}
+.cbdg{background:rgba(196,168,130,.2);color:var(--tan);padding:4px 12px;border-radius:20px;font-size:13px;border:1px solid rgba(196,168,130,.3)}
+.srow{display:flex;gap:16px;padding:20px 28px;background:#faf7f2;flex-wrap:wrap}
+.st{flex:1;min-width:100px;text-align:center}
+.st .v{font-family:'Playfair Display',serif;font-size:28px;color:var(--bark)}
+.st .l{font-size:11px;color:#8b6f4e;letter-spacing:1px;text-transform:uppercase}
+hr{border:none;border-top:1px solid #e0d5c5}
+table{width:100%;border-collapse:collapse}
+th{background:#f5efe6;padding:11px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--wood);border-bottom:2px solid #e0d5c5}
+td{padding:12px 16px;border-bottom:1px solid #f0e8dc;font-size:14px}
+tr:last-child td{border-bottom:none}tr:hover td{background:#faf7f2}
+.sc{font-weight:700}.s5{color:var(--green)}.s34{color:var(--gold)}.slo{color:var(--red)}
+.empty{text-align:center;padding:48px;color:#a08060;font-size:15px}
+.empty .ic{font-size:36px;margin-bottom:12px}
+.spin{display:inline-block;width:15px;height:15px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(max-width:500px){.frow{flex-direction:column}.cb{padding:20px}}
+</style>
+</head>
+<body>
+
+<!-- ===== STUDENT HEADER ===== -->
+<header class="hdr" id="s-hdr">
+  <div class="brand"><em>&#129683;</em><div><p>5th Grade ELA</p><h1>Hatchet &mdash; Exit Tickets</h1></div></div>
+  <button class="ghost-btn" id="btn-teacher">Teacher</button>
+</header>
+
+<!-- ===== VIEW: NAME ===== -->
+<div class="view show" id="v-name">
+  <div class="wrap">
+    <div class="card">
+      <div class="ch"><div><h2>Welcome!</h2><p>Enter your info to begin.</p></div><span class="badge">Exit Ticket</span></div>
+      <div class="cb">
+        <div class="frow">
+          <div class="field"><label>First Name</label><input type="text" id="inp-first" placeholder="First name" autocomplete="off"></div>
+          <div class="field"><label>Last Name</label><input type="text" id="inp-last" placeholder="Last name" autocomplete="off"></div>
+        </div>
+        <div class="field" style="max-width:210px"><label>Student Number</label><input type="text" id="inp-num" placeholder="e.g. 12345" autocomplete="off"></div>
+        <button class="btn btn-p" id="btn-start">Continue &rarr;</button>
+        <p id="name-err" style="color:var(--red);font-size:13px;margin-top:10px;display:none">Please fill in all three fields.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== VIEW: WAITING ===== -->
+<div class="view" id="v-wait">
+  <div class="wrap">
+    <div class="card"><div class="cb"><div class="wb">
+      <div class="ic">&#9203;</div>
+      <h3>Hang tight!</h3>
+      <p>Your teacher hasn&rsquo;t activated a ticket yet.<br>This page checks automatically every few seconds.</p>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- ===== VIEW: QUIZ ===== -->
+<div class="view" id="v-quiz">
+  <div class="wrap"><div class="card" id="quiz-card"></div></div>
+</div>
+
+<!-- ===== VIEW: SUCCESS ===== -->
+<div class="view" id="v-done">
+  <div class="wrap">
+    <div class="card"><div class="cb"><div class="suc">
+      <div class="bi">&#10003;&#65039;</div>
+      <h2>Submitted!</h2>
+      <div class="sd" id="done-score"></div>
+      <p id="done-msg"></p>
+      <p style="margin-top:18px;color:#a08060;font-size:14px">You can close this tab.</p>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- ===== VIEW: LOGIN ===== -->
+<div class="view" id="v-login">
+  <div class="lcard">
+    <div class="li">&#128274;</div>
+    <h2>Teacher Dashboard</h2>
+    <p class="sub">Hatchet Exit Tickets</p>
+    <div class="field"><label>Password</label><input type="password" id="inp-pw" placeholder="Enter password"></div>
+    <button class="btn btn-p" style="width:100%" id="btn-login">Sign In</button>
+    <p class="lerr" id="login-err">Incorrect password.</p>
+    <p class="bk" id="btn-back">&larr; Back to student view</p>
+  </div>
+</div>
+
+<!-- ===== VIEW: DASHBOARD ===== -->
+<div class="view" id="v-dash">
+  <div class="dhdr">
+    <div><h1>&#129683; Teacher Dashboard</h1><p>Hatchet Exit Tickets &mdash; Response Tracker</p></div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <button class="btn btn-o btn-sm" id="btn-refresh">&#8635; Refresh</button>
+      <button class="ghost-btn" id="btn-logout">Sign Out</button>
+    </div>
+  </div>
+  <div class="dwrap">
+    <!-- ticket control -->
+    <div class="tsel">
+      <h3>Active Exit Ticket</h3>
+      <p class="sub">Choose which ticket students see when they load the page.</p>
+      <div class="ttabs" id="d-tabs"></div>
+      <div class="sbr">
+        <button class="btn btn-p btn-sm" id="btn-setactive">Set Active Ticket</button>
+        <button class="btn btn-o btn-sm" id="btn-deactivate">Deactivate</button>
+        <span class="albl aoff" id="d-albl">Loading&hellip;</span>
+      </div>
+    </div>
+    <!-- responses -->
+    <div class="rcard">
+      <div class="rhdr">
+        <div><h3>Student Responses</h3><p>All submissions across all tickets</p></div>
+        <div class="rhr"><span class="cbdg" id="d-count">0 responses</span><button class="btn btn-d btn-sm" id="btn-clear">Clear All</button></div>
+      </div>
+      <div class="srow">
+        <div class="st"><div class="v" id="d-total">&mdash;</div><div class="l">Responses</div></div>
+        <div class="st"><div class="v" id="d-avg">&mdash;</div><div class="l">Avg Score</div></div>
+        <div class="st"><div class="v" id="d-perf">&mdash;</div><div class="l">Perfect 5/5</div></div>
+        <div class="st"><div class="v" id="d-low">&mdash;</div><div class="l">Below 3/5</div></div>
+      </div>
+      <hr>
+      <div id="d-table"><div class="empty"><div class="ic">&#128203;</div>No responses yet.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase compat (script tags, no modules) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+// ---- Firebase init ----
+firebase.initializeApp({
+  databaseURL: "https://hatchet-tickets-default-rtdb.firebaseio.com/"
+});
+var db = firebase.database();
+
+// ---- Data ----
+var PASS = "mariana2026";
+var TICKETS = [
+  { id:1, title:"Exit Ticket #1", ch:"Chapters 1\u20134", qs:[
+    { q:"Why is Brian on the small plane at the beginning of the novel?", o:["He is going to summer camp.","He is flying to visit his father in Canada.","He is moving to Canada with his mother.","He is going on a school field trip."], a:1 },
+    { q:'What is "The Secret" that weighs on Brian\'s mind?', o:["He stole money from his mother.","He saw his mother with another man before the divorce.","He failed his final exams.","He broke his father\u2019s favorite tool."], a:1 },
+    { q:"What happens to the pilot during the flight?", o:["He falls asleep at the controls.","He has a heart attack and dies.","He jumps out of the plane.","He radios for help and lands safely."], a:1 },
+    { q:"How does Brian manage to land the plane?", o:["He follows radio instructions from a controller.","He pulls back on the controls and crash-lands into a lake.","He parachutes out before impact.","He finds an empty field and sets the plane down."], a:1 },
+    { q:"What gift did Brian\u2019s mother give him before the trip?", o:["A survival kit.","A pocket knife.","A hatchet.","A compass."], a:2 }
+  ]},
+  { id:2, title:"Exit Ticket #2", ch:"Chapters 5\u20138", qs:[
+    { q:"After the crash, what is Brian\u2019s most urgent physical need?", o:["Building a shelter.","Finding food.","Finding drinkable water.","Making a fire."], a:2 },
+    { q:"What does Brian eat first after the crash, even though it makes him sick?", o:["Fish.","Wild raspberries.","Gut cherries (chokecherries).","Bird eggs."], a:2 },
+    { q:"Where does Brian make his shelter?", o:["In a hollowed-out tree.","In a rock overhang or cave-like ledge.","In a pit he digs in the ground.","In the wreckage of the plane."], a:1 },
+    { q:"A porcupine enters Brian\u2019s shelter and injures him. What does this teach him?", o:["To block the entrance each night.","That self-pity is useless \u2014 he must stay positive and problem-solve.","That porcupines are his biggest threat.","That he should move campsites immediately."], a:1 },
+    { q:"Brian dreams of his friend Terry and his father, both seemingly pointing at something. What idea do these dreams help him figure out?", o:["How to build a raft.","How to make fire.","How to find the emergency kit on the plane.","How to signal rescuers."], a:1 }
+  ]},
+  { id:3, title:"Exit Ticket #3", ch:"Chapters 9\u201312", qs:[
+    { q:"What materials does Brian use to finally create fire?", o:["Two dry sticks rubbed together.","The hatchet struck against a rock to create sparks.","A piece of glass from the plane focused on dry leaves.","Flint stones he finds near the lake."], a:1 },
+    { q:"Why is fire so important to Brian beyond just warmth?", o:["It keeps insects away and purifies his water.","It scares away predators, signals rescuers, and allows him to cook food.","It dries out his wet shelter and clothing.","All of the above."], a:3 },
+    { q:"What startles Brian at the lake while he is getting water?", o:["A bear.","A wolf.","A moose.","A ruffed grouse (foolbird) bursting from cover."], a:3 },
+    { q:"How does Brian successfully catch fish?", o:["He makes a fishing pole from a branch and uses worms as bait.","He weaves a net from plant fibers.","He makes a spear and learns to aim above where he sees the fish due to light refraction.","He traps fish in a pool he builds with rocks."], a:2 },
+    { q:"Which word best describes how Brian\u2019s mindset has changed by the end of Chapter 12?", o:["Hopeless.","Reckless.","Resilient.","Angry."], a:2 }
+  ]},
+  { id:4, title:"Exit Ticket #4", ch:"Chapters 13\u201316", qs:[
+    { q:"A plane flies over Brian\u2019s camp but does not see him. How does this affect him?", o:["He feels relieved he can handle survival on his own.","He falls into a deep depression and loses the will to survive temporarily.","He becomes angry at the pilot.","He immediately builds a larger signal fire."], a:1 },
+    { q:'After the plane misses him, Brian reaches his lowest point. What does he ultimately realize?', o:["That he truly wants to be rescued at any cost.","That he must give up hope.","That he has become tougher \u2014 he calls it his \u201cnew Brian.\u201d","That his family will never find him."], a:2 },
+    { q:"A skunk destroys Brian\u2019s turtle egg cache. What does this teach him?", o:["To store food in higher places.","That he must constantly adapt his food storage strategies.","That skunks are the most dangerous animal in the forest.","To stop collecting eggs and focus only on fish."], a:1 },
+    { q:"What motivates Brian to finally try to retrieve the survival pack from the sunken plane?", o:["He sees a map he needs.","He hopes to find a rescue transmitter (emergency beacon).","He wants dry clothes.","He runs out of food near the lake."], a:1 },
+    { q:"What natural disaster strikes Brian\u2019s camp and causes major damage?", o:["A wildfire.","A tornado.","A violent storm with high winds and waves.","A flash flood."], a:2 }
+  ]},
+  { id:5, title:"Exit Ticket #5", ch:"Chapters 17\u201319", qs:[
+    { q:"What tool does Brian use to break into the submerged plane?", o:["A sharpened stick.","His hatchet.","A rock from the lake bed.","A piece of metal from the plane door."], a:1 },
+    { q:"Which item in the survival pack proves most critical to Brian\u2019s rescue?", o:["A flare gun.","An emergency transmitter (EPIRB).","A satellite phone.","A signal mirror."], a:1 },
+    { q:"How is Brian ultimately rescued?", o:["His parents charter a helicopter that spots his signal fire.","A fur trader whose plane picks up Brian\u2019s transmitter signal lands nearby.","A search party following the plane\u2019s GPS coordinates finds him on foot.","A passing boat sees his smoke signal."], a:1 },
+    { q:"By the end of the novel, how has Brian changed from who he was at the beginning?", o:["He is unchanged \u2014 simply relieved to return to normal life.","He is more resourceful, self-reliant, and mentally tough, and sees the world differently.","He becomes bitter and angry about his ordeal.","He decides he wants to live in the wilderness permanently."], a:1 },
+    { q:'What does Brian think about "The Secret" by the end of the novel?', o:["He decides to confront his mother immediately upon returning.","It no longer controls him \u2014 he plans to tell his father but feels at peace.","He has completely forgotten about it during his time in the wilderness.","He feels more resentment toward his mother than ever."], a:1 }
+  ]}
+];
+
+// ---- State ----
+var stu = {}, sel = {}, curTicket = null, dashTab = 1, pollId = null;
+
+// ---- View switcher ----
+function show(id) {
+  var views = ['v-name','v-wait','v-quiz','v-done','v-login','v-dash'];
+  views.forEach(function(v){ document.getElementById(v).classList.remove('show'); });
+  document.getElementById('s-hdr').style.display = (id==='v-login'||id==='v-dash') ? 'none' : 'flex';
+  document.getElementById(id).classList.add('show');
+}
+
+// ---- Student: name submit ----
+document.getElementById('btn-start').addEventListener('click', function() {
+  var first = document.getElementById('inp-first').value.trim();
+  var last  = document.getElementById('inp-last').value.trim();
+  var num   = document.getElementById('inp-num').value.trim();
+  if (!first || !last || !num) {
+    document.getElementById('name-err').style.display = 'block';
+    return;
+  }
+  document.getElementById('name-err').style.display = 'none';
+  stu = { first:first, last:last, num:num, name:first+' '+last };
+  this.innerHTML = '<span class="spin"></span>Loading&hellip;';
+  this.disabled = true;
+  startPolling();
+});
+
+function startPolling() {
+  checkActive();
+  pollId = setInterval(checkActive, 4000);
+}
+
+function checkActive() {
+  db.ref('activeTicket').get().then(function(snap) {
+    var val = snap.val();
+    if (!val || val === 'none') {
+      show('v-wait');
+      var b = document.getElementById('btn-start');
+      if (b) { b.innerHTML = 'Continue &rarr;'; b.disabled = false; }
+    } else {
+      var ticket = null;
+      for (var i=0; i<TICKETS.length; i++) { if (TICKETS[i].id === parseInt(val)) { ticket = TICKETS[i]; break; } }
+      if (ticket && (!curTicket || curTicket.id !== ticket.id)) {
+        clearInterval(pollId);
+        loadQuiz(ticket);
+      }
+    }
+  });
+}
+
+// ---- Quiz ----
+function loadQuiz(ticket) {
+  curTicket = ticket; sel = {};
+  var html = '<div class="ch"><div><h2>'+ticket.title+'</h2><p>'+ticket.ch+'</p></div><span class="badge">5 Questions</span></div><div class="cb">';
+  for (var qi=0; qi<ticket.qs.length; qi++) {
+    var q = ticket.qs[qi];
+    html += '<div class="ques"><div class="qlbl"><span class="qn">'+(qi+1)+'</span>'+q.q+'</div><div class="opts">';
+    for (var oi=0; oi<q.o.length; oi++) {
+      html += '<button class="opt" data-qi="'+qi+'" data-oi="'+oi+'"><span class="oc">'+String.fromCharCode(65+oi)+'</span>'+q.o[oi]+'</button>';
+    }
+    html += '</div></div>';
+  }
+  html += '<div class="arow"><button class="btn btn-p" id="btn-submit" disabled>Submit</button><span class="hint" id="q-hint">Answer all 5 questions to submit.</span></div></div>';
+  document.getElementById('quiz-card').innerHTML = html;
+
+  // wire option buttons
+  var opts = document.querySelectorAll('.opt');
+  for (var k=0; k<opts.length; k++) {
+    opts[k].addEventListener('click', function() {
+      var qi = parseInt(this.getAttribute('data-qi'));
+      var oi = parseInt(this.getAttribute('data-oi'));
+      var siblings = document.querySelectorAll('.opt[data-qi="'+qi+'"]');
+      for (var s=0; s<siblings.length; s++) siblings[s].classList.remove('sel');
+      this.classList.add('sel');
+      sel[qi] = oi;
+      if (Object.keys(sel).length === curTicket.qs.length) {
+        document.getElementById('btn-submit').disabled = false;
+        document.getElementById('q-hint').style.display = 'none';
+      }
+    });
+  }
+
+  // wire submit
+  document.getElementById('btn-submit').addEventListener('click', function() {
+    this.innerHTML = '<span class="spin"></span>Submitting&hellip;';
+    this.disabled = true;
+    var score = 0;
+    for (var qi=0; qi<curTicket.qs.length; qi++) { if (sel[qi]===curTicket.qs[qi].a) score++; }
+    db.ref('responses').push({
+      name: stu.name, num: stu.num,
+      ticket: curTicket.title, chapters: curTicket.ch, ticketId: curTicket.id,
+      score: score, total: 5,
+      time: new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}),
+      ts: Date.now()
+    }).then(function() {
+      document.getElementById('done-score').textContent = score + ' / 5';
+      var msgs = ["Keep reviewing \u2014 you\u2019ve got this! \uD83D\uDCDA","Good effort! Review your notes. \uD83D\uDC4D","Nice work! \uD83C\uDF1F","Great job! \uD83C\uDF89","Perfect score! Outstanding! \uD83C\uDFC6"];
+      document.getElementById('done-msg').textContent = msgs[score];
+      show('v-done');
+    });
+  });
+
+  show('v-quiz');
+}
+
+// ---- Teacher login ----
+document.getElementById('btn-teacher').addEventListener('click', function() { show('v-login'); });
+document.getElementById('btn-back').addEventListener('click', function() { show('v-name'); });
+document.getElementById('btn-logout').addEventListener('click', function() { show('v-name'); });
+document.getElementById('inp-pw').addEventListener('keydown', function(e) { if (e.key==='Enter') tryLogin(); });
+document.getElementById('btn-login').addEventListener('click', tryLogin);
+
+function tryLogin() {
+  if (document.getElementById('inp-pw').value === PASS) {
+    document.getElementById('login-err').style.display = 'none';
+    document.getElementById('inp-pw').value = '';
+    show('v-dash');
+    loadDash();
+  } else {
+    document.getElementById('login-err').style.display = 'block';
+  }
+}
+
+// ---- Dashboard ----
+document.getElementById('btn-refresh').addEventListener('click', loadDash);
+
+document.getElementById('btn-setactive').addEventListener('click', function() {
+  db.ref('activeTicket').set(String(dashTab)).then(refreshLabel);
+});
+document.getElementById('btn-deactivate').addEventListener('click', function() {
+  db.ref('activeTicket').set('none').then(refreshLabel);
+});
+document.getElementById('btn-clear').addEventListener('click', function() {
+  if (!confirm('Clear ALL student responses? This cannot be undone.')) return;
+  db.ref('responses').remove().then(loadTable);
+});
+
+function loadDash() { renderTabs(); refreshLabel(); loadTable(); }
+
+function renderTabs() {
+  var html = '';
+  for (var i=0; i<TICKETS.length; i++) {
+    var t = TICKETS[i];
+    html += '<button class="ttab'+(dashTab===t.id?' on':'')+'" data-id="'+t.id+'">#'+t.id+' \u2014 '+t.ch+'</button>';
+  }
+  document.getElementById('d-tabs').innerHTML = html;
+  var tabs = document.querySelectorAll('.ttab');
+  for (var k=0; k<tabs.length; k++) {
+    tabs[k].addEventListener('click', function() {
+      dashTab = parseInt(this.getAttribute('data-id'));
+      renderTabs();
+    });
+  }
+}
+
+function refreshLabel() {
+  db.ref('activeTicket').get().then(function(snap) {
+    var val = snap.val();
+    var el = document.getElementById('d-albl');
+    if (!val || val==='none') {
+      el.textContent = 'No ticket active'; el.className = 'albl aoff';
+    } else {
+      var t = null; for(var i=0;i<TICKETS.length;i++){if(TICKETS[i].id===parseInt(val)){t=TICKETS[i];break;}}
+      el.textContent = t ? 'Active: '+t.title+' ('+t.ch+')' : 'No ticket active';
+      el.className = 'albl aon';
+    }
+  });
+}
+
+function loadTable() {
+  db.ref('responses').get().then(function(snap) {
+    var data = snap.val();
+    var rows = [];
+    if (data) { var keys=Object.keys(data); for(var i=0;i<keys.length;i++) rows.push(data[keys[i]]); }
+    rows.sort(function(a,b){return b.ts-a.ts;});
+
+    document.getElementById('d-count').textContent = rows.length+' response'+(rows.length!==1?'s':'');
+    document.getElementById('d-total').textContent = rows.length || '\u2014';
+    if (rows.length) {
+      var sum=0; for(var i=0;i<rows.length;i++) sum+=rows[i].score;
+      document.getElementById('d-avg').textContent = (sum/rows.length).toFixed(1)+'/5';
+      var perf=0,low=0; for(var i=0;i<rows.length;i++){if(rows[i].score===5)perf++;if(rows[i].score<3)low++;}
+      document.getElementById('d-perf').textContent = perf;
+      document.getElementById('d-low').textContent = low;
+    } else {
+      document.getElementById('d-avg').textContent = '\u2014';
+      document.getElementById('d-perf').textContent = '\u2014';
+      document.getElementById('d-low').textContent = '\u2014';
+    }
+
+    if (!rows.length) {
+      document.getElementById('d-table').innerHTML = '<div class="empty"><div class="ic">&#128203;</div>No responses yet. Students will appear here as they submit.</div>';
+      return;
+    }
+    var html = '<table><thead><tr><th>#</th><th>Name</th><th>Student #</th><th>Ticket</th><th>Score</th><th>Submitted</th></tr></thead><tbody>';
+    for (var i=0;i<rows.length;i++) {
+      var r=rows[i], cls=r.score===5?'s5':r.score>=3?'s34':'slo';
+      html += '<tr><td style="color:#a08060">'+(i+1)+'</td><td><strong>'+r.name+'</strong></td><td style="font-family:monospace">'+r.num+'</td><td><span style="font-size:12px;color:#8b6f4e">'+r.chapters+'</span></td><td class="sc '+cls+'">'+r.score+'/'+r.total+' <span style="font-size:12px;font-weight:400">('+Math.round(r.score/r.total*100)+'%)</span></td><td style="color:#a08060;font-size:13px">'+r.time+'</td></tr>';
+    }
+    html += '</tbody></table>';
+    document.getElementById('d-table').innerHTML = html;
+  });
+}
+
+// ---- Init ----
+show('v-name');
+</script>
+</body>
+</html>
