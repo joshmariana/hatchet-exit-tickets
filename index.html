@@ -1,497 +1,845 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Hatchet Exit Tickets</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curse of the Forgotten Pharaoh — Grammar Escape Room</title>
 <style>
-:root{--bark:#2c1a0e;--wood:#5c3a1e;--tan:#c4a882;--cream:#f5efe6;--paper:#faf7f2;--green:#3a6b3a;--gl:#d4edda;--red:#8b2020;--rl:#fce8e8;--gold:#b8860b}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Source Sans 3',sans-serif;background:var(--cream);min-height:100vh;color:var(--bark)}
-
-/* --- views --- */
-.view{display:none!important}
-.view.show{display:block!important}
-#v-login.show{display:flex!important}
-#v-dash.show{display:block!important}
-
-/* --- header --- */
-.hdr{background:var(--bark);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:99;box-shadow:0 2px 12px rgba(0,0,0,.3)}
-.brand{display:flex;align-items:center;gap:12px}
-.brand em{font-size:26px;font-style:normal}
-.brand h1{font-family:'Playfair Display',serif;color:#fff;font-size:20px;line-height:1}
-.brand p{color:var(--tan);font-size:11px;letter-spacing:2px;text-transform:uppercase}
-.ghost-btn{font-size:12px;color:var(--tan);background:rgba(255,255,255,.08);padding:6px 14px;border-radius:5px;border:1px solid rgba(255,255,255,.15);cursor:pointer}
-.ghost-btn:hover{background:rgba(255,255,255,.18);color:#fff}
-
-/* --- layout --- */
-.wrap{max-width:680px;margin:0 auto;padding:36px 20px 60px}
-.dwrap{max-width:960px;margin:0 auto;padding:32px 20px 60px}
-
-/* --- card --- */
-.card{background:#fff;border-radius:12px;box-shadow:0 3px 20px rgba(44,26,14,.10);overflow:hidden;margin-bottom:24px}
-.ch{background:var(--bark);padding:20px 28px;display:flex;justify-content:space-between;align-items:center}
-.ch h2{font-family:'Playfair Display',serif;color:#fff;font-size:22px}
-.ch p{color:var(--tan);font-size:13px;margin-top:2px}
-.badge{background:rgba(196,168,130,.15);border:1px solid rgba(196,168,130,.3);color:var(--tan);font-size:12px;padding:5px 12px;border-radius:20px}
-.cb{padding:28px}
-
-/* --- fields --- */
-.field{margin-bottom:20px}
-.field label{display:block;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--wood);margin-bottom:7px}
-.field input{width:100%;padding:11px 14px;border:2px solid #e0d5c5;border-radius:7px;font-family:'Source Sans 3',sans-serif;font-size:15px;color:var(--bark);background:var(--paper);outline:none;transition:border-color .15s}
-.field input:focus{border-color:var(--wood)}
-.frow{display:flex;gap:14px}
-.frow .field{flex:1}
-
-/* --- waiting --- */
-.wb{text-align:center;padding:40px 28px}
-.wb .ic{font-size:48px;margin-bottom:16px}
-.wb h3{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:8px}
-.wb p{color:#7a6450;font-size:15px}
-
-/* --- quiz --- */
-.ques{margin-bottom:28px}
-.qlbl{font-size:15px;font-weight:700;margin-bottom:13px;line-height:1.5;display:flex;gap:10px;align-items:flex-start}
-.qn{background:var(--bark);color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;flex-shrink:0;margin-top:2px}
-.opts{display:flex;flex-direction:column;gap:9px}
-.opt{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:8px;border:2px solid #e0d5c5;background:var(--paper);text-align:left;cursor:pointer;font-family:'Source Sans 3',sans-serif;font-size:14px;color:var(--bark);transition:all .14s;width:100%}
-.opt:hover{border-color:var(--tan);background:#f0e8dc}
-.opt.sel{border-color:var(--wood);background:#ede0ce}
-.oc{width:26px;height:26px;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
-.arow{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px}
-.hint{font-size:13px;color:#8b6f4e}
-
-/* --- buttons --- */
-.btn{padding:12px 26px;border-radius:8px;border:none;font-family:'Source Sans 3',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s}
-.btn-p{background:var(--bark);color:#fff}.btn-p:hover{background:var(--wood)}.btn-p:disabled{background:#bbb;cursor:not-allowed}
-.btn-o{background:#fff;color:var(--bark);border:2px solid var(--bark)}.btn-o:hover{background:var(--cream)}
-.btn-d{background:var(--red);color:#fff}.btn-d:hover{opacity:.85}
-.btn-sm{padding:7px 14px;font-size:13px}
-
-/* --- success --- */
-.suc{text-align:center;padding:48px 28px}
-.suc .bi{font-size:56px;margin-bottom:16px}
-.suc h2{font-family:'Playfair Display',serif;font-size:26px;margin-bottom:8px}
-.suc p{color:#7a6450;font-size:16px}
-.sd{display:inline-block;margin:20px 0;font-family:'Playfair Display',serif;font-size:48px;color:var(--bark);border-bottom:3px solid var(--tan);padding-bottom:4px}
-
-/* --- login view --- */
-#v-login{background:var(--bark);min-height:100vh;align-items:center;justify-content:center;flex-direction:column}
-.lcard{background:#fff;border-radius:14px;padding:40px;width:100%;max-width:380px;box-shadow:0 8px 40px rgba(0,0,0,.3);text-align:center}
-.lcard .li{font-size:36px;margin-bottom:16px}
-.lcard h2{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:6px}
-.lcard .sub{color:#7a6450;font-size:14px;margin-bottom:24px}
-.lerr{color:var(--red);font-size:13px;margin-top:10px;display:none}
-.bk{margin-top:20px;font-size:13px;color:#a08060;cursor:pointer}
-
-/* --- dash header --- */
-.dhdr{background:var(--bark);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:99;box-shadow:0 2px 12px rgba(0,0,0,.3)}
-.dhdr h1{font-family:'Playfair Display',serif;color:#fff;font-size:20px}
-.dhdr p{color:var(--tan);font-size:12px}
-
-/* --- ticket selector --- */
-.tsel{background:#fff;border-radius:12px;box-shadow:0 3px 20px rgba(44,26,14,.10);padding:24px 28px;margin-bottom:28px}
-.tsel h3{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:4px}
-.tsel .sub{color:#7a6450;font-size:13px;margin-bottom:16px}
-.ttabs{display:flex;gap:8px;flex-wrap:wrap}
-.ttab{padding:8px 16px;border-radius:6px;border:2px solid #e0d5c5;background:#fff;color:var(--bark);font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .14s}
-.ttab.on{background:var(--bark);color:#fff;border-color:var(--bark)}
-.ttab:hover:not(.on){border-color:var(--tan)}
-.sbr{margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.albl{font-size:13px;font-weight:700;padding:5px 12px;border-radius:20px;border:1px solid}
-.albl.aon{background:var(--gl);color:var(--green);border-color:var(--green)}
-.albl.aoff{background:var(--rl);color:var(--red);border-color:var(--red)}
-
-/* --- responses --- */
-.rcard{background:#fff;border-radius:12px;box-shadow:0 3px 20px rgba(44,26,14,.10);overflow:hidden}
-.rhdr{background:var(--bark);padding:18px 28px;display:flex;justify-content:space-between;align-items:center}
-.rhdr h3{font-family:'Playfair Display',serif;color:#fff;font-size:18px}
-.rhdr p{color:var(--tan);font-size:13px}
-.rhr{display:flex;gap:10px;align-items:center}
-.cbdg{background:rgba(196,168,130,.2);color:var(--tan);padding:4px 12px;border-radius:20px;font-size:13px;border:1px solid rgba(196,168,130,.3)}
-.srow{display:flex;gap:16px;padding:20px 28px;background:#faf7f2;flex-wrap:wrap}
-.st{flex:1;min-width:100px;text-align:center}
-.st .v{font-family:'Playfair Display',serif;font-size:28px;color:var(--bark)}
-.st .l{font-size:11px;color:#8b6f4e;letter-spacing:1px;text-transform:uppercase}
-hr{border:none;border-top:1px solid #e0d5c5}
-table{width:100%;border-collapse:collapse}
-th{background:#f5efe6;padding:11px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--wood);border-bottom:2px solid #e0d5c5}
-td{padding:12px 16px;border-bottom:1px solid #f0e8dc;font-size:14px}
-tr:last-child td{border-bottom:none}tr:hover td{background:#faf7f2}
-.sc{font-weight:700}.s5{color:var(--green)}.s34{color:var(--gold)}.slo{color:var(--red)}
-.empty{text-align:center;padding:48px;color:#a08060;font-size:15px}
-.empty .ic{font-size:36px;margin-bottom:12px}
-.spin{display:inline-block;width:15px;height:15px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle;margin-right:6px}
-@keyframes sp{to{transform:rotate(360deg)}}
-@media(max-width:500px){.frow{flex-direction:column}.cb{padding:20px}}
+body{font-family:system-ui,-apple-system,sans-serif;background:#FDF6E3;color:#2C2C2A;min-height:100vh}
+h1{font-size:22px;font-weight:500;color:#2C2C2A;margin-bottom:6px}
+h2{font-size:18px;font-weight:500;color:#2C2C2A;margin-bottom:8px}
+h3{font-size:16px;font-weight:500;color:#2C2C2A;margin-bottom:6px}
+p{font-size:15px;color:#5F5E5A;line-height:1.6;margin-bottom:8px}
+.er{max-width:860px;margin:0 auto;padding:1.5rem 1rem}
+.screen{display:none}
+.screen.active{display:block}
+.card{background:#fff;border:1px solid #D3D1C7;border-radius:12px;padding:1rem 1.25rem;margin-bottom:12px}
+.card-amber{background:#FAEEDA;border:1px solid #FAC775;border-radius:12px;padding:1rem 1.25rem;margin-bottom:12px}
+.badge{display:inline-block;font-size:12px;font-weight:500;padding:3px 10px;border-radius:8px;margin-right:6px;margin-bottom:4px}
+.badge-amber{background:#FAC775;color:#633806}
+.badge-teal{background:#9FE1CB;color:#085041}
+.badge-coral{background:#F5C4B3;color:#4A1B0C}
+.badge-blue{background:#B5D4F4;color:#042C53}
+.badge-purple{background:#CECBF6;color:#26215C}
+.btn{display:inline-block;padding:8px 18px;border-radius:8px;border:1px solid #B4B2A9;background:transparent;font-size:14px;font-weight:500;cursor:pointer;color:#2C2C2A;transition:background 0.15s}
+.btn:hover{background:#F1EFE8}
+.btn-primary{background:#1D9E75;color:#fff;border-color:#1D9E75}
+.btn-primary:hover{background:#0F6E56}
+.btn-amber{background:#EF9F27;color:#fff;border-color:#EF9F27}
+.btn-amber:hover{background:#BA7517}
+input[type=text],input[type=number],select{padding:7px 10px;border:1px solid #B4B2A9;border-radius:8px;font-size:14px;background:#fff;color:#2C2C2A;width:100%}
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+@media(max-width:600px){.grid5{grid-template-columns:repeat(3,1fr)}}
+.char-card{border:2px solid #D3D1C7;border-radius:12px;padding:1rem;cursor:pointer;text-align:center;transition:border-color 0.15s;background:#fff}
+.char-card:hover{border-color:#1D9E75}
+.char-card.selected{border-color:#1D9E75;background:#E1F5EE}
+.char-card.taken{opacity:0.45;cursor:not-allowed}
+.char-emoji{font-size:28px;margin-bottom:6px}
+.char-name{font-size:13px;font-weight:500;color:#2C2C2A}
+.char-role{font-size:11px;color:#5F5E5A;margin-top:2px}
+.player-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #D3D1C7}
+.player-row:last-child{border-bottom:none}
+.player-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.progress-bar{display:flex;gap:6px;margin-bottom:1.5rem}
+.prog-step{flex:1;height:6px;border-radius:3px;background:#D3D1C7}
+.prog-step.done{background:#1D9E75}
+.prog-step.active{background:#EF9F27}
+.room-header{background:#FAEEDA;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;border:1px solid #FAC775}
+.grammar-section{background:#F1EFE8;border-radius:8px;padding:1rem;margin-bottom:10px}
+.clue-reveal{background:#E1F5EE;border:1px solid #5DCAA5;border-radius:8px;padding:0.75rem 1rem;margin-top:8px;font-size:14px;color:#085041;font-weight:500}
+.puzzle-box{background:#FAEEDA;border:2px dashed #EF9F27;border-radius:12px;padding:1.25rem;margin-bottom:12px}
+.msg-success{background:#E1F5EE;border:1px solid #5DCAA5;border-radius:8px;padding:0.75rem 1rem;color:#085041;font-size:14px;font-weight:500;margin-top:8px}
+.msg-error{background:#FCEBEB;border:1px solid #F09595;border-radius:8px;padding:0.75rem 1rem;color:#501313;font-size:14px;margin-top:8px}
+.teacher-panel{background:#E6F1FB;border:1px solid #85B7EB;border-radius:12px;padding:1rem 1.25rem;margin-top:1rem}
+.tab-bar{display:flex;gap:4px;margin-bottom:1rem;border-bottom:1px solid #D3D1C7;padding-bottom:0;flex-wrap:wrap}
+.tab{padding:6px 14px;border-radius:8px 8px 0 0;font-size:13px;cursor:pointer;border:1px solid transparent;color:#5F5E5A;background:transparent}
+.tab.active{background:#fff;border-color:#D3D1C7;border-bottom-color:#fff;color:#2C2C2A;font-weight:500}
+.timer{font-size:24px;font-weight:500;color:#2C2C2A;font-variant-numeric:tabular-nums}
+.timer.warn{color:#E24B4A}
+.q-block{border-left:3px solid #EF9F27;padding-left:12px;margin-bottom:14px}
+.q-text{font-size:14px;color:#2C2C2A;margin-bottom:6px;line-height:1.5}
+.opts{display:flex;flex-direction:column;gap:4px}
+.opt{padding:6px 10px;border:1px solid #D3D1C7;border-radius:8px;font-size:13px;cursor:pointer;background:#fff;color:#2C2C2A;text-align:left;transition:background 0.1s}
+.opt:hover{background:#F1EFE8}
+.opt.correct{background:#E1F5EE;border-color:#5DCAA5;color:#085041}
+.opt.wrong-ans{background:#FCEBEB;border-color:#F09595;color:#501313}
+.opt.disabled{cursor:default;pointer-events:none}
+.cipher-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin:8px 0}
+.cipher-cell{border:1px solid #D3D1C7;border-radius:4px;padding:4px 2px;text-align:center;font-size:11px;background:#F1EFE8}
+.cipher-cell .letter{font-weight:500;font-size:14px;color:#2C2C2A}
+.cipher-cell .num{color:#888780;font-size:10px}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.shake{animation:shake 0.3s}
 </style>
 </head>
 <body>
+<div class="er">
 
-<!-- ===== STUDENT HEADER ===== -->
-<header class="hdr" id="s-hdr">
-  <div class="brand"><em>&#129683;</em><div><p>5th Grade ELA</p><h1>Hatchet &mdash; Exit Tickets</h1></div></div>
-  <button class="ghost-btn" id="btn-teacher">Teacher</button>
-</header>
-
-<!-- ===== VIEW: NAME ===== -->
-<div class="view show" id="v-name">
-  <div class="wrap">
-    <div class="card">
-      <div class="ch"><div><h2>Welcome!</h2><p>Enter your info to begin.</p></div><span class="badge">Exit Ticket</span></div>
-      <div class="cb">
-        <div class="frow">
-          <div class="field"><label>First Name</label><input type="text" id="inp-first" placeholder="First name" autocomplete="off"></div>
-          <div class="field"><label>Last Name</label><input type="text" id="inp-last" placeholder="Last name" autocomplete="off"></div>
-        </div>
-        <div class="field" style="max-width:210px"><label>Student Number</label><input type="text" id="inp-num" placeholder="e.g. 12345" autocomplete="off"></div>
-        <button class="btn btn-p" id="btn-start">Continue &rarr;</button>
-        <p id="name-err" style="color:var(--red);font-size:13px;margin-top:10px;display:none">Please fill in all three fields.</p>
-      </div>
+<!-- TITLE SCREEN -->
+<div id="screen-title" class="screen active">
+  <div style="text-align:center;padding:2rem 0 1rem">
+    <div style="font-size:56px;margin-bottom:0.5rem">🏺</div>
+    <h1 style="font-size:26px;margin-bottom:4px">Curse of the Forgotten Pharaoh</h1>
+    <p style="font-size:15px;margin-bottom:1.5rem">A Grammar Escape Room — 5 Investigators Required</p>
+    <div class="card" style="max-width:480px;margin:0 auto 1.5rem;text-align:left">
+      <h3>The Mission</h3>
+      <p style="font-size:13px">The tomb of Pharaoh Neferkara has been sealed for 3,000 years. A team of investigators has broken through the outer wall — but four cursed chambers stand between you and the burial chamber. Each chamber holds a piece of the Pharaoh's true name. Only by speaking it correctly can the curse be lifted. Each investigator holds secrets the others don't. You must work together.</p>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="showScreen('screen-setup')">Begin Investigation</button>
+      <button class="btn btn-amber" onclick="teacherLogin()">Teacher Mode</button>
     </div>
   </div>
 </div>
 
-<!-- ===== VIEW: WAITING ===== -->
-<div class="view" id="v-wait">
-  <div class="wrap">
-    <div class="card"><div class="cb"><div class="wb">
-      <div class="ic">&#9203;</div>
-      <h3>Hang tight!</h3>
-      <p>Your teacher hasn&rsquo;t activated a ticket yet.<br>This page checks automatically every few seconds.</p>
-    </div></div></div>
+<!-- SETUP SCREEN -->
+<div id="screen-setup" class="screen">
+  <div style="margin-bottom:1rem">
+    <h2>Choose Your Investigators</h2>
+    <p>Each player picks one character. Your role determines which clues only you can unlock.</p>
   </div>
-</div>
-
-<!-- ===== VIEW: QUIZ ===== -->
-<div class="view" id="v-quiz">
-  <div class="wrap"><div class="card" id="quiz-card"></div></div>
-</div>
-
-<!-- ===== VIEW: SUCCESS ===== -->
-<div class="view" id="v-done">
-  <div class="wrap">
-    <div class="card"><div class="cb"><div class="suc">
-      <div class="bi">&#10003;&#65039;</div>
-      <h2>Submitted!</h2>
-      <div class="sd" id="done-score"></div>
-      <p id="done-msg"></p>
-      <p style="margin-top:18px;color:#a08060;font-size:14px">You can close this tab.</p>
-    </div></div></div>
+  <div class="grid5" id="char-grid">
+    <div class="char-card" id="cc-0" onclick="selectChar(0)"><div class="char-emoji">🔭</div><div class="char-name">The Archaeologist</div><div class="char-role">Sees what's buried</div></div>
+    <div class="char-card" id="cc-1" onclick="selectChar(1)"><div class="char-emoji">📜</div><div class="char-name">The Scribe</div><div class="char-role">Reads the scrolls</div></div>
+    <div class="char-card" id="cc-2" onclick="selectChar(2)"><div class="char-emoji">🗺️</div><div class="char-name">The Cartographer</div><div class="char-role">Maps the chambers</div></div>
+    <div class="char-card" id="cc-3" onclick="selectChar(3)"><div class="char-emoji">⚗️</div><div class="char-name">The Alchemist</div><div class="char-role">Decodes inscriptions</div></div>
+    <div class="char-card" id="cc-4" onclick="selectChar(4)"><div class="char-emoji">🛡️</div><div class="char-name">The Guardian</div><div class="char-role">Protects the team</div></div>
   </div>
-</div>
-
-<!-- ===== VIEW: LOGIN ===== -->
-<div class="view" id="v-login">
-  <div class="lcard">
-    <div class="li">&#128274;</div>
-    <h2>Teacher Dashboard</h2>
-    <p class="sub">Hatchet Exit Tickets</p>
-    <div class="field"><label>Password</label><input type="password" id="inp-pw" placeholder="Enter password"></div>
-    <button class="btn btn-p" style="width:100%" id="btn-login">Sign In</button>
-    <p class="lerr" id="login-err">Incorrect password.</p>
-    <p class="bk" id="btn-back">&larr; Back to student view</p>
-  </div>
-</div>
-
-<!-- ===== VIEW: DASHBOARD ===== -->
-<div class="view" id="v-dash">
-  <div class="dhdr">
-    <div><h1>&#129683; Teacher Dashboard</h1><p>Hatchet Exit Tickets &mdash; Response Tracker</p></div>
-    <div style="display:flex;gap:10px;align-items:center">
-      <button class="btn btn-o btn-sm" id="btn-refresh">&#8635; Refresh</button>
-      <button class="ghost-btn" id="btn-logout">Sign Out</button>
+  <div style="margin-top:1rem">
+    <div id="setup-players"></div>
+    <div style="margin-top:1rem;display:flex;gap:8px;flex-wrap:wrap">
+      <input type="text" id="player-name-input" placeholder="Enter your name, then pick a character above" style="max-width:280px">
+      <button class="btn btn-primary" onclick="addPlayer()" id="add-player-btn">Add Investigator</button>
     </div>
   </div>
-  <div class="dwrap">
-    <!-- ticket control -->
-    <div class="tsel">
-      <h3>Active Exit Ticket</h3>
-      <p class="sub">Choose which ticket students see when they load the page.</p>
-      <div class="ttabs" id="d-tabs"></div>
-      <div class="sbr">
-        <button class="btn btn-p btn-sm" id="btn-setactive">Set Active Ticket</button>
-        <button class="btn btn-o btn-sm" id="btn-deactivate">Deactivate</button>
-        <span class="albl aoff" id="d-albl">Loading&hellip;</span>
+  <div style="margin-top:1.5rem;display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn btn-primary" id="start-game-btn" onclick="startGame()" style="display:none">Enter the Tomb →</button>
+    <button class="btn" onclick="showScreen('screen-title')">← Back</button>
+  </div>
+</div>
+
+<!-- ROOM 1 -->
+<div id="screen-room1" class="screen">
+  <div class="progress-bar"><div class="prog-step done"></div><div class="prog-step active"></div><div class="prog-step"></div><div class="prog-step"></div><div class="prog-step"></div></div>
+  <div class="room-header">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <span style="font-size:28px">🚪</span>
+      <div>
+        <h2 style="color:#412402;margin-bottom:2px">Chamber I: The Hall of Parts</h2>
+        <p style="color:#633806;font-size:13px;margin:0">Parts of speech • Adjectives &amp; Adverbs • Figurative language</p>
+      </div>
+      <div style="margin-left:auto;text-align:right">
+        <div class="timer" id="timer1">25:00</div>
+        <div style="font-size:11px;color:#633806">remaining</div>
       </div>
     </div>
-    <!-- responses -->
-    <div class="rcard">
-      <div class="rhdr">
-        <div><h3>Student Responses</h3><p>All submissions across all tickets</p></div>
-        <div class="rhr"><span class="cbdg" id="d-count">0 responses</span><button class="btn btn-d btn-sm" id="btn-clear">Clear All</button></div>
+  </div>
+  <div class="card-amber">
+    <p style="font-size:13px;color:#633806"><strong>The wall inscription reads:</strong> "Each seeker must find their glyph alone. Then together, you must decipher the order they go in."</p>
+  </div>
+  <div class="tab-bar" id="tabs1"></div>
+  <div id="player-panels1"></div>
+  <div id="room1-puzzle" style="display:none">
+    <div class="puzzle-box">
+      <h3>🧩 The Cipher Puzzle — All Five Together</h3>
+      <p style="font-size:13px;margin-bottom:10px">Each of you has unlocked a <strong>hieroglyph number</strong>. Share your numbers aloud. Use the Rosetta Cipher below to find the letter for each number. Then arrange the 5 letters in order from <em>lowest to highest</em> number to spell the first word of the Pharaoh's name.</p>
+      <div class="cipher-grid" id="cipher1"></div>
+      <p style="font-size:12px;color:#5F5E5A;margin-top:6px;margin-bottom:10px">Each investigator's glyph number (revealed after completing questions) converts to one letter using this cipher.</p>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
+        <span style="font-size:13px;color:#5F5E5A">Enter the 5-letter word:</span>
+        <input type="text" id="puzzle1-answer" placeholder="5 letters..." style="max-width:140px;text-transform:uppercase" maxlength="5">
+        <button class="btn btn-primary" onclick="checkPuzzle(1)">Submit</button>
       </div>
-      <div class="srow">
-        <div class="st"><div class="v" id="d-total">&mdash;</div><div class="l">Responses</div></div>
-        <div class="st"><div class="v" id="d-avg">&mdash;</div><div class="l">Avg Score</div></div>
-        <div class="st"><div class="v" id="d-perf">&mdash;</div><div class="l">Perfect 5/5</div></div>
-        <div class="st"><div class="v" id="d-low">&mdash;</div><div class="l">Below 3/5</div></div>
-      </div>
-      <hr>
-      <div id="d-table"><div class="empty"><div class="ic">&#128203;</div>No responses yet.</div></div>
+      <div id="puzzle1-msg"></div>
     </div>
   </div>
 </div>
 
-<!-- Firebase compat (script tags, no modules) -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<!-- ROOM 2 -->
+<div id="screen-room2" class="screen">
+  <div class="progress-bar"><div class="prog-step done"></div><div class="prog-step done"></div><div class="prog-step active"></div><div class="prog-step"></div><div class="prog-step"></div></div>
+  <div class="room-header">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <span style="font-size:28px">💀</span>
+      <div>
+        <h2 style="color:#412402;margin-bottom:2px">Chamber II: The Anubis Trial</h2>
+        <p style="color:#633806;font-size:13px;margin:0">Capitalization • Punctuation • Subject-verb agreement</p>
+      </div>
+      <div style="margin-left:auto;text-align:right">
+        <div class="timer" id="timer2">25:00</div>
+        <div style="font-size:11px;color:#633806">remaining</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-amber">
+    <p style="font-size:13px;color:#633806"><strong>The jackal-headed guardian speaks:</strong> "Only those who command language may pass. Earn your coordinates, then plot the course together."</p>
+  </div>
+  <div class="tab-bar" id="tabs2"></div>
+  <div id="player-panels2"></div>
+  <div id="room2-puzzle" style="display:none">
+    <div class="puzzle-box">
+      <h3>🧩 The Map Grid Puzzle — All Five Together</h3>
+      <p style="font-size:13px;margin-bottom:10px">Each of you has unlocked a <strong>grid coordinate</strong> (a letter A–E and a number 1–5). Share them all. Using the grid below, mark each of your 5 points, then connect them in investigator order (1→2→3→4→5). What letter shape does the path trace?</p>
+      <div id="map-grid" style="display:inline-block;margin-bottom:12px;overflow-x:auto"></div>
+      <p style="font-size:12px;color:#5F5E5A;margin-bottom:10px">Coordinates by investigator: <span id="coords-display" style="font-weight:500;color:#2C2C2A"></span></p>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
+        <span style="font-size:13px;color:#5F5E5A">What letter does the path form?</span>
+        <input type="text" id="puzzle2-answer" placeholder="One letter..." style="max-width:100px;text-transform:uppercase" maxlength="1">
+        <button class="btn btn-primary" onclick="checkPuzzle(2)">Submit</button>
+      </div>
+      <div id="puzzle2-msg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ROOM 3 -->
+<div id="screen-room3" class="screen">
+  <div class="progress-bar"><div class="prog-step done"></div><div class="prog-step done"></div><div class="prog-step done"></div><div class="prog-step active"></div><div class="prog-step"></div></div>
+  <div class="room-header">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <span style="font-size:28px">🐍</span>
+      <div>
+        <h2 style="color:#412402;margin-bottom:2px">Chamber III: The Serpent's Riddle</h2>
+        <p style="color:#633806;font-size:13px;margin:0">Prepositions • Figurative language • Parts of speech deep dive</p>
+      </div>
+      <div style="margin-left:auto;text-align:right">
+        <div class="timer" id="timer3">25:00</div>
+        <div style="font-size:11px;color:#633806">remaining</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-amber">
+    <p style="font-size:13px;color:#633806"><strong>A serpent carved in stone hisses:</strong> "I speak in riddles and figures. Your logic clue will reveal one of five suspects — together eliminate the rest."</p>
+  </div>
+  <div class="tab-bar" id="tabs3"></div>
+  <div id="player-panels3"></div>
+  <div id="room3-puzzle" style="display:none">
+    <div class="puzzle-box">
+      <h3>🧩 The Logic Grid — All Five Together</h3>
+      <p style="font-size:13px;margin-bottom:10px">A thief stole one of five sacred canopic jars. Each of you has unlocked one clue about the thief. Share your clues, use the grid to eliminate suspects, and identify the thief.</p>
+      <div id="logic-grid-container" style="overflow-x:auto;margin-bottom:12px"></div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
+        <span style="font-size:13px;color:#5F5E5A">The thief is:</span>
+        <select id="puzzle3-answer" style="max-width:200px">
+          <option value="">-- choose --</option>
+          <option>Horus</option>
+          <option>Isis</option>
+          <option>Thoth</option>
+          <option>Bastet</option>
+          <option>Ra</option>
+        </select>
+        <button class="btn btn-primary" onclick="checkPuzzle(3)">Submit</button>
+      </div>
+      <div id="puzzle3-msg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ROOM 4 -->
+<div id="screen-room4" class="screen">
+  <div class="progress-bar"><div class="prog-step done"></div><div class="prog-step done"></div><div class="prog-step done"></div><div class="prog-step done"></div><div class="prog-step active"></div></div>
+  <div class="room-header">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <span style="font-size:28px">👑</span>
+      <div>
+        <h2 style="color:#412402;margin-bottom:2px">Chamber IV: The Burial Chamber</h2>
+        <p style="color:#633806;font-size:13px;margin:0">Mixed review — all skills — final challenge</p>
+      </div>
+      <div style="margin-left:auto;text-align:right">
+        <div class="timer" id="timer4">30:00</div>
+        <div style="font-size:11px;color:#633806">remaining</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-amber">
+    <p style="font-size:13px;color:#633806"><strong>The Pharaoh's sarcophagus glows:</strong> "You have gathered the fragments of my name. But only those who pass the final trial may speak it. Each of you holds one last piece of ancient wisdom."</p>
+  </div>
+  <div class="tab-bar" id="tabs4"></div>
+  <div id="player-panels4"></div>
+  <div id="room4-puzzle" style="display:none">
+    <div class="puzzle-box">
+      <h3>🧩 The Final Invocation — All Five Together</h3>
+      <p style="font-size:13px;margin-bottom:10px">You each hold one <strong>Roman numeral</strong>. Convert your numerals to regular numbers. Add them all together. The sum is the unlock code for the sarcophagus.</p>
+      <div style="background:#fff;border:1px solid #D3D1C7;border-radius:8px;padding:1rem;margin-bottom:12px;font-size:13px">
+        <div id="roman-display">Share your Roman numerals, convert them, and add them together.</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
+        <span style="font-size:13px;color:#5F5E5A">Enter the sum:</span>
+        <input type="number" id="puzzle4-answer" placeholder="Sum..." style="max-width:120px">
+        <button class="btn btn-primary" onclick="checkPuzzle(4)">Submit</button>
+      </div>
+      <div id="puzzle4-msg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- VICTORY SCREEN -->
+<div id="screen-victory" class="screen">
+  <div style="text-align:center;padding:2rem 0">
+    <div style="font-size:56px;margin-bottom:1rem">🏆</div>
+    <h1 style="font-size:26px;margin-bottom:8px">The Curse is Lifted!</h1>
+    <p style="font-size:15px;max-width:500px;margin:0 auto 1.5rem">Pharaoh Neferkara's true name has been spoken. The tomb is at peace. Your team of investigators has defeated one of history's greatest linguistic puzzles.</p>
+    <div class="card" style="max-width:480px;margin:0 auto 1.5rem;text-align:left">
+      <h3>Investigators Who Saved the Day</h3>
+      <div id="victory-players"></div>
+    </div>
+    <div style="font-size:14px;color:#5F5E5A;margin-bottom:1.5rem">Total time: <strong id="total-time"></strong></div>
+    <button class="btn btn-primary" onclick="resetGame()">Play Again</button>
+  </div>
+</div>
+
+<!-- TEACHER SCREEN -->
+<div id="screen-teacher" class="screen">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;flex-wrap:wrap">
+    <button class="btn" onclick="showScreen('screen-title')">← Back</button>
+    <h2 style="margin:0">Teacher Answer Key &amp; Guide</h2>
+  </div>
+  <div class="tab-bar" id="teacher-tab-bar">
+    <div class="tab active" onclick="teachTab(0,this)">Room 1</div>
+    <div class="tab" onclick="teachTab(1,this)">Room 2</div>
+    <div class="tab" onclick="teachTab(2,this)">Room 3</div>
+    <div class="tab" onclick="teachTab(3,this)">Room 4</div>
+    <div class="tab" onclick="teachTab(4,this)">Overview</div>
+  </div>
+  <div id="teacher-content"></div>
+</div>
+
+</div><!-- end .er -->
 
 <script>
-// ---- Firebase init ----
-firebase.initializeApp({
-  databaseURL: "https://hatchet-tickets-default-rtdb.firebaseio.com/"
-});
-var db = firebase.database();
-
-// ---- Data ----
-var PASS = "mariana2026";
-var TICKETS = [
-  { id:1, title:"Exit Ticket #1", ch:"Chapters 1\u20134", qs:[
-    { q:"Why is Brian on the small plane at the beginning of the novel?", o:["He is going to summer camp.","He is flying to visit his father in Canada.","He is moving to Canada with his mother.","He is going on a school field trip."], a:1 },
-    { q:'What is "The Secret" that weighs on Brian\'s mind?', o:["He stole money from his mother.","He saw his mother with another man before the divorce.","He failed his final exams.","He broke his father\u2019s favorite tool."], a:1 },
-    { q:"What happens to the pilot during the flight?", o:["He falls asleep at the controls.","He has a heart attack and dies.","He jumps out of the plane.","He radios for help and lands safely."], a:1 },
-    { q:"How does Brian manage to land the plane?", o:["He follows radio instructions from a controller.","He pulls back on the controls and crash-lands into a lake.","He parachutes out before impact.","He finds an empty field and sets the plane down."], a:1 },
-    { q:"What gift did Brian\u2019s mother give him before the trip?", o:["A survival kit.","A pocket knife.","A hatchet.","A compass."], a:2 }
-  ]},
-  { id:2, title:"Exit Ticket #2", ch:"Chapters 5\u20138", qs:[
-    { q:"After the crash, what is Brian\u2019s most urgent physical need?", o:["Building a shelter.","Finding food.","Finding drinkable water.","Making a fire."], a:2 },
-    { q:"What does Brian eat first after the crash, even though it makes him sick?", o:["Fish.","Wild raspberries.","Gut cherries (chokecherries).","Bird eggs."], a:2 },
-    { q:"Where does Brian make his shelter?", o:["In a hollowed-out tree.","In a rock overhang or cave-like ledge.","In a pit he digs in the ground.","In the wreckage of the plane."], a:1 },
-    { q:"A porcupine enters Brian\u2019s shelter and injures him. What does this teach him?", o:["To block the entrance each night.","That self-pity is useless \u2014 he must stay positive and problem-solve.","That porcupines are his biggest threat.","That he should move campsites immediately."], a:1 },
-    { q:"Brian dreams of his friend Terry and his father, both seemingly pointing at something. What idea do these dreams help him figure out?", o:["How to build a raft.","How to make fire.","How to find the emergency kit on the plane.","How to signal rescuers."], a:1 }
-  ]},
-  { id:3, title:"Exit Ticket #3", ch:"Chapters 9\u201312", qs:[
-    { q:"What materials does Brian use to finally create fire?", o:["Two dry sticks rubbed together.","The hatchet struck against a rock to create sparks.","A piece of glass from the plane focused on dry leaves.","Flint stones he finds near the lake."], a:1 },
-    { q:"Why is fire so important to Brian beyond just warmth?", o:["It keeps insects away and purifies his water.","It scares away predators, signals rescuers, and allows him to cook food.","It dries out his wet shelter and clothing.","All of the above."], a:3 },
-    { q:"What startles Brian at the lake while he is getting water?", o:["A bear.","A wolf.","A moose.","A ruffed grouse (foolbird) bursting from cover."], a:3 },
-    { q:"How does Brian successfully catch fish?", o:["He makes a fishing pole from a branch and uses worms as bait.","He weaves a net from plant fibers.","He makes a spear and learns to aim above where he sees the fish due to light refraction.","He traps fish in a pool he builds with rocks."], a:2 },
-    { q:"Which word best describes how Brian\u2019s mindset has changed by the end of Chapter 12?", o:["Hopeless.","Reckless.","Resilient.","Angry."], a:2 }
-  ]},
-  { id:4, title:"Exit Ticket #4", ch:"Chapters 13\u201316", qs:[
-    { q:"A plane flies over Brian\u2019s camp but does not see him. How does this affect him?", o:["He feels relieved he can handle survival on his own.","He falls into a deep depression and loses the will to survive temporarily.","He becomes angry at the pilot.","He immediately builds a larger signal fire."], a:1 },
-    { q:'After the plane misses him, Brian reaches his lowest point. What does he ultimately realize?', o:["That he truly wants to be rescued at any cost.","That he must give up hope.","That he has become tougher \u2014 he calls it his \u201cnew Brian.\u201d","That his family will never find him."], a:2 },
-    { q:"A skunk destroys Brian\u2019s turtle egg cache. What does this teach him?", o:["To store food in higher places.","That he must constantly adapt his food storage strategies.","That skunks are the most dangerous animal in the forest.","To stop collecting eggs and focus only on fish."], a:1 },
-    { q:"What motivates Brian to finally try to retrieve the survival pack from the sunken plane?", o:["He sees a map he needs.","He hopes to find a rescue transmitter (emergency beacon).","He wants dry clothes.","He runs out of food near the lake."], a:1 },
-    { q:"What natural disaster strikes Brian\u2019s camp and causes major damage?", o:["A wildfire.","A tornado.","A violent storm with high winds and waves.","A flash flood."], a:2 }
-  ]},
-  { id:5, title:"Exit Ticket #5", ch:"Chapters 17\u201319", qs:[
-    { q:"What tool does Brian use to break into the submerged plane?", o:["A sharpened stick.","His hatchet.","A rock from the lake bed.","A piece of metal from the plane door."], a:1 },
-    { q:"Which item in the survival pack proves most critical to Brian\u2019s rescue?", o:["A flare gun.","An emergency transmitter (EPIRB).","A satellite phone.","A signal mirror."], a:1 },
-    { q:"How is Brian ultimately rescued?", o:["His parents charter a helicopter that spots his signal fire.","A fur trader whose plane picks up Brian\u2019s transmitter signal lands nearby.","A search party following the plane\u2019s GPS coordinates finds him on foot.","A passing boat sees his smoke signal."], a:1 },
-    { q:"By the end of the novel, how has Brian changed from who he was at the beginning?", o:["He is unchanged \u2014 simply relieved to return to normal life.","He is more resourceful, self-reliant, and mentally tough, and sees the world differently.","He becomes bitter and angry about his ordeal.","He decides he wants to live in the wilderness permanently."], a:1 },
-    { q:'What does Brian think about "The Secret" by the end of the novel?', o:["He decides to confront his mother immediately upon returning.","It no longer controls him \u2014 he plans to tell his father but feels at peace.","He has completely forgotten about it during his time in the wilderness.","He feels more resentment toward his mother than ever."], a:1 }
-  ]}
+const CHARS=[
+  {name:"The Archaeologist",emoji:"🔭",color:"amber",bg:"#FAC775",text:"#412402"},
+  {name:"The Scribe",emoji:"📜",color:"teal",bg:"#9FE1CB",text:"#085041"},
+  {name:"The Cartographer",emoji:"🗺️",color:"blue",bg:"#B5D4F4",text:"#042C53"},
+  {name:"The Alchemist",emoji:"⚗️",color:"purple",bg:"#CECBF6",text:"#26215C"},
+  {name:"The Guardian",emoji:"🛡️",color:"coral",bg:"#F5C4B3",text:"#4A1B0C"}
 ];
 
-// ---- State ----
-var stu = {}, sel = {}, curTicket = null, dashTab = 1, pollId = null;
+let players=[];
+let selectedChar=null;
+let gameState={room:1,roomsComplete:[false,false,false,false]};
+let timers={};
+let startTime=null;
+let currentTabs={1:0,2:0,3:0,4:0};
+let playerRoomDone={};
+window.answers=window.answers||{};
+window.qScores=window.qScores||{};
 
-// ---- View switcher ----
-function show(id) {
-  var views = ['v-name','v-wait','v-quiz','v-done','v-login','v-dash'];
-  views.forEach(function(v){ document.getElementById(v).classList.remove('show'); });
-  document.getElementById('s-hdr').style.display = (id==='v-login'||id==='v-dash') ? 'none' : 'flex';
-  document.getElementById(id).classList.add('show');
+const R1_QUESTIONS=[
+  {role:"Archaeologist",qs:[
+    {q:"Which word in this sentence is an <strong>adverb</strong>?<br><em>'The mummy walked slowly through the dark corridor.'</em>",opts:["dark","walked","slowly","corridor"],ans:2,skill:"Adverb"},
+    {q:"Which sentence uses a <strong>simile</strong>?",opts:["The sand burned my feet.","The tomb was as dark as midnight.","A spider crawled up the wall.","Dust covered every surface."],ans:1,skill:"Figurative language"},
+    {q:"Identify the <strong>adjective</strong> in this sentence:<br><em>'Three ancient statues guarded the golden door.'</em>",opts:["guarded","golden","statues","Three"],ans:3,skill:"Adjective"}
+  ],glyphNum:5,glyphLetter:"A"},
+  {role:"Scribe",qs:[
+    {q:"Which word is a <strong>preposition</strong>?<br><em>'The scarab crawled beneath the cracked stone.'</em>",opts:["crawled","cracked","beneath","scarab"],ans:2,skill:"Preposition"},
+    {q:"Which is an example of <strong>personification</strong>?",opts:["The desert was as hot as fire.","The pyramids rose like giants.","The wind whispered secrets to the sand.","Sand covered the mummy's face."],ans:2,skill:"Figurative language"},
+    {q:"Which word in this sentence is an <strong>adverb</strong>?<br><em>'She carefully brushed dust off the hieroglyphs.'</em>",opts:["carefully","brushed","hieroglyphs","dust"],ans:0,skill:"Adverb"}
+  ],glyphNum:7,glyphLetter:"N"},
+  {role:"Cartographer",qs:[
+    {q:"What part of speech is the word <strong>'golden'</strong> in this sentence?<br><em>'The golden sarcophagus gleamed in the torchlight.'</em>",opts:["Noun","Verb","Adjective","Adverb"],ans:2,skill:"Parts of speech"},
+    {q:"Which sentence uses <strong>hyperbole</strong>?",opts:["The tomb smelled like roses.","I've told you a million times not to touch the artifacts!","The torch flickered like a candle.","Darkness wrapped around us."],ans:1,skill:"Figurative language"},
+    {q:"Which word is the <strong>noun</strong> in this sentence?<br><em>'The exhausted explorer nervously opened the heavy door.'</em>",opts:["exhausted","explorer","nervously","heavy"],ans:1,skill:"Parts of speech"}
+  ],glyphNum:11,glyphLetter:"K"},
+  {role:"Alchemist",qs:[
+    {q:"Which underlined word(s) is/are the <strong>adjective(s)</strong>?<br><em>'The <u>clever</u> archaeologist <u>found</u> a <u>hidden</u> passage <u>quickly</u>.'</em>",opts:["clever (only)","found","hidden (only)","Both 'clever' and 'hidden'"],ans:3,skill:"Adjective"},
+    {q:"Which literary device is used here?<br><em>'The pyramid is a sleeping giant, waiting for the ages to pass.'</em>",opts:["Simile","Hyperbole","Metaphor","Alliteration"],ans:2,skill:"Figurative language"},
+    {q:"What part of speech is <strong>'swiftly'</strong> in this sentence?<br><em>'The snake swiftly slithered away.'</em>",opts:["Adjective","Adverb","Verb","Noun"],ans:1,skill:"Parts of speech"}
+  ],glyphNum:15,glyphLetter:"H"},
+  {role:"Guardian",qs:[
+    {q:"Choose the sentence that correctly uses an <strong>adverb to modify an adjective</strong>:",opts:["The dog ran quick.","She was extremely careful with the jar.","He careful opened the lid.","The torch burned bright quick."],ans:1,skill:"Adverb"},
+    {q:"Which sentence contains <strong>alliteration</strong>?",opts:["The pharaoh's tomb was sealed forever.","Slithering serpents surrounded the sacred shrine.","The mummy rose at midnight.","Gold glinted in the torchlight."],ans:1,skill:"Figurative language"},
+    {q:"What part of speech is <strong>'through'</strong> in this sentence?<br><em>'We crawled through the narrow tunnel.'</em>",opts:["Verb","Adjective","Preposition","Adverb"],ans:2,skill:"Parts of speech"}
+  ],glyphNum:18,glyphLetter:"E"}
+];
+
+const R2_QUESTIONS=[
+  {role:"Archaeologist",qs:[
+    {q:"Choose the sentence with <strong>correct capitalization</strong>:",opts:["My favorite subject is History.","The nile river flows through egypt.","Cleopatra ruled Ancient Egypt for many years.","we visited the cairo museum on tuesday."],ans:2,skill:"Capitalization"},
+    {q:"Which sentence uses a <strong>comma correctly</strong>?",opts:["The tomb was dark cold and dusty.","The tomb was dark, cold, and dusty.","The tomb, was dark cold, and dusty.","The tomb was dark cold, and dusty."],ans:1,skill:"Punctuation"},
+    {q:"Choose the correct verb to match the subject:<br><em>'The collection of artifacts _____ on display.'</em>",opts:["are","were","is","have been"],ans:2,skill:"Subject-verb agreement"}
+  ],coord:"A1"},
+  {role:"Scribe",qs:[
+    {q:"Which sentence needs a <strong>question mark</strong>?",opts:["What a beautiful sarcophagus that is","Could you hand me the brush please","The hieroglyphs were hard to read","Watch out for the falling rocks"],ans:1,skill:"Punctuation"},
+    {q:"Choose the sentence with <strong>correct capitalization</strong>:",opts:["We read a book called secrets of the nile.","We read a book called Secrets of the Nile.","we Read a Book called Secrets of the Nile.","We read a Book called Secrets Of The Nile."],ans:1,skill:"Capitalization"},
+    {q:"Choose the correct form:<br><em>'Neither the torch nor the candles _____ enough light.'</em>",opts:["provides","provide","is providing","has provided"],ans:1,skill:"Subject-verb agreement"}
+  ],coord:"A5"},
+  {role:"Cartographer",qs:[
+    {q:"Which sentence has an <strong>apostrophe error</strong>?",opts:["The pharaoh's throne was solid gold.","The explorers' tools were left behind.","The mummy's bandages were unwrapped.","The tomb's were discovered by accident."],ans:3,skill:"Punctuation"},
+    {q:"Fix the capitalization error:<br><em>'dr. howard carter discovered king tutankhamun's tomb.'</em>",opts:["Dr. Howard Carter Discovered King Tutankhamun's Tomb.","Dr. Howard Carter discovered King Tutankhamun's tomb.","dr. Howard Carter discovered King Tutankhamun's tomb.","Dr. howard carter discovered king tutankhamun's tomb."],ans:1,skill:"Capitalization"},
+    {q:"Choose the correct verb:<br><em>'The team of archaeologists _____ the site every morning.'</em>",opts:["survey","surveys","are survey","surveying"],ans:1,skill:"Subject-verb agreement"}
+  ],coord:"C3"},
+  {role:"Alchemist",qs:[
+    {q:"Which sentence is punctuated <strong>correctly</strong>?",opts:["Before entering the tomb we lit our torches.","Before entering the tomb, we lit our torches.","Before, entering the tomb we lit our torches.","Before entering, the tomb we lit our torches."],ans:1,skill:"Punctuation"},
+    {q:"Which word should <strong>NOT</strong> be capitalized?",opts:["Cleopatra","Egyptian","Nile","Pyramid (in the middle of a sentence)"],ans:3,skill:"Capitalization"},
+    {q:"Choose the correct form:<br><em>'Everyone on the expedition _____ exhausted by nightfall.'</em>",opts:["were","are","was","have been"],ans:2,skill:"Subject-verb agreement"}
+  ],coord:"E5"},
+  {role:"Guardian",qs:[
+    {q:"Which sentence uses a <strong>semicolon correctly</strong>?",opts:["The sarcophagus was sealed; and no one had touched it.","The torch went out; we were plunged into darkness.","We entered the tomb; because we were curious.","She screamed; and ran away."],ans:1,skill:"Punctuation"},
+    {q:"Choose the sentence with <strong>all capitalization correct</strong>:",opts:["Professor Evans said, 'the Pharaoh's curse is real.'","Professor Evans said, 'The pharaoh's Curse is real.'","Professor Evans said, \"The Pharaoh's curse is real.\"","professor Evans said, \"The pharaoh's curse is real.\""],ans:2,skill:"Capitalization"},
+    {q:"Choose the correct verb:<br><em>'Each of the five canopic jars _____ a different organ.'</em>",opts:["contain","contains","are containing","have"],ans:1,skill:"Subject-verb agreement"}
+  ],coord:"E1"}
+];
+
+const R3_QUESTIONS=[
+  {role:"Archaeologist",qs:[
+    {q:"Identify the <strong>prepositional phrase</strong>:<br><em>'The scarab beetle crawled beneath the golden altar.'</em>",opts:["The scarab beetle","crawled","beneath the golden altar","golden altar"],ans:2,skill:"Prepositions"},
+    {q:"Which sentence uses <strong>onomatopoeia</strong>?",opts:["The cobra was as fast as lightning.","The ancient door creaked as it opened.","Time is a river flowing endlessly.","The pit was bottomless."],ans:1,skill:"Figurative language"},
+    {q:"In the sentence below, what type of figurative language is used?<br><em>'The desert swallowed our footprints whole.'</em>",opts:["Simile","Personification","Hyperbole","Alliteration"],ans:1,skill:"Figurative language"}
+  ],logicClue:"The thief was NOT wearing a headdress."},
+  {role:"Scribe",qs:[
+    {q:"How many <strong>prepositional phrases</strong> are in this sentence?<br><em>'She ran through the tunnel and into the hidden chamber beyond the waterfall.'</em>",opts:["1","2","3","4"],ans:2,skill:"Prepositions"},
+    {q:"Which sentence uses <strong>imagery</strong> (appeals to the senses)?",opts:["The mummy was very scary.","The bandages reeked of ancient spices and decay.","The pharaoh was powerful.","Everyone was afraid of the curse."],ans:1,skill:"Figurative language"},
+    {q:"Identify the <strong>object of the preposition</strong>:<br><em>'The archaeologist dug around the enormous boulder.'</em>",opts:["archaeologist","dug","around","boulder"],ans:3,skill:"Prepositions"}
+  ],logicClue:"The thief works alone and is not a god of the sun."},
+  {role:"Cartographer",qs:[
+    {q:"Choose the sentence where <strong>'over'</strong> is used as a <strong>preposition</strong> (not an adverb):",opts:["The game is over.","She turned it over.","The bat flew over the tomb.","Pull over here."],ans:2,skill:"Prepositions"},
+    {q:"Which type of figurative language is used here?<br><em>'Life is a journey through an endless desert.'</em>",opts:["Simile","Metaphor","Onomatopoeia","Hyperbole"],ans:1,skill:"Figurative language"},
+    {q:"Which sentence contains a <strong>preposition of time</strong>?",opts:["She hid the scroll under the altar.","The mummy moved toward the door.","Before sunset, the tomb must be sealed.","The torch hung above our heads."],ans:2,skill:"Prepositions"}
+  ],logicClue:"The thief left behind a feather quill near the jar."},
+  {role:"Alchemist",qs:[
+    {q:"Which sentence uses <strong>'without'</strong> as a preposition correctly?",opts:["Without warning, the ceiling collapsed.","She went without.","He ran without stopping.","They left without us behind."],ans:0,skill:"Prepositions"},
+    {q:"Which literary device is in this sentence?<br><em>'The stars screamed as the archaeologist broke the seal.'</em>",opts:["Simile","Hyperbole","Personification","Alliteration"],ans:2,skill:"Figurative language"},
+    {q:"Complete the sentence with the correct prepositional phrase:<br><em>'The treasure was hidden _____ the Sphinx.'</em>",opts:["during","because of","beneath","without"],ans:2,skill:"Prepositions"}
+  ],logicClue:"The thief is associated with wisdom or writing."},
+  {role:"Guardian",qs:[
+    {q:"In the sentence below, identify the <strong>preposition</strong>:<br><em>'Despite the danger, the team pressed forward.'</em>",opts:["danger","team","pressed","Despite"],ans:3,skill:"Prepositions"},
+    {q:"Which sentence uses a <strong>simile</strong> correctly?",opts:["The mummy screamed like a banshee.","The mummy was a screaming banshee.","The mummy screamed, oh so loud!","The mummy's scream shook the walls."],ans:0,skill:"Figurative language"},
+    {q:"How many prepositional phrases are in this sentence?<br><em>'During the night, the cat slipped through the crack in the wall.'</em>",opts:["2","3","4","1"],ans:1,skill:"Prepositions"}
+  ],logicClue:"The thief stole the jar at night, not during a ceremony."}
+];
+
+const R4_QUESTIONS=[
+  {role:"Archaeologist",qs:[
+    {q:"Which sentence has a <strong>dangling modifier</strong>?",opts:["Running through the tomb, she tripped on a stone.","Running through the tomb, a stone made her trip.","She tripped on a stone while running through the tomb.","The stone tripped her as she ran through the tomb."],ans:1,skill:"Grammar review"},
+    {q:"Choose the sentence with <strong>correct punctuation and capitalization</strong>:",opts:["The professor shouted, \"don't touch that artifact!\"","The professor shouted, \"Don't touch that artifact!\"","the professor shouted, \"Don't Touch that Artifact!\"","The Professor shouted \"don't touch that Artifact!\""],ans:1,skill:"Mixed review"},
+    {q:"Which sentence uses a <strong>compound adjective</strong> correctly?",opts:["The three thousand year old tomb was discovered.","The three-thousand-year-old tomb was discovered.","The three thousand-year old tomb was discovered.","The three thousand year-old tomb was discovered."],ans:1,skill:"Grammar review"}
+  ],romanNumeral:"XIV"},
+  {role:"Scribe",qs:[
+    {q:"Choose the sentence where <strong>subject and verb agree</strong> correctly:",opts:["The collection of mummies are on display.","The data from the excavations is being analyzed.","A group of explorers were lost in the desert.","The team of researchers are publishing their results."],ans:1,skill:"Subject-verb agreement"},
+    {q:"Which sentence uses <strong>both a simile and an adverb</strong>?",opts:["She bravely charged like a lion.","The lion charged her bravely.","Like a lion, she brave charged.","She charged the lion bravely."],ans:0,skill:"Mixed review"},
+    {q:"Identify the part of speech of the <strong>underlined word</strong>:<br><em>'The <u>recently</u> discovered tomb shocked the world.'</em>",opts:["Adjective","Noun","Adverb","Preposition"],ans:2,skill:"Parts of speech"}
+  ],romanNumeral:"IX"},
+  {role:"Cartographer",qs:[
+    {q:"Choose the sentence that is <strong>NOT a run-on sentence</strong>:",opts:["The torch went out we were in total darkness.","The torch went out, we were in total darkness.","The torch went out; we were in total darkness.","The torch went out and we were in total darkness and we screamed."],ans:2,skill:"Punctuation/grammar"},
+    {q:"Choose the sentence with the <strong>correct apostrophe use</strong>:",opts:["The teams' leader discovered the tomb.","The team's leader discovered the tomb.","The teams leader's discovered the tomb.","The team leader's discovered the tomb."],ans:1,skill:"Punctuation"},
+    {q:"What type of figurative language is used?<br><em>'The silence in the tomb was so loud it roared.'</em>",opts:["Simile","Alliteration","Oxymoron / paradox","Metaphor"],ans:2,skill:"Figurative language"}
+  ],romanNumeral:"VI"},
+  {role:"Alchemist",qs:[
+    {q:"Which sentence uses <strong>parallel structure</strong> correctly?",opts:["The archaeologist dug, finding artifacts, and took photographs.","The archaeologist dug, found artifacts, and took photographs.","The archaeologist was digging, found artifacts, and photographs.","The archaeologist dug, finds artifacts, and photographs."],ans:1,skill:"Grammar review"},
+    {q:"Choose the sentence where the <strong>prepositional phrase is misplaced</strong>:",opts:["She found the scarab in the corner of the room.","The explorer with a flashlight examined the mummy.","She gave the artifact to the museum on Tuesday.","I saw the mummy walking down the street."],ans:3,skill:"Prepositions"},
+    {q:"Which sentence correctly uses <strong>commas around an appositive</strong>?",opts:["King Tut, the young pharaoh, died at age 19.","King Tut the young pharaoh, died at age 19.","King Tut, the young pharaoh died at age 19.","King Tut the young pharaoh died at age 19."],ans:0,skill:"Punctuation"}
+  ],romanNumeral:"XIX"},
+  {role:"Guardian",qs:[
+    {q:"Which word in the sentence functions as <strong>both a noun and a verb</strong> depending on context?<br><em>'We will <u>seal</u> the chamber tonight.' / 'The <u>seal</u> was broken.'</em>",opts:["will","tonight","seal","chamber"],ans:2,skill:"Parts of speech"},
+    {q:"Choose the sentence with <strong>correct use of 'fewer' vs. 'less'</strong>:",opts:["There were less artifacts in Room 2.","There were fewer artifacts in Room 2.","There was fewer artifacts in Room 2.","There were less artifact in Room 2."],ans:1,skill:"Grammar review"},
+    {q:"Which sentence correctly uses a <strong>colon</strong>?",opts:["We needed: torches, rope, and a map.","We needed three things: torches, rope, and a map.","We: needed torches rope and a map.","We needed torches: rope: and a map."],ans:1,skill:"Punctuation"}
+  ],romanNumeral:"XII"}
+];
+
+const PUZZLE_ANSWERS={1:"ANKHE",2:"N",3:"Thoth",4:60};
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
 }
 
-// ---- Student: name submit ----
-document.getElementById('btn-start').addEventListener('click', function() {
-  var first = document.getElementById('inp-first').value.trim();
-  var last  = document.getElementById('inp-last').value.trim();
-  var num   = document.getElementById('inp-num').value.trim();
-  if (!first || !last || !num) {
-    document.getElementById('name-err').style.display = 'block';
+function selectChar(idx){
+  if(players.length>=5) return;
+  const taken=players.map(p=>p.charIdx);
+  if(taken.includes(idx)) return;
+  selectedChar=idx;
+  document.querySelectorAll('.char-card').forEach((c,i)=>{
+    c.classList.remove('selected');
+    if(i===idx && !taken.includes(i)) c.classList.add('selected');
+  });
+}
+
+function addPlayer(){
+  const nameEl=document.getElementById('player-name-input');
+  const name=nameEl.value.trim();
+  if(!name){alert('Enter your name first!');return;}
+  if(selectedChar===null){alert('Pick a character above!');return;}
+  const taken=players.map(p=>p.charIdx);
+  if(taken.includes(selectedChar)){alert('That character is already taken!');return;}
+  if(players.length>=5){alert('Maximum 5 players!');return;}
+  players.push({name,charIdx:selectedChar,num:players.length+1});
+  nameEl.value='';
+  selectedChar=null;
+  renderSetup();
+  if(players.length>=2) document.getElementById('start-game-btn').style.display='';
+  if(players.length>=5) document.getElementById('add-player-btn').textContent='Team Full';
+}
+
+function renderSetup(){
+  const taken=players.map(p=>p.charIdx);
+  document.querySelectorAll('.char-card').forEach((c,i)=>{
+    c.classList.remove('selected','taken');
+    if(taken.includes(i)) c.classList.add('taken');
+  });
+  const pl=document.getElementById('setup-players');
+  pl.innerHTML=players.map(p=>`<div class="player-row"><div class="player-dot" style="background:${CHARS[p.charIdx].bg}"></div><span style="font-size:14px;font-weight:500">${p.name}</span><span class="badge badge-${CHARS[p.charIdx].color}" style="margin-left:6px">${CHARS[p.charIdx].emoji} ${CHARS[p.charIdx].name}</span></div>`).join('');
+}
+
+function startGame(){
+  if(players.length<2){alert('Need at least 2 players!');return;}
+  startTime=Date.now();
+  buildRoom(1);
+  showScreen('screen-room1');
+  startTimer(1,25*60);
+}
+
+function buildRoom(roomNum){
+  const allQ=[null,R1_QUESTIONS,R2_QUESTIONS,R3_QUESTIONS,R4_QUESTIONS][roomNum];
+  const tabBar=document.getElementById('tabs'+roomNum);
+  const panelContainer=document.getElementById('player-panels'+roomNum);
+  tabBar.innerHTML='';
+  panelContainer.innerHTML='';
+  players.forEach((p,i)=>{
+    const pData=allQ[p.charIdx];
+    const tab=document.createElement('div');
+    tab.className='tab'+(i===0?' active':'');
+    tab.innerHTML=CHARS[p.charIdx].emoji+' '+p.name;
+    tab.onclick=(()=>{const idx=i;return ()=>switchTab(roomNum,idx);})();
+    tabBar.appendChild(tab);
+    const panel=document.createElement('div');
+    panel.id=`panel-r${roomNum}-p${i}`;
+    panel.style.display=i===0?'block':'none';
+    panel.innerHTML=buildPlayerPanel(p,pData,roomNum,i);
+    panelContainer.appendChild(panel);
+  });
+  if(roomNum===2) buildMapGrid();
+  if(roomNum===3) buildLogicGrid();
+}
+
+function buildPlayerPanel(player,pData,roomNum,playerIdx){
+  const done=playerRoomDone[`${roomNum}-${playerIdx}`];
+  let html=`<div class="card"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+    <span style="font-size:24px">${CHARS[player.charIdx].emoji}</span>
+    <div><div style="font-weight:500;font-size:15px">${player.name} — ${CHARS[player.charIdx].name}</div>
+    <div style="font-size:12px;color:#5F5E5A">Investigator #${player.num}</div></div>`;
+  if(done) html+=`<span class="badge badge-teal" style="margin-left:auto">✓ Complete</span>`;
+  html+=`</div>`;
+  pData.qs.forEach((q,qi)=>{
+    const key=`r${roomNum}p${playerIdx}q${qi}`;
+    const answered=window.answers[key];
+    html+=`<div class="q-block" id="qblock-${key}"><div class="q-text">${q.q}</div><div class="opts">`;
+    q.opts.forEach((o,oi)=>{
+      let cls='opt';
+      if(answered!==undefined){
+        cls+=' disabled';
+        if(oi===q.ans) cls+=' correct';
+        else if(oi===answered&&answered!==q.ans) cls+=' wrong-ans';
+      }
+      html+=`<button class="${cls}" onclick="answerQ('${key}',${oi},${q.ans},${roomNum},${playerIdx},${qi})">${o}</button>`;
+    });
+    html+=`</div></div>`;
+  });
+  if(done){
+    const info=getGlyphInfo(roomNum,player.charIdx);
+    html+=`<div class="clue-reveal">🔺 Your clue unlocked: <strong>${info}</strong></div>`;
+  }
+  html+=`</div>`;
+  return html;
+}
+
+function getGlyphInfo(roomNum,charIdx){
+  if(roomNum===1){const d=R1_QUESTIONS[charIdx];return`Glyph number: <span style="font-size:18px;font-weight:500">${d.glyphNum}</span> — use the Rosetta Cipher to find your letter!`;}
+  if(roomNum===2){const d=R2_QUESTIONS[charIdx];return`Grid Coordinate: <span style="font-size:18px">${d.coord}</span>`;}
+  if(roomNum===3){const d=R3_QUESTIONS[charIdx];return`Logic clue: "${d.logicClue}"`;}
+  if(roomNum===4){const d=R4_QUESTIONS[charIdx];return`Roman numeral: <span style="font-size:18px">${d.romanNumeral}</span>`;}
+}
+
+function answerQ(key,chosen,correct,roomNum,playerIdx){
+  if(window.answers[key]!==undefined) return;
+  if(chosen===correct){
+    window.answers[key]=chosen;
+    const block=document.getElementById('qblock-'+key);
+    if(block){
+      block.querySelectorAll('.opt').forEach((b,i)=>{
+        b.classList.add('disabled');
+        if(i===correct) b.classList.add('correct');
+      });
+    }
+    checkPlayerRoomDone(roomNum,playerIdx);
+  } else {
+    const block=document.getElementById('qblock-'+key);
+    if(block){
+      const btn=block.querySelectorAll('.opt')[chosen];
+      if(btn){
+        btn.classList.add('wrong-ans');
+        btn.classList.add('disabled');
+      }
+    }
+  }
+}
+
+function checkPlayerRoomDone(roomNum,playerIdx){
+  const player=players[playerIdx];
+  const pData=[null,R1_QUESTIONS,R2_QUESTIONS,R3_QUESTIONS,R4_QUESTIONS][roomNum][player.charIdx];
+  const allDone=pData.qs.every((_,qi)=>window.answers[`r${roomNum}p${playerIdx}q${qi}`]!==undefined);
+  if(allDone&&!playerRoomDone[`${roomNum}-${playerIdx}`]){
+    playerRoomDone[`${roomNum}-${playerIdx}`]=true;
+    const panel=document.getElementById(`panel-r${roomNum}-p${playerIdx}`);
+    if(panel) panel.innerHTML=buildPlayerPanel(player,pData,roomNum,playerIdx);
+    checkAllRoomDone(roomNum);
+  }
+}
+
+function checkAllRoomDone(roomNum){
+  const allDone=players.every((_,i)=>playerRoomDone[`${roomNum}-${i}`]);
+  if(allDone){
+    const puzzleDiv=document.getElementById('room'+roomNum+'-puzzle');
+    if(puzzleDiv){puzzleDiv.style.display='block';puzzleDiv.scrollIntoView({behavior:'smooth'});}
+    if(roomNum===2) renderCoordsDisplay();
+    if(roomNum===4) buildRomanDisplay();
+  }
+}
+
+function switchTab(roomNum,idx){
+  players.forEach((_,i)=>{
+    const p=document.getElementById(`panel-r${roomNum}-p${i}`);
+    if(p) p.style.display=i===idx?'block':'none';
+  });
+  document.getElementById('tabs'+roomNum).querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+}
+
+function buildMapGrid(){
+  const grid=document.getElementById('map-grid');
+  const rows=['A','B','C','D','E'];
+  let html=`<table style="border-collapse:collapse;">`;
+  html+=`<tr><td style="width:28px"></td>`;
+  for(let c=1;c<=5;c++) html+=`<td style="width:50px;height:28px;text-align:center;font-size:12px;color:#5F5E5A;font-weight:500">${c}</td>`;
+  html+=`</tr>`;
+  rows.forEach(r=>{
+    html+=`<tr><td style="font-size:12px;font-weight:500;color:#5F5E5A;padding-right:4px;text-align:right">${r}</td>`;
+    for(let c=1;c<=5;c++){
+      html+=`<td style="width:50px;height:50px;border:1px solid #D3D1C7;text-align:center;cursor:pointer;font-size:20px;background:#fff" id="gc-${r}${c}" onclick="toggleCell('${r}${c}')" title="${r}${c}"></td>`;
+    }
+    html+=`</tr>`;
+  });
+  html+=`</table>`;
+  grid.innerHTML=html;
+}
+
+function toggleCell(coord){
+  const el=document.getElementById('gc-'+coord);
+  el.innerHTML=el.innerHTML===''?'●':'';
+}
+
+function renderCoordsDisplay(){
+  const coords=players.map(p=>R2_QUESTIONS[p.charIdx].coord);
+  document.getElementById('coords-display').textContent=coords.map((c,i)=>`Investigator ${i+1}: ${c}`).join('  |  ');
+}
+
+function buildLogicGrid(){
+  const suspects=['Horus','Isis','Thoth','Bastet','Ra'];
+  const props=['Wears headdress','Works alone','4-letter name','God of wisdom/writing','Active at night'];
+  let html=`<table style="border-collapse:collapse;font-size:12px">`;
+  html+=`<tr><td style="padding:4px 8px;background:#F1EFE8;font-weight:500;border:1px solid #D3D1C7"></td>`;
+  suspects.forEach(s=>html+=`<td style="padding:4px 10px;background:#F1EFE8;font-weight:500;text-align:center;border:1px solid #D3D1C7">${s}</td>`);
+  html+=`</tr>`;
+  props.forEach((prop,pi)=>{
+    html+=`<tr><td style="padding:4px 8px;border:1px solid #D3D1C7;background:#F1EFE8;white-space:nowrap">${prop}</td>`;
+    suspects.forEach((s,si)=>{
+      html+=`<td id="lg-${pi}-${si}" style="padding:4px 10px;border:1px solid #D3D1C7;text-align:center;cursor:pointer;min-width:60px;background:#fff" onclick="toggleLG(${pi},${si})"></td>`;
+    });
+    html+=`</tr>`;
+  });
+  html+=`</table>`;
+  document.getElementById('logic-grid-container').innerHTML=html;
+}
+
+function toggleLG(pi,si){
+  const el=document.getElementById(`lg-${pi}-${si}`);
+  el.innerHTML=el.innerHTML===''?`<span style="color:#E24B4A;font-weight:500">✗</span>`:'';
+}
+
+function buildRomanDisplay(){
+  const allDone=players.every((_,i)=>playerRoomDone[`4-${i}`]);
+  if(!allDone) return;
+  const VALUES={I:1,V:5,X:10,L:50,C:100,D:500,M:1000};
+  function fromRoman(s){let t=0,p=0;for(let i=s.length-1;i>=0;i--){const v=VALUES[s[i]];if(v<p)t-=v;else t+=v;p=v;}return t;}
+  const el=document.getElementById('roman-display');
+  if(el){
+    let html=`<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:8px">`;
+    players.forEach((p,i)=>{
+      const d=R4_QUESTIONS[p.charIdx];
+      html+=`<div style="text-align:center;padding:8px;background:#F1EFE8;border-radius:8px">
+        <div style="font-size:11px;color:#5F5E5A">${p.name}</div>
+        <div style="font-size:20px;font-weight:500">${d.romanNumeral}</div>
+        <div style="font-size:11px;color:#5F5E5A">= ${fromRoman(d.romanNumeral)}</div>
+      </div>`;
+    });
+    html+=`</div><div style="font-size:13px;color:#5F5E5A">Convert each Roman numeral, then add all five values together.</div>`;
+    el.innerHTML=html;
+  }
+}
+
+function checkPuzzle(roomNum){
+  const ansEl=document.getElementById('puzzle'+roomNum+'-answer');
+  const msgEl=document.getElementById('puzzle'+roomNum+'-msg');
+  const raw=ansEl.value||ansEl.options&&ansEl.options[ansEl.selectedIndex]&&ansEl.options[ansEl.selectedIndex].value;
+  const ans=(ansEl.tagName==='SELECT'?ansEl.value:ansEl.value.trim()).toUpperCase();
+  const correct=String(PUZZLE_ANSWERS[roomNum]).toUpperCase();
+  if(ans===correct){
+    msgEl.innerHTML=`<div class="msg-success">✓ Correct! The chamber seal breaks open. Proceed to the next room.</div>`;
+    gameState.roomsComplete[roomNum-1]=true;
+    if(timers['t'+roomNum]) clearInterval(timers['t'+roomNum]);
+    setTimeout(()=>advanceRoom(roomNum),1800);
+  } else {
+    msgEl.innerHTML=`<div class="msg-error">✗ Not quite. Make sure all investigators have shared their clue and you've combined everything correctly.</div>`;
+    ansEl.classList.add('shake');
+    setTimeout(()=>ansEl.classList.remove('shake'),400);
+  }
+}
+
+function advanceRoom(roomNum){
+  if(roomNum===4){showVictory();return;}
+  const next=roomNum+1;
+  buildRoom(next);
+  showScreen('screen-room'+next);
+  startTimer(next,next===4?30*60:25*60);
+}
+
+function startTimer(roomNum,seconds){
+  let remaining=seconds;
+  const el=document.getElementById('timer'+roomNum);
+  const key='t'+roomNum;
+  if(timers[key]) clearInterval(timers[key]);
+  timers[key]=setInterval(()=>{
+    remaining--;
+    const m=Math.floor(remaining/60),s=remaining%60;
+    el.textContent=`${m}:${s<10?'0':''}${s}`;
+    if(remaining<=300) el.classList.add('warn');
+    if(remaining<=0){clearInterval(timers[key]);el.textContent='TIME!';}
+  },1000);
+}
+
+function showVictory(){
+  const elapsed=Math.round((Date.now()-startTime)/1000);
+  const m=Math.floor(elapsed/60),s=elapsed%60;
+  document.getElementById('total-time').textContent=`${m} min ${s} sec`;
+  document.getElementById('victory-players').innerHTML=players.map(p=>`<div class="player-row"><span style="font-size:18px">${CHARS[p.charIdx].emoji}</span><span style="font-size:14px;font-weight:500">${p.name}</span><span style="font-size:13px;color:#5F5E5A;margin-left:4px">— ${CHARS[p.charIdx].name}</span></div>`).join('');
+  showScreen('screen-victory');
+}
+
+function teacherLogin(){
+  const pw=prompt('Enter teacher password:');
+  if(pw===null) return;
+  if(pw==='mariana2026'){showScreen('screen-teacher');}
+  else{alert('Incorrect password.');}
+}
+
+function resetGame(){
+  players=[];selectedChar=null;
+  gameState={room:1,roomsComplete:[false,false,false,false]};
+  window.answers={};window.qScores={};playerRoomDone={};
+  Object.values(timers).forEach(t=>clearInterval(t));
+  timers={};startTime=null;
+  document.getElementById('add-player-btn').textContent='Add Investigator';
+  document.getElementById('start-game-btn').style.display='none';
+  renderSetup();
+  showScreen('screen-title');
+}
+
+function buildCipher1(){
+  const CIPHER_MAP={1:'Z',2:'Q',3:'X',4:'J',5:'A',6:'W',7:'N',8:'F',9:'Y',10:'B',11:'K',12:'V',13:'C',14:'G',15:'H',16:'P',17:'O',18:'E',19:'S',20:'D',21:'U',22:'R',23:'I',24:'T',25:'M',26:'L'};
+  const el=document.getElementById('cipher1');
+  if(el) el.innerHTML=Object.entries(CIPHER_MAP).map(([n,l])=>`<div class="cipher-cell"><div class="num" style="font-size:13px;font-weight:500;color:#2C2C2A">${n}</div><div class="letter" style="font-size:11px;color:#633806">↓</div><div class="letter" style="font-size:16px;font-weight:500;color:#412402">${l}</div></div>`).join('');
+}
+
+const TEACHER_DATA=[
+  {room:"Room 1: The Hall of Parts",skills:"Parts of speech, adjectives, adverbs, figurative language",
+   puzzle:"Cipher puzzle. Each player unlocks a glyph number after completing their grammar questions. Numbers: Archaeologist=5, Scribe=7, Cartographer=11, Alchemist=15, Guardian=18. Using the Rosetta Cipher, these convert to: 5→A, 7→N, 11→K, 15→H, 18→E. Sorted lowest to highest: 5,7,11,15,18 = A,N,K,H,E = ANKHE.",
+   answer:"ANKHE",
+   notes:"Students must physically sort the numbers from lowest to highest before using the cipher. The cipher is scrambled (not A=1) to prevent guessing. The word ANKHE is a fragment of ANKH — a discussion point about ancient Egyptian symbolism as a bonus.",
+   qkey:[
+     {player:"Archaeologist (#1)",answers:["Q1: slowly","Q2: The tomb was as dark as midnight.","Q3: Three"]},
+     {player:"Scribe (#2)",answers:["Q1: beneath","Q2: The wind whispered secrets to the sand.","Q3: carefully"]},
+     {player:"Cartographer (#3)",answers:["Q1: Adjective","Q2: I've told you a million times...","Q3: explorer"]},
+     {player:"Alchemist (#4)",answers:["Q1: Both 'clever' and 'hidden'","Q2: Metaphor","Q3: Adverb"]},
+     {player:"Guardian (#5)",answers:["Q1: She was extremely careful with the jar.","Q2: Slithering serpents surrounded the sacred shrine.","Q3: Preposition"]}
+   ]},
+  {room:"Room 2: The Anubis Trial",skills:"Capitalization, punctuation, subject-verb agreement",
+   puzzle:"Map grid puzzle. After completing grammar questions, each player reveals their coordinate: Archaeologist=A1, Scribe=A5, Cartographer=C3, Alchemist=E5, Guardian=E1. Students plot these 5 points on the 5×5 grid (rows A–E, columns 1–5) and connect them in INVESTIGATOR NUMBER order (1→2→3→4→5): A1→A5→C3→E5→E1. The path traces the letter N.",
+   answer:"N",
+   notes:"Emphasize connection order is by investigator number, not alphabetically. Students can use the on-screen clickable grid or draw on paper. Paper may help collaboration. If students disagree on the shape, have them re-plot carefully.",
+   qkey:[
+     {player:"Archaeologist (#1)",answers:["Q1: Cleopatra ruled Ancient Egypt for many years.","Q2: The tomb was dark, cold, and dusty.","Q3: is"]},
+     {player:"Scribe (#2)",answers:["Q1: Could you hand me the brush please","Q2: We read a book called Secrets of the Nile.","Q3: provide"]},
+     {player:"Cartographer (#3)",answers:["Q1: The tomb's were discovered by accident. (has error)","Q2: Dr. Howard Carter discovered King Tutankhamun's tomb.","Q3: surveys"]},
+     {player:"Alchemist (#4)",answers:["Q1: Before entering the tomb, we lit our torches.","Q2: Pyramid (in the middle of a sentence)","Q3: was"]},
+     {player:"Guardian (#5)",answers:["Q1: The torch went out; we were plunged into darkness.","Q2: Professor Evans said, \"The Pharaoh's curse is real.\"","Q3: contains"]}
+   ]},
+  {room:"Room 3: The Serpent's Riddle",skills:"Prepositions, figurative language",
+   puzzle:"Logic elimination puzzle. Each player's logic clue: (1) Not wearing a headdress, (2) Works alone, not sun god, (3) Left behind a feather quill, (4) Associated with wisdom/writing, (5) Stole at night. Elimination: Ra=sun god (out by clue 2). Horus=sun god (out by clue 2). Isis=wears headdress (out by clue 1). Bastet=cat goddess, no association with quills or writing (out by clues 3 and 4). Thoth=god of wisdom and writing, associated with feather quills. Answer: Thoth.",
+   answer:"Thoth",
+   notes:"Clues 3 and 4 both point to Thoth — feather quills and wisdom/writing are both strongly associated with him. Clues 1 and 2 eliminate four of the five suspects cleanly, leaving Thoth as the only one who fits all five clues. Good discussion point: ask students which clue they found most helpful and why.",
+   qkey:[
+     {player:"Archaeologist (#1)",answers:["Q1: beneath the golden altar","Q2: The ancient door creaked as it opened. (onomatopoeia)","Q3: Personification"]},
+     {player:"Scribe (#2)",answers:["Q1: 3 (through, into, beyond)","Q2: The bandages reeked of ancient spices and decay.","Q3: boulder"]},
+     {player:"Cartographer (#3)",answers:["Q1: The bat flew over the tomb.","Q2: Metaphor","Q3: Before sunset, the tomb must be sealed."]},
+     {player:"Alchemist (#4)",answers:["Q1: Without warning, the ceiling collapsed.","Q2: Personification","Q3: beneath"]},
+     {player:"Guardian (#5)",answers:["Q1: Despite","Q2: The mummy screamed like a banshee.","Q3: 3 (During the night, through the crack, in the wall)"]}
+   ]},
+  {room:"Room 4: The Burial Chamber",skills:"Mixed review — all skills",
+   puzzle:"Roman numeral math. Each player's Roman numeral: Archaeologist=XIV(14), Scribe=IX(9), Cartographer=VI(6), Alchemist=XIX(19), Guardian=XII(12). Sum: 14+9+6+19+12 = 60.",
+   answer:"60",
+   notes:"Roman numeral conversion errors are common: IX=9 (not 11), XIV=14 (not 16), XIX=19 (not 21). Consider posting a Roman numeral reference on the board. The grammar questions in this room are the most challenging — parallel structure, dangling modifiers, fewer vs. less, and appositive comma usage.",
+   qkey:[
+     {player:"Archaeologist (#1)",answers:["Q1: Running through the tomb, a stone made her trip. (dangling)","Q2: The professor shouted, \"Don't touch that artifact!\"","Q3: The three-thousand-year-old tomb was discovered."]},
+     {player:"Scribe (#2)",answers:["Q1: The data from the excavations is being analyzed.","Q2: She bravely charged like a lion.","Q3: Adverb"]},
+     {player:"Cartographer (#3)",answers:["Q1: The torch went out; we were in total darkness.","Q2: The team's leader discovered the tomb.","Q3: Oxymoron / paradox"]},
+     {player:"Alchemist (#4)",answers:["Q1: The archaeologist dug, found artifacts, and took photographs.","Q2: I saw the mummy walking down the street. (misplaced)","Q3: King Tut, the young pharaoh, died at age 19."]},
+     {player:"Guardian (#5)",answers:["Q1: seal","Q2: There were fewer artifacts in Room 2.","Q3: We needed three things: torches, rope, and a map."]}
+   ]}
+];
+
+function teachTab(idx,el){
+  document.querySelectorAll('#teacher-tab-bar .tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  const tc=document.getElementById('teacher-content');
+  if(idx===4){
+    tc.innerHTML=`<div class="teacher-panel">
+      <h3>Overview &amp; Facilitation Tips</h3>
+      <p style="font-size:13px;margin-top:8px"><strong>Estimated total time:</strong> 90–110 minutes (4 rooms at 25/25/25/30 min)</p>
+      <p style="font-size:13px;margin-top:8px"><strong>Pod setup:</strong> Assign pods before class. Each student should know their investigator number (1–5) — it determines the order for puzzle-solving in Rooms 1 and 2.</p>
+      <p style="font-size:13px;margin-top:8px"><strong>Enforcing collaboration:</strong> Each player's glyph/clue is only visible on their own tab after they complete their grammar questions. Students should NOT look at each other's screens — they must verbally share their piece with the group.</p>
+      <p style="font-size:13px;margin-top:8px"><strong>Room 3 design note:</strong> The logic puzzle deliberately contains a conflict (4-letter name clue vs. wisdom/writing clue). This is intentional — it generates discussion and critical thinking. The answer is Thoth; the wisdom clue is decisive because Isis (4 letters) is eliminated by the headdress clue.</p>
+      <p style="font-size:13px;margin-top:8px"><strong>Room 2 grid note:</strong> The on-screen grid is clickable, but paper may work better for student collaboration. The path A1→A5→C3→E5→E1 traces the letter N.</p>
+      <p style="font-size:13px;margin-top:8px"><strong>Differentiation:</strong> For pods moving quickly, challenge them to explain WHY each wrong answer is wrong before moving on. For pods struggling, allow one hint: "Make sure everyone has shared their piece before working on the puzzle."</p>
+      <p style="font-size:13px;margin-top:8px"><strong>Puzzle answers summary:</strong> Room 1 = ANKHE | Room 2 = N | Room 3 = Thoth | Room 4 = 60</p>
+    </div>`;
     return;
   }
-  document.getElementById('name-err').style.display = 'none';
-  stu = { first:first, last:last, num:num, name:first+' '+last };
-  this.innerHTML = '<span class="spin"></span>Loading&hellip;';
-  this.disabled = true;
-  startPolling();
+  const d=TEACHER_DATA[idx];
+  tc.innerHTML=`<div class="teacher-panel">
+    <h3>${d.room}</h3>
+    <p style="font-size:13px;margin-top:4px"><strong>Skills covered:</strong> ${d.skills}</p>
+    <p style="font-size:13px;margin-top:10px"><strong>Puzzle mechanism:</strong> ${d.puzzle}</p>
+    <div style="background:#E1F5EE;border:1px solid #5DCAA5;border-radius:8px;padding:0.75rem;margin:10px 0">
+      <strong style="font-size:14px;color:#085041">Final Answer: ${d.answer}</strong>
+    </div>
+    <p style="font-size:13px"><strong>Notes for teacher:</strong> ${d.notes}</p>
+    <details style="margin-top:12px">
+      <summary style="font-size:13px;font-weight:500;cursor:pointer;color:#2C2C2A;padding:4px 0">Individual question answers (click to expand)</summary>
+      <div style="margin-top:10px">
+        ${d.qkey.map(pk=>`<div style="margin-bottom:10px;padding:8px;background:#fff;border-radius:8px;border:1px solid #D3D1C7">
+          <div style="font-size:12px;font-weight:500;color:#5F5E5A;margin-bottom:4px">${pk.player}</div>
+          ${pk.answers.map((a,i)=>`<div style="font-size:12px;color:#2C2C2A;padding:2px 0">Q${i+1}: ${a}</div>`).join('')}
+        </div>`).join('')}
+      </div>
+    </details>
+  </div>`;
+}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  buildCipher1();
+  teachTab(0,document.querySelector('#teacher-tab-bar .tab'));
 });
-
-function startPolling() {
-  checkActive();
-  pollId = setInterval(checkActive, 4000);
-}
-
-function checkActive() {
-  db.ref('activeTicket').get().then(function(snap) {
-    var val = snap.val();
-    if (!val || val === 'none') {
-      show('v-wait');
-      var b = document.getElementById('btn-start');
-      if (b) { b.innerHTML = 'Continue &rarr;'; b.disabled = false; }
-    } else {
-      var ticket = null;
-      for (var i=0; i<TICKETS.length; i++) { if (TICKETS[i].id === parseInt(val)) { ticket = TICKETS[i]; break; } }
-      if (ticket && (!curTicket || curTicket.id !== ticket.id)) {
-        clearInterval(pollId);
-        loadQuiz(ticket);
-      }
-    }
-  });
-}
-
-// ---- Quiz ----
-function loadQuiz(ticket) {
-  curTicket = ticket; sel = {};
-  var html = '<div class="ch"><div><h2>'+ticket.title+'</h2><p>'+ticket.ch+'</p></div><span class="badge">5 Questions</span></div><div class="cb">';
-  for (var qi=0; qi<ticket.qs.length; qi++) {
-    var q = ticket.qs[qi];
-    html += '<div class="ques"><div class="qlbl"><span class="qn">'+(qi+1)+'</span>'+q.q+'</div><div class="opts">';
-    for (var oi=0; oi<q.o.length; oi++) {
-      html += '<button class="opt" data-qi="'+qi+'" data-oi="'+oi+'"><span class="oc">'+String.fromCharCode(65+oi)+'</span>'+q.o[oi]+'</button>';
-    }
-    html += '</div></div>';
-  }
-  html += '<div class="arow"><button class="btn btn-p" id="btn-submit" disabled>Submit</button><span class="hint" id="q-hint">Answer all 5 questions to submit.</span></div></div>';
-  document.getElementById('quiz-card').innerHTML = html;
-
-  // wire option buttons
-  var opts = document.querySelectorAll('.opt');
-  for (var k=0; k<opts.length; k++) {
-    opts[k].addEventListener('click', function() {
-      var qi = parseInt(this.getAttribute('data-qi'));
-      var oi = parseInt(this.getAttribute('data-oi'));
-      var siblings = document.querySelectorAll('.opt[data-qi="'+qi+'"]');
-      for (var s=0; s<siblings.length; s++) siblings[s].classList.remove('sel');
-      this.classList.add('sel');
-      sel[qi] = oi;
-      if (Object.keys(sel).length === curTicket.qs.length) {
-        document.getElementById('btn-submit').disabled = false;
-        document.getElementById('q-hint').style.display = 'none';
-      }
-    });
-  }
-
-  // wire submit
-  document.getElementById('btn-submit').addEventListener('click', function() {
-    this.innerHTML = '<span class="spin"></span>Submitting&hellip;';
-    this.disabled = true;
-    var score = 0;
-    for (var qi=0; qi<curTicket.qs.length; qi++) { if (sel[qi]===curTicket.qs[qi].a) score++; }
-    db.ref('responses').push({
-      name: stu.name, num: stu.num,
-      ticket: curTicket.title, chapters: curTicket.ch, ticketId: curTicket.id,
-      score: score, total: 5,
-      time: new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}),
-      ts: Date.now()
-    }).then(function() {
-      document.getElementById('done-score').textContent = score + ' / 5';
-      var msgs = ["Keep reviewing \u2014 you\u2019ve got this! \uD83D\uDCDA","Good effort! Review your notes. \uD83D\uDC4D","Nice work! \uD83C\uDF1F","Great job! \uD83C\uDF89","Perfect score! Outstanding! \uD83C\uDFC6"];
-      document.getElementById('done-msg').textContent = msgs[score];
-      show('v-done');
-    });
-  });
-
-  show('v-quiz');
-}
-
-// ---- Teacher login ----
-document.getElementById('btn-teacher').addEventListener('click', function() { show('v-login'); });
-document.getElementById('btn-back').addEventListener('click', function() { show('v-name'); });
-document.getElementById('btn-logout').addEventListener('click', function() { show('v-name'); });
-document.getElementById('inp-pw').addEventListener('keydown', function(e) { if (e.key==='Enter') tryLogin(); });
-document.getElementById('btn-login').addEventListener('click', tryLogin);
-
-function tryLogin() {
-  if (document.getElementById('inp-pw').value === PASS) {
-    document.getElementById('login-err').style.display = 'none';
-    document.getElementById('inp-pw').value = '';
-    show('v-dash');
-    loadDash();
-  } else {
-    document.getElementById('login-err').style.display = 'block';
-  }
-}
-
-// ---- Dashboard ----
-document.getElementById('btn-refresh').addEventListener('click', loadDash);
-
-document.getElementById('btn-setactive').addEventListener('click', function() {
-  db.ref('activeTicket').set(String(dashTab)).then(refreshLabel);
-});
-document.getElementById('btn-deactivate').addEventListener('click', function() {
-  db.ref('activeTicket').set('none').then(refreshLabel);
-});
-document.getElementById('btn-clear').addEventListener('click', function() {
-  if (!confirm('Clear ALL student responses? This cannot be undone.')) return;
-  db.ref('responses').remove().then(loadTable);
-});
-
-function loadDash() { renderTabs(); refreshLabel(); loadTable(); }
-
-function renderTabs() {
-  var html = '';
-  for (var i=0; i<TICKETS.length; i++) {
-    var t = TICKETS[i];
-    html += '<button class="ttab'+(dashTab===t.id?' on':'')+'" data-id="'+t.id+'">#'+t.id+' \u2014 '+t.ch+'</button>';
-  }
-  document.getElementById('d-tabs').innerHTML = html;
-  var tabs = document.querySelectorAll('.ttab');
-  for (var k=0; k<tabs.length; k++) {
-    tabs[k].addEventListener('click', function() {
-      dashTab = parseInt(this.getAttribute('data-id'));
-      renderTabs();
-    });
-  }
-}
-
-function refreshLabel() {
-  db.ref('activeTicket').get().then(function(snap) {
-    var val = snap.val();
-    var el = document.getElementById('d-albl');
-    if (!val || val==='none') {
-      el.textContent = 'No ticket active'; el.className = 'albl aoff';
-    } else {
-      var t = null; for(var i=0;i<TICKETS.length;i++){if(TICKETS[i].id===parseInt(val)){t=TICKETS[i];break;}}
-      el.textContent = t ? 'Active: '+t.title+' ('+t.ch+')' : 'No ticket active';
-      el.className = 'albl aon';
-    }
-  });
-}
-
-function loadTable() {
-  db.ref('responses').get().then(function(snap) {
-    var data = snap.val();
-    var rows = [];
-    if (data) { var keys=Object.keys(data); for(var i=0;i<keys.length;i++) rows.push(data[keys[i]]); }
-    rows.sort(function(a,b){return b.ts-a.ts;});
-
-    document.getElementById('d-count').textContent = rows.length+' response'+(rows.length!==1?'s':'');
-    document.getElementById('d-total').textContent = rows.length || '\u2014';
-    if (rows.length) {
-      var sum=0; for(var i=0;i<rows.length;i++) sum+=rows[i].score;
-      document.getElementById('d-avg').textContent = (sum/rows.length).toFixed(1)+'/5';
-      var perf=0,low=0; for(var i=0;i<rows.length;i++){if(rows[i].score===5)perf++;if(rows[i].score<3)low++;}
-      document.getElementById('d-perf').textContent = perf;
-      document.getElementById('d-low').textContent = low;
-    } else {
-      document.getElementById('d-avg').textContent = '\u2014';
-      document.getElementById('d-perf').textContent = '\u2014';
-      document.getElementById('d-low').textContent = '\u2014';
-    }
-
-    if (!rows.length) {
-      document.getElementById('d-table').innerHTML = '<div class="empty"><div class="ic">&#128203;</div>No responses yet. Students will appear here as they submit.</div>';
-      return;
-    }
-    var html = '<table><thead><tr><th>#</th><th>Name</th><th>Student #</th><th>Ticket</th><th>Score</th><th>Submitted</th></tr></thead><tbody>';
-    for (var i=0;i<rows.length;i++) {
-      var r=rows[i], cls=r.score===5?'s5':r.score>=3?'s34':'slo';
-      html += '<tr><td style="color:#a08060">'+(i+1)+'</td><td><strong>'+r.name+'</strong></td><td style="font-family:monospace">'+r.num+'</td><td><span style="font-size:12px;color:#8b6f4e">'+r.chapters+'</span></td><td class="sc '+cls+'">'+r.score+'/'+r.total+' <span style="font-size:12px;font-weight:400">('+Math.round(r.score/r.total*100)+'%)</span></td><td style="color:#a08060;font-size:13px">'+r.time+'</td></tr>';
-    }
-    html += '</tbody></table>';
-    document.getElementById('d-table').innerHTML = html;
-  });
-}
-
-// ---- Init ----
-show('v-name');
 </script>
 </body>
 </html>
