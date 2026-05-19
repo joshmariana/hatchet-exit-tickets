@@ -9,49 +9,31 @@
 :root{--bark:#2c1a0e;--wood:#5c3a1e;--tan:#c4a882;--cream:#f5efe6;--paper:#faf7f2;--green:#3a6b3a;--gl:#d4edda;--red:#8b2020;--rl:#fce8e8;--gold:#b8860b}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Source Sans 3',sans-serif;background:var(--cream);min-height:100vh;color:var(--bark)}
-
-/* --- views --- */
-.view{display:none!important}
-.view.show{display:block!important}
-#v-login.show{display:flex!important}
-#v-dash.show{display:block!important}
-
-/* --- header --- */
+.view{display:none!important}.view.show{display:block!important}
+#v-login.show{display:flex!important}#v-dash.show{display:block!important}
 .hdr{background:var(--bark);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:99;box-shadow:0 2px 12px rgba(0,0,0,.3)}
-.brand{display:flex;align-items:center;gap:12px}
-.brand em{font-size:26px;font-style:normal}
+.brand{display:flex;align-items:center;gap:12px}.brand em{font-size:26px;font-style:normal}
 .brand h1{font-family:'Playfair Display',serif;color:#fff;font-size:20px;line-height:1}
 .brand p{color:var(--tan);font-size:11px;letter-spacing:2px;text-transform:uppercase}
 .ghost-btn{font-size:12px;color:var(--tan);background:rgba(255,255,255,.08);padding:6px 14px;border-radius:5px;border:1px solid rgba(255,255,255,.15);cursor:pointer}
 .ghost-btn:hover{background:rgba(255,255,255,.18);color:#fff}
-
-/* --- layout --- */
 .wrap{max-width:680px;margin:0 auto;padding:36px 20px 60px}
 .dwrap{max-width:960px;margin:0 auto;padding:32px 20px 60px}
-
-/* --- card --- */
 .card{background:#fff;border-radius:12px;box-shadow:0 3px 20px rgba(44,26,14,.10);overflow:hidden;margin-bottom:24px}
 .ch{background:var(--bark);padding:20px 28px;display:flex;justify-content:space-between;align-items:center}
 .ch h2{font-family:'Playfair Display',serif;color:#fff;font-size:22px}
 .ch p{color:var(--tan);font-size:13px;margin-top:2px}
 .badge{background:rgba(196,168,130,.15);border:1px solid rgba(196,168,130,.3);color:var(--tan);font-size:12px;padding:5px 12px;border-radius:20px}
 .cb{padding:28px}
-
-/* --- fields --- */
 .field{margin-bottom:20px}
 .field label{display:block;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--wood);margin-bottom:7px}
 .field input{width:100%;padding:11px 14px;border:2px solid #e0d5c5;border-radius:7px;font-family:'Source Sans 3',sans-serif;font-size:15px;color:var(--bark);background:var(--paper);outline:none;transition:border-color .15s}
 .field input:focus{border-color:var(--wood)}
-.frow{display:flex;gap:14px}
-.frow .field{flex:1}
-
-/* --- waiting --- */
+.frow{display:flex;gap:14px}.frow .field{flex:1}
 .wb{text-align:center;padding:40px 28px}
 .wb .ic{font-size:48px;margin-bottom:16px}
 .wb h3{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:8px}
 .wb p{color:#7a6450;font-size:15px}
-
-/* --- quiz --- */
 .ques{margin-bottom:28px}
 .qlbl{font-size:15px;font-weight:700;margin-bottom:13px;line-height:1.5;display:flex;gap:10px;align-items:flex-start}
 .qn{background:var(--bark);color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;flex-shrink:0;margin-top:2px}
@@ -62,22 +44,16 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--cream);min-height:1
 .oc{width:26px;height:26px;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
 .arow{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px}
 .hint{font-size:13px;color:#8b6f4e}
-
-/* --- buttons --- */
 .btn{padding:12px 26px;border-radius:8px;border:none;font-family:'Source Sans 3',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s}
 .btn-p{background:var(--bark);color:#fff}.btn-p:hover{background:var(--wood)}.btn-p:disabled{background:#bbb;cursor:not-allowed}
 .btn-o{background:#fff;color:var(--bark);border:2px solid var(--bark)}.btn-o:hover{background:var(--cream)}
 .btn-d{background:var(--red);color:#fff}.btn-d:hover{opacity:.85}
 .btn-sm{padding:7px 14px;font-size:13px}
-
-/* --- success --- */
 .suc{text-align:center;padding:48px 28px}
 .suc .bi{font-size:56px;margin-bottom:16px}
 .suc h2{font-family:'Playfair Display',serif;font-size:26px;margin-bottom:8px}
 .suc p{color:#7a6450;font-size:16px}
 .sd{display:inline-block;margin:20px 0;font-family:'Playfair Display',serif;font-size:48px;color:var(--bark);border-bottom:3px solid var(--tan);padding-bottom:4px}
-
-/* --- login view --- */
 #v-login{background:var(--bark);min-height:100vh;align-items:center;justify-content:center;flex-direction:column}
 .lcard{background:#fff;border-radius:14px;padding:40px;width:100%;max-width:380px;box-shadow:0 8px 40px rgba(0,0,0,.3);text-align:center}
 .lcard .li{font-size:36px;margin-bottom:16px}
@@ -85,13 +61,9 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--cream);min-height:1
 .lcard .sub{color:#7a6450;font-size:14px;margin-bottom:24px}
 .lerr{color:var(--red);font-size:13px;margin-top:10px;display:none}
 .bk{margin-top:20px;font-size:13px;color:#a08060;cursor:pointer}
-
-/* --- dash header --- */
 .dhdr{background:var(--bark);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:99;box-shadow:0 2px 12px rgba(0,0,0,.3)}
 .dhdr h1{font-family:'Playfair Display',serif;color:#fff;font-size:20px}
 .dhdr p{color:var(--tan);font-size:12px}
-
-/* --- ticket selector --- */
 .tsel{background:#fff;border-radius:12px;box-shadow:0 3px 20px rgba(44,26,14,.10);padding:24px 28px;margin-bottom:28px}
 .tsel h3{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:4px}
 .tsel .sub{color:#7a6450;font-size:13px;margin-bottom:16px}
@@ -103,8 +75,6 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--cream);min-height:1
 .albl{font-size:13px;font-weight:700;padding:5px 12px;border-radius:20px;border:1px solid}
 .albl.aon{background:var(--gl);color:var(--green);border-color:var(--green)}
 .albl.aoff{background:var(--rl);color:var(--red);border-color:var(--red)}
-
-/* --- responses --- */
 .rcard{background:#fff;border-radius:12px;box-shadow:0 3px 20px rgba(44,26,14,.10);overflow:hidden}
 .rhdr{background:var(--bark);padding:18px 28px;display:flex;justify-content:space-between;align-items:center}
 .rhdr h3{font-family:'Playfair Display',serif;color:#fff;font-size:18px}
@@ -130,13 +100,11 @@ tr:last-child td{border-bottom:none}tr:hover td{background:#faf7f2}
 </head>
 <body>
 
-<!-- ===== STUDENT HEADER ===== -->
 <header class="hdr" id="s-hdr">
   <div class="brand"><em>&#129683;</em><div><p>5th Grade ELA</p><h1>Hatchet &mdash; Exit Tickets</h1></div></div>
   <button class="ghost-btn" id="btn-teacher">Teacher</button>
 </header>
 
-<!-- ===== VIEW: NAME ===== -->
 <div class="view show" id="v-name">
   <div class="wrap">
     <div class="card">
@@ -154,7 +122,6 @@ tr:last-child td{border-bottom:none}tr:hover td{background:#faf7f2}
   </div>
 </div>
 
-<!-- ===== VIEW: WAITING ===== -->
 <div class="view" id="v-wait">
   <div class="wrap">
     <div class="card"><div class="cb"><div class="wb">
@@ -165,12 +132,10 @@ tr:last-child td{border-bottom:none}tr:hover td{background:#faf7f2}
   </div>
 </div>
 
-<!-- ===== VIEW: QUIZ ===== -->
 <div class="view" id="v-quiz">
   <div class="wrap"><div class="card" id="quiz-card"></div></div>
 </div>
 
-<!-- ===== VIEW: SUCCESS ===== -->
 <div class="view" id="v-done">
   <div class="wrap">
     <div class="card"><div class="cb"><div class="suc">
@@ -183,7 +148,6 @@ tr:last-child td{border-bottom:none}tr:hover td{background:#faf7f2}
   </div>
 </div>
 
-<!-- ===== VIEW: LOGIN ===== -->
 <div class="view" id="v-login">
   <div class="lcard">
     <div class="li">&#128274;</div>
@@ -196,7 +160,6 @@ tr:last-child td{border-bottom:none}tr:hover td{background:#faf7f2}
   </div>
 </div>
 
-<!-- ===== VIEW: DASHBOARD ===== -->
 <div class="view" id="v-dash">
   <div class="dhdr">
     <div><h1>&#129683; Teacher Dashboard</h1><p>Hatchet Exit Tickets &mdash; Response Tracker</p></div>
@@ -206,7 +169,6 @@ tr:last-child td{border-bottom:none}tr:hover td{background:#faf7f2}
     </div>
   </div>
   <div class="dwrap">
-    <!-- ticket control -->
     <div class="tsel">
       <h3>Active Exit Ticket</h3>
       <p class="sub">Choose which ticket students see when they load the page.</p>
@@ -217,7 +179,6 @@ tr:last-child td{border-bottom:none}tr:hover td{background:#faf7f2}
         <span class="albl aoff" id="d-albl">Loading&hellip;</span>
       </div>
     </div>
-    <!-- responses -->
     <div class="rcard">
       <div class="rhdr">
         <div><h3>Student Responses</h3><p>All submissions across all tickets</p></div>
@@ -235,61 +196,78 @@ tr:last-child td{border-bottom:none}tr:hover td{background:#faf7f2}
   </div>
 </div>
 
-<!-- Firebase compat (script tags, no modules) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
 <script>
-// ---- Firebase init ----
-firebase.initializeApp({
-  databaseURL: "https://hatchet-tickets-default-rtdb.firebaseio.com/"
-});
+firebase.initializeApp({ databaseURL: "https://hatchet-tickets-default-rtdb.firebaseio.com/" });
 var db = firebase.database();
-
-// ---- Data ----
 var PASS = "mariana2026";
+
 var TICKETS = [
   { id:1, title:"Exit Ticket #1", ch:"Chapters 1\u20134", qs:[
-    { q:"Why is Brian on the small plane at the beginning of the novel?", o:["He is going to summer camp.","He is flying to visit his father in Canada.","He is moving to Canada with his mother.","He is going on a school field trip."], a:1 },
-    { q:'What is "The Secret" that weighs on Brian\'s mind?', o:["He stole money from his mother.","He saw his mother with another man before the divorce.","He failed his final exams.","He broke his father\u2019s favorite tool."], a:1 },
-    { q:"What happens to the pilot during the flight?", o:["He falls asleep at the controls.","He has a heart attack and dies.","He jumps out of the plane.","He radios for help and lands safely."], a:1 },
-    { q:"How does Brian manage to land the plane?", o:["He follows radio instructions from a controller.","He pulls back on the controls and crash-lands into a lake.","He parachutes out before impact.","He finds an empty field and sets the plane down."], a:1 },
-    { q:"What gift did Brian\u2019s mother give him before the trip?", o:["A survival kit.","A pocket knife.","A hatchet.","A compass."], a:2 }
+    { q:"Why is Brian traveling on the small plane at the beginning of the novel?",
+      o:["He is going to summer camp in Canada.","He is flying to visit his father in the Canadian oil fields.","He is moving to Canada permanently with his mother.","He is going on a school wilderness trip."], a:1 },
+    { q:"What is \"The Secret\" that Brian cannot stop thinking about?",
+      o:["He failed his final exams and hid his report card.","He saw his mother with another man before his parents divorced.","He accidentally broke an expensive piece of his father\u2019s equipment.","He stole money from his mother\u2019s purse."], a:1 },
+    { q:"What happens to the pilot during the flight?",
+      o:["He falls asleep at the controls from exhaustion.","He has a heart attack and dies.","He radios for help and then passes out.","He deliberately lands the plane in the wilderness."], a:1 },
+    { q:"How does Brian bring the plane down?",
+      o:["He follows step-by-step radio instructions from an air traffic controller.","He runs out of fuel and crash-lands the plane into a lake.","He parachutes out just before the plane hits the ground.","He finds a clearing and manages a rough but safe landing."], a:1 },
+    { q:"What gift did Brian\u2019s mother give him just before he boarded the plane?",
+      o:["A first-aid survival kit.","A folding pocket knife.","A hatchet, which he wore on his belt.","A compass and map of northern Canada."], a:2 }
   ]},
   { id:2, title:"Exit Ticket #2", ch:"Chapters 5\u20138", qs:[
-    { q:"After the crash, what is Brian\u2019s most urgent physical need?", o:["Building a shelter.","Finding food.","Finding drinkable water.","Making a fire."], a:2 },
-    { q:"What does Brian eat first after the crash, even though it makes him sick?", o:["Fish.","Wild raspberries.","Gut cherries (chokecherries).","Bird eggs."], a:2 },
-    { q:"Where does Brian make his shelter?", o:["In a hollowed-out tree.","In a rock overhang or cave-like ledge.","In a pit he digs in the ground.","In the wreckage of the plane."], a:1 },
-    { q:"A porcupine enters Brian\u2019s shelter and injures him. What does this teach him?", o:["To block the entrance each night.","That self-pity is useless \u2014 he must stay positive and problem-solve.","That porcupines are his biggest threat.","That he should move campsites immediately."], a:1 },
-    { q:"Brian dreams of his friend Terry and his father, both seemingly pointing at something. What idea do these dreams help him figure out?", o:["How to build a raft.","How to make fire.","How to find the emergency kit on the plane.","How to signal rescuers."], a:1 }
+    { q:"What is Brian\u2019s most urgent need when he first wakes up after the crash?",
+      o:["Finding shelter before nightfall.","Finding something to eat.","Finding water \u2014 he wakes with an overpowering thirst.","Starting a fire to signal rescuers."], a:2 },
+    { q:"What are the first berries Brian eats, and what happens after he eats them?",
+      o:["Raspberries \u2014 they give him energy and help him feel better.","Blueberries \u2014 they taste good but do not fill him up.","Gut cherries (chokecherries) \u2014 they make him violently sick.","Wild strawberries \u2014 they cause a minor allergic reaction."], a:2 },
+    { q:"Where does Brian build his shelter?",
+      o:["Inside a hollowed-out fallen tree trunk.","In a shallow pit he digs into the hillside.","Under a rocky overhang that forms a cave-like space.","In the wreckage of the crashed plane near the shore."], a:2 },
+    { q:"A porcupine enters Brian\u2019s shelter at night and shoots quills into his leg. What important lesson does Brian take away from this painful experience?",
+      o:["He must seal the entrance to his shelter every night.","Self-pity solves nothing \u2014 he must focus and problem-solve to survive.","Porcupines are the most dangerous animal he will face.","He needs to relocate his campsite to a safer spot."], a:1 },
+    { q:"In Brian\u2019s dream, his friend Terry is at a barbecue. What does Terry do in the dream that gives Brian a crucial survival idea?",
+      o:["Terry points to a pile of dry leaves and bark.","Terry lights a fire and looks meaningfully at Brian.","Terry holds up a piece of flint rock.","Terry builds a shelter from branches and mud."], a:1 }
   ]},
   { id:3, title:"Exit Ticket #3", ch:"Chapters 9\u201312", qs:[
-    { q:"What materials does Brian use to finally create fire?", o:["Two dry sticks rubbed together.","The hatchet struck against a rock to create sparks.","A piece of glass from the plane focused on dry leaves.","Flint stones he finds near the lake."], a:1 },
-    { q:"Why is fire so important to Brian beyond just warmth?", o:["It keeps insects away and purifies his water.","It scares away predators, signals rescuers, and allows him to cook food.","It dries out his wet shelter and clothing.","All of the above."], a:3 },
-    { q:"What startles Brian at the lake while he is getting water?", o:["A bear.","A wolf.","A moose.","A ruffed grouse (foolbird) bursting from cover."], a:3 },
-    { q:"How does Brian successfully catch fish?", o:["He makes a fishing pole from a branch and uses worms as bait.","He weaves a net from plant fibers.","He makes a spear and learns to aim above where he sees the fish due to light refraction.","He traps fish in a pool he builds with rocks."], a:2 },
-    { q:"Which word best describes how Brian\u2019s mindset has changed by the end of Chapter 12?", o:["Hopeless.","Reckless.","Resilient.","Angry."], a:2 }
+    { q:"How does Brian finally succeed in making fire?",
+      o:["He rubs two dry sticks together until friction creates a flame.","He strikes his hatchet against a flint-like rock to produce sparks.","He uses a curved piece of plane wreckage to focus sunlight on dry leaves.","He finds a box of waterproof matches in his jacket pocket."], a:1 },
+    { q:"Beyond warmth, why is fire especially critical to Brian\u2019s survival?",
+      o:["It purifies his drinking water and keeps away insects.","It lets him cook food, drives away predators, and can signal rescuers.","It dries out his wet shelter and clothing after rainstorms.","All of the above."], a:3 },
+    { q:"What birds does Brian discover and learn to hunt in the woods? He nicknames them because they seem almost too easy to find.",
+      o:["Ravens, which he calls \u201cblack birds.\u201d","Ducks, which he calls \u201cwater birds.\u201d","Ruffed grouse, which he calls \u201cfoolbirds.\u201d","Sparrows, which he calls \u201clittle birds.\u201d"], a:2 },
+    { q:"When Brian tries to spear fish, his first attempts all miss. What does he figure out that finally makes him accurate?",
+      o:["He needs to throw the spear harder from farther away.","Light bends in water, so the fish is never exactly where it appears \u2014 he must aim to the side.","He needs a longer spear so he can reach deeper into the water.","He must wait until the fish is completely still before striking."], a:1 },
+    { q:"By the end of Chapter 12, which word best describes how Brian\u2019s attitude and mindset have changed?",
+      o:["Hopeless \u2014 he has given up on being rescued.","Reckless \u2014 he takes dangerous risks without thinking.","Resilient \u2014 he has grown tougher and more self-reliant.","Angry \u2014 he is furious at his situation and his family."], a:2 }
   ]},
   { id:4, title:"Exit Ticket #4", ch:"Chapters 13\u201316", qs:[
-    { q:"A plane flies over Brian\u2019s camp but does not see him. How does this affect him?", o:["He feels relieved he can handle survival on his own.","He falls into a deep depression and loses the will to survive temporarily.","He becomes angry at the pilot.","He immediately builds a larger signal fire."], a:1 },
-    { q:'After the plane misses him, Brian reaches his lowest point. What does he ultimately realize?', o:["That he truly wants to be rescued at any cost.","That he must give up hope.","That he has become tougher \u2014 he calls it his \u201cnew Brian.\u201d","That his family will never find him."], a:2 },
-    { q:"A skunk destroys Brian\u2019s turtle egg cache. What does this teach him?", o:["To store food in higher places.","That he must constantly adapt his food storage strategies.","That skunks are the most dangerous animal in the forest.","To stop collecting eggs and focus only on fish."], a:1 },
-    { q:"What motivates Brian to finally try to retrieve the survival pack from the sunken plane?", o:["He sees a map he needs.","He hopes to find a rescue transmitter (emergency beacon).","He wants dry clothes.","He runs out of food near the lake."], a:1 },
-    { q:"What natural disaster strikes Brian\u2019s camp and causes major damage?", o:["A wildfire.","A tornado.","A violent storm with high winds and waves.","A flash flood."], a:2 }
+    { q:"A plane flies directly over Brian\u2019s camp but does not see him and flies away. How does this affect Brian emotionally?",
+      o:["He feels relief, believing rescuers are narrowing their search area.","He falls into deep despair and loses his will to keep fighting to survive.","He becomes angry at the pilot and makes a vow to build a better signal fire.","He immediately gets to work expanding his camp so he is easier to spot."], a:1 },
+    { q:"After hitting his lowest point following the missed plane, what does Brian resolve the next morning?",
+      o:["To build a large raft and try to paddle to civilization.","To stop signaling rescuers and focus entirely on long-term survival.","To embrace life, stay active, and never let despair take over again.","To swim out to the plane wreck and search for supplies immediately."], a:2 },
+    { q:"A skunk raids and destroys Brian\u2019s cache of turtle eggs. What does this force Brian to learn?",
+      o:["To store food in elevated locations away from the ground.","That he must constantly adapt and protect his food supplies or lose them.","That skunks are the most destructive animal threat he faces.","To abandon turtle eggs entirely and rely only on fish and foolbirds."], a:1 },
+    { q:"What motivates Brian to finally attempt the dangerous task of diving into the sunken plane?",
+      o:["He spots a map inside the cockpit that could show him where he is.","He believes there may be an emergency rescue transmitter in a survival pack.","He wants to recover dry clothing from his luggage.","His food supply near camp has completely run out."], a:1 },
+    { q:"What specific natural disaster strikes Brian\u2019s camp, destroys much of his work, and also partially lifts the sunken plane out of the water?",
+      o:["A wildfire that sweeps through the forest.","A flash flood from heavy upstream rainfall.","A tornado that tears through the area.","A blizzard with heavy snow and ice."], a:2 }
   ]},
   { id:5, title:"Exit Ticket #5", ch:"Chapters 17\u201319", qs:[
-    { q:"What tool does Brian use to break into the submerged plane?", o:["A sharpened stick.","His hatchet.","A rock from the lake bed.","A piece of metal from the plane door."], a:1 },
-    { q:"Which item in the survival pack proves most critical to Brian\u2019s rescue?", o:["A flare gun.","An emergency transmitter (EPIRB).","A satellite phone.","A signal mirror."], a:1 },
-    { q:"How is Brian ultimately rescued?", o:["His parents charter a helicopter that spots his signal fire.","A fur trader whose plane picks up Brian\u2019s transmitter signal lands nearby.","A search party following the plane\u2019s GPS coordinates finds him on foot.","A passing boat sees his smoke signal."], a:1 },
-    { q:"By the end of the novel, how has Brian changed from who he was at the beginning?", o:["He is unchanged \u2014 simply relieved to return to normal life.","He is more resourceful, self-reliant, and mentally tough, and sees the world differently.","He becomes bitter and angry about his ordeal.","He decides he wants to live in the wilderness permanently."], a:1 },
-    { q:'What does Brian think about "The Secret" by the end of the novel?', o:["He decides to confront his mother immediately upon returning.","It no longer controls him \u2014 he plans to tell his father but feels at peace.","He has completely forgotten about it during his time in the wilderness.","He feels more resentment toward his mother than ever."], a:1 }
+    { q:"What does Brian use to chop a hole through the fuselage of the sunken plane to reach the survival pack inside?",
+      o:["A sharpened wooden stake he carved at camp.","His hatchet, which he nearly loses to the lake bottom in the process.","A jagged rock he finds on the lake bed.","A piece of torn metal from the plane\u2019s broken wing."], a:1 },
+    { q:"Brian activates the emergency transmitter from the survival pack but believes it is broken. What actually happens?",
+      o:["The transmitter is broken, and Brian is only rescued because of his signal fire.","The transmitter is working, and its signal is picked up by a passing plane whose pilot lands to rescue Brian.","The transmitter contacts a satellite, which alerts search-and-rescue teams on the ground.","The transmitter triggers a flare that a distant boat crew spots on the lake."], a:1 },
+    { q:"Who rescues Brian, and how does the rescue happen?",
+      o:["A military helicopter crew following the crashed plane\u2019s last known GPS coordinates.","A fur trader flying a small plane who picks up Brian\u2019s transmitter signal and lands on the lake.","A search-and-rescue team that has been tracking Brian\u2019s footprints through the forest.","Brian\u2019s father, who chartered a floatplane after the original search was called off."], a:1 },
+    { q:"By the end of the novel, how has Brian fundamentally changed from the boy he was at the beginning?",
+      o:["He is largely unchanged \u2014 he is just relieved to return to his normal life.","He is more resourceful, mentally tough, and self-reliant, and he sees the world with new awareness.","He becomes bitter and withdrawn, haunted by his experience in the wilderness.","He decides he never wants to return to city life and plans to live outdoors permanently."], a:1 },
+    { q:"In the epilogue, what does Brian decide to do about \"The Secret\" \u2014 his knowledge of his mother\u2019s affair?",
+      o:["He tells his father everything as soon as he is rescued.","He confronts his mother directly when he returns home.","He keeps it to himself and does not tell his father.","He has completely forgotten about it after his months in the wilderness."], a:2 }
   ]}
 ];
 
-// ---- State ----
 var stu = {}, sel = {}, curTicket = null, dashTab = 1, pollId = null;
 
-// ---- View switcher ----
 function show(id) {
   var views = ['v-name','v-wait','v-quiz','v-done','v-login','v-dash'];
   views.forEach(function(v){ document.getElementById(v).classList.remove('show'); });
@@ -297,26 +275,18 @@ function show(id) {
   document.getElementById(id).classList.add('show');
 }
 
-// ---- Student: name submit ----
 document.getElementById('btn-start').addEventListener('click', function() {
   var first = document.getElementById('inp-first').value.trim();
   var last  = document.getElementById('inp-last').value.trim();
   var num   = document.getElementById('inp-num').value.trim();
-  if (!first || !last || !num) {
-    document.getElementById('name-err').style.display = 'block';
-    return;
-  }
+  if (!first || !last || !num) { document.getElementById('name-err').style.display='block'; return; }
   document.getElementById('name-err').style.display = 'none';
   stu = { first:first, last:last, num:num, name:first+' '+last };
   this.innerHTML = '<span class="spin"></span>Loading&hellip;';
   this.disabled = true;
-  startPolling();
-});
-
-function startPolling() {
   checkActive();
   pollId = setInterval(checkActive, 4000);
-}
+});
 
 function checkActive() {
   db.ref('activeTicket').get().then(function(snap) {
@@ -327,8 +297,8 @@ function checkActive() {
       if (b) { b.innerHTML = 'Continue &rarr;'; b.disabled = false; }
     } else {
       var ticket = null;
-      for (var i=0; i<TICKETS.length; i++) { if (TICKETS[i].id === parseInt(val)) { ticket = TICKETS[i]; break; } }
-      if (ticket && (!curTicket || curTicket.id !== ticket.id)) {
+      for (var i=0;i<TICKETS.length;i++){if(TICKETS[i].id===parseInt(val)){ticket=TICKETS[i];break;}}
+      if (ticket && (!curTicket || curTicket.id!==ticket.id)) {
         clearInterval(pollId);
         loadQuiz(ticket);
       }
@@ -336,14 +306,13 @@ function checkActive() {
   });
 }
 
-// ---- Quiz ----
 function loadQuiz(ticket) {
   curTicket = ticket; sel = {};
   var html = '<div class="ch"><div><h2>'+ticket.title+'</h2><p>'+ticket.ch+'</p></div><span class="badge">5 Questions</span></div><div class="cb">';
-  for (var qi=0; qi<ticket.qs.length; qi++) {
-    var q = ticket.qs[qi];
+  for (var qi=0;qi<ticket.qs.length;qi++) {
+    var q=ticket.qs[qi];
     html += '<div class="ques"><div class="qlbl"><span class="qn">'+(qi+1)+'</span>'+q.q+'</div><div class="opts">';
-    for (var oi=0; oi<q.o.length; oi++) {
+    for (var oi=0;oi<q.o.length;oi++) {
       html += '<button class="opt" data-qi="'+qi+'" data-oi="'+oi+'"><span class="oc">'+String.fromCharCode(65+oi)+'</span>'+q.o[oi]+'</button>';
     }
     html += '</div></div>';
@@ -351,146 +320,118 @@ function loadQuiz(ticket) {
   html += '<div class="arow"><button class="btn btn-p" id="btn-submit" disabled>Submit</button><span class="hint" id="q-hint">Answer all 5 questions to submit.</span></div></div>';
   document.getElementById('quiz-card').innerHTML = html;
 
-  // wire option buttons
   var opts = document.querySelectorAll('.opt');
-  for (var k=0; k<opts.length; k++) {
+  for (var k=0;k<opts.length;k++) {
     opts[k].addEventListener('click', function() {
-      var qi = parseInt(this.getAttribute('data-qi'));
-      var oi = parseInt(this.getAttribute('data-oi'));
-      var siblings = document.querySelectorAll('.opt[data-qi="'+qi+'"]');
-      for (var s=0; s<siblings.length; s++) siblings[s].classList.remove('sel');
-      this.classList.add('sel');
-      sel[qi] = oi;
-      if (Object.keys(sel).length === curTicket.qs.length) {
-        document.getElementById('btn-submit').disabled = false;
-        document.getElementById('q-hint').style.display = 'none';
+      var qi=parseInt(this.getAttribute('data-qi')), oi=parseInt(this.getAttribute('data-oi'));
+      var sib=document.querySelectorAll('.opt[data-qi="'+qi+'"]');
+      for(var s=0;s<sib.length;s++) sib[s].classList.remove('sel');
+      this.classList.add('sel'); sel[qi]=oi;
+      if (Object.keys(sel).length===curTicket.qs.length) {
+        document.getElementById('btn-submit').disabled=false;
+        document.getElementById('q-hint').style.display='none';
       }
     });
   }
 
-  // wire submit
   document.getElementById('btn-submit').addEventListener('click', function() {
-    this.innerHTML = '<span class="spin"></span>Submitting&hellip;';
-    this.disabled = true;
-    var score = 0;
-    for (var qi=0; qi<curTicket.qs.length; qi++) { if (sel[qi]===curTicket.qs[qi].a) score++; }
+    this.innerHTML='<span class="spin"></span>Submitting&hellip;'; this.disabled=true;
+    var score=0;
+    for(var qi=0;qi<curTicket.qs.length;qi++){if(sel[qi]===curTicket.qs[qi].a)score++;}
     db.ref('responses').push({
-      name: stu.name, num: stu.num,
-      ticket: curTicket.title, chapters: curTicket.ch, ticketId: curTicket.id,
-      score: score, total: 5,
-      time: new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}),
-      ts: Date.now()
-    }).then(function() {
-      document.getElementById('done-score').textContent = score + ' / 5';
-      var msgs = ["Keep reviewing \u2014 you\u2019ve got this! \uD83D\uDCDA","Good effort! Review your notes. \uD83D\uDC4D","Nice work! \uD83C\uDF1F","Great job! \uD83C\uDF89","Perfect score! Outstanding! \uD83C\uDFC6"];
-      document.getElementById('done-msg').textContent = msgs[score];
+      name:stu.name, num:stu.num,
+      ticket:curTicket.title, chapters:curTicket.ch, ticketId:curTicket.id,
+      score:score, total:5,
+      time:new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}),
+      ts:Date.now()
+    }).then(function(){
+      document.getElementById('done-score').textContent=score+' / 5';
+      var msgs=["Keep reviewing \u2014 you\u2019ve got this! \uD83D\uDCDA","Good effort! Review your notes. \uD83D\uDC4D","Nice work! \uD83C\uDF1F","Great job! \uD83C\uDF89","Perfect score! Outstanding! \uD83C\uDFC6"];
+      document.getElementById('done-msg').textContent=msgs[score];
       show('v-done');
     });
   });
-
   show('v-quiz');
 }
 
-// ---- Teacher login ----
-document.getElementById('btn-teacher').addEventListener('click', function() { show('v-login'); });
-document.getElementById('btn-back').addEventListener('click', function() { show('v-name'); });
-document.getElementById('btn-logout').addEventListener('click', function() { show('v-name'); });
-document.getElementById('inp-pw').addEventListener('keydown', function(e) { if (e.key==='Enter') tryLogin(); });
-document.getElementById('btn-login').addEventListener('click', tryLogin);
+document.getElementById('btn-teacher').addEventListener('click',function(){show('v-login');});
+document.getElementById('btn-back').addEventListener('click',function(){show('v-name');});
+document.getElementById('btn-logout').addEventListener('click',function(){show('v-name');});
+document.getElementById('inp-pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryLogin();});
+document.getElementById('btn-login').addEventListener('click',tryLogin);
 
-function tryLogin() {
-  if (document.getElementById('inp-pw').value === PASS) {
-    document.getElementById('login-err').style.display = 'none';
-    document.getElementById('inp-pw').value = '';
-    show('v-dash');
-    loadDash();
-  } else {
-    document.getElementById('login-err').style.display = 'block';
-  }
+function tryLogin(){
+  if(document.getElementById('inp-pw').value===PASS){
+    document.getElementById('login-err').style.display='none';
+    document.getElementById('inp-pw').value='';
+    show('v-dash'); loadDash();
+  } else { document.getElementById('login-err').style.display='block'; }
 }
 
-// ---- Dashboard ----
-document.getElementById('btn-refresh').addEventListener('click', loadDash);
-
-document.getElementById('btn-setactive').addEventListener('click', function() {
-  db.ref('activeTicket').set(String(dashTab)).then(refreshLabel);
-});
-document.getElementById('btn-deactivate').addEventListener('click', function() {
-  db.ref('activeTicket').set('none').then(refreshLabel);
-});
-document.getElementById('btn-clear').addEventListener('click', function() {
-  if (!confirm('Clear ALL student responses? This cannot be undone.')) return;
+document.getElementById('btn-refresh').addEventListener('click',loadDash);
+document.getElementById('btn-setactive').addEventListener('click',function(){db.ref('activeTicket').set(String(dashTab)).then(refreshLabel);});
+document.getElementById('btn-deactivate').addEventListener('click',function(){db.ref('activeTicket').set('none').then(refreshLabel);});
+document.getElementById('btn-clear').addEventListener('click',function(){
+  if(!confirm('Clear ALL student responses? This cannot be undone.'))return;
   db.ref('responses').remove().then(loadTable);
 });
 
-function loadDash() { renderTabs(); refreshLabel(); loadTable(); }
+function loadDash(){renderTabs();refreshLabel();loadTable();}
 
-function renderTabs() {
-  var html = '';
-  for (var i=0; i<TICKETS.length; i++) {
-    var t = TICKETS[i];
-    html += '<button class="ttab'+(dashTab===t.id?' on':'')+'" data-id="'+t.id+'">#'+t.id+' \u2014 '+t.ch+'</button>';
+function renderTabs(){
+  var html='';
+  for(var i=0;i<TICKETS.length;i++){
+    var t=TICKETS[i];
+    html+='<button class="ttab'+(dashTab===t.id?' on':'')+'" data-id="'+t.id+'">#'+t.id+' \u2014 '+t.ch+'</button>';
   }
-  document.getElementById('d-tabs').innerHTML = html;
-  var tabs = document.querySelectorAll('.ttab');
-  for (var k=0; k<tabs.length; k++) {
-    tabs[k].addEventListener('click', function() {
-      dashTab = parseInt(this.getAttribute('data-id'));
-      renderTabs();
-    });
+  document.getElementById('d-tabs').innerHTML=html;
+  var tabs=document.querySelectorAll('.ttab');
+  for(var k=0;k<tabs.length;k++){
+    tabs[k].addEventListener('click',function(){dashTab=parseInt(this.getAttribute('data-id'));renderTabs();});
   }
 }
 
-function refreshLabel() {
-  db.ref('activeTicket').get().then(function(snap) {
-    var val = snap.val();
-    var el = document.getElementById('d-albl');
-    if (!val || val==='none') {
-      el.textContent = 'No ticket active'; el.className = 'albl aoff';
-    } else {
-      var t = null; for(var i=0;i<TICKETS.length;i++){if(TICKETS[i].id===parseInt(val)){t=TICKETS[i];break;}}
-      el.textContent = t ? 'Active: '+t.title+' ('+t.ch+')' : 'No ticket active';
-      el.className = 'albl aon';
+function refreshLabel(){
+  db.ref('activeTicket').get().then(function(snap){
+    var val=snap.val(), el=document.getElementById('d-albl');
+    if(!val||val==='none'){el.textContent='No ticket active';el.className='albl aoff';}
+    else{
+      var t=null;for(var i=0;i<TICKETS.length;i++){if(TICKETS[i].id===parseInt(val)){t=TICKETS[i];break;}}
+      el.textContent=t?'Active: '+t.title+' ('+t.ch+')':'No ticket active';
+      el.className='albl aon';
     }
   });
 }
 
-function loadTable() {
-  db.ref('responses').get().then(function(snap) {
-    var data = snap.val();
-    var rows = [];
-    if (data) { var keys=Object.keys(data); for(var i=0;i<keys.length;i++) rows.push(data[keys[i]]); }
+function loadTable(){
+  db.ref('responses').get().then(function(snap){
+    var data=snap.val(), rows=[];
+    if(data){var keys=Object.keys(data);for(var i=0;i<keys.length;i++)rows.push(data[keys[i]]);}
     rows.sort(function(a,b){return b.ts-a.ts;});
-
-    document.getElementById('d-count').textContent = rows.length+' response'+(rows.length!==1?'s':'');
-    document.getElementById('d-total').textContent = rows.length || '\u2014';
-    if (rows.length) {
-      var sum=0; for(var i=0;i<rows.length;i++) sum+=rows[i].score;
-      document.getElementById('d-avg').textContent = (sum/rows.length).toFixed(1)+'/5';
-      var perf=0,low=0; for(var i=0;i<rows.length;i++){if(rows[i].score===5)perf++;if(rows[i].score<3)low++;}
-      document.getElementById('d-perf').textContent = perf;
-      document.getElementById('d-low').textContent = low;
+    document.getElementById('d-count').textContent=rows.length+' response'+(rows.length!==1?'s':'');
+    document.getElementById('d-total').textContent=rows.length||'\u2014';
+    if(rows.length){
+      var sum=0;for(var i=0;i<rows.length;i++)sum+=rows[i].score;
+      document.getElementById('d-avg').textContent=(sum/rows.length).toFixed(1)+'/5';
+      var perf=0,low=0;for(var i=0;i<rows.length;i++){if(rows[i].score===5)perf++;if(rows[i].score<3)low++;}
+      document.getElementById('d-perf').textContent=perf;
+      document.getElementById('d-low').textContent=low;
     } else {
-      document.getElementById('d-avg').textContent = '\u2014';
-      document.getElementById('d-perf').textContent = '\u2014';
-      document.getElementById('d-low').textContent = '\u2014';
+      document.getElementById('d-avg').textContent='\u2014';
+      document.getElementById('d-perf').textContent='\u2014';
+      document.getElementById('d-low').textContent='\u2014';
     }
-
-    if (!rows.length) {
-      document.getElementById('d-table').innerHTML = '<div class="empty"><div class="ic">&#128203;</div>No responses yet. Students will appear here as they submit.</div>';
-      return;
+    if(!rows.length){document.getElementById('d-table').innerHTML='<div class="empty"><div class="ic">&#128203;</div>No responses yet. Students will appear here as they submit.</div>';return;}
+    var html='<table><thead><tr><th>#</th><th>Name</th><th>Student #</th><th>Ticket</th><th>Score</th><th>Submitted</th></tr></thead><tbody>';
+    for(var i=0;i<rows.length;i++){
+      var r=rows[i],cls=r.score===5?'s5':r.score>=3?'s34':'slo';
+      html+='<tr><td style="color:#a08060">'+(i+1)+'</td><td><strong>'+r.name+'</strong></td><td style="font-family:monospace">'+r.num+'</td><td><span style="font-size:12px;color:#8b6f4e">'+r.chapters+'</span></td><td class="sc '+cls+'">'+r.score+'/'+r.total+' <span style="font-size:12px;font-weight:400">('+Math.round(r.score/r.total*100)+'%)</span></td><td style="color:#a08060;font-size:13px">'+r.time+'</td></tr>';
     }
-    var html = '<table><thead><tr><th>#</th><th>Name</th><th>Student #</th><th>Ticket</th><th>Score</th><th>Submitted</th></tr></thead><tbody>';
-    for (var i=0;i<rows.length;i++) {
-      var r=rows[i], cls=r.score===5?'s5':r.score>=3?'s34':'slo';
-      html += '<tr><td style="color:#a08060">'+(i+1)+'</td><td><strong>'+r.name+'</strong></td><td style="font-family:monospace">'+r.num+'</td><td><span style="font-size:12px;color:#8b6f4e">'+r.chapters+'</span></td><td class="sc '+cls+'">'+r.score+'/'+r.total+' <span style="font-size:12px;font-weight:400">('+Math.round(r.score/r.total*100)+'%)</span></td><td style="color:#a08060;font-size:13px">'+r.time+'</td></tr>';
-    }
-    html += '</tbody></table>';
-    document.getElementById('d-table').innerHTML = html;
+    html+='</tbody></table>';
+    document.getElementById('d-table').innerHTML=html;
   });
 }
 
-// ---- Init ----
 show('v-name');
 </script>
 </body>
